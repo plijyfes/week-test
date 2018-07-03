@@ -1,4 +1,8 @@
-div {
+body {
+    background-color: black;
+}
+
+#container div {
     float: left;
 }
 
@@ -10,19 +14,16 @@ div {
     left: 50%;
     margin-top: -100px;
     margin-left: -340px;
-    overflow: hidden;
 }
 
 #content {
     width: 1000px;
     height: 200px;
-    overflow-y: hidden;
 }
 
 #scrollDiv {
     width: 600px;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 #content>.img {
