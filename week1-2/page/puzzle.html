@@ -101,7 +101,7 @@
     </div>
     <script>
         var startDiv;
-        var endDiv;
+        var endDivClass;
         document.addEventListener('DOMContentLoaded', function (event) {
             var dragSource = document.getElementsByClassName('img');
             var dropTarget = document.getElementsByClassName('block');
@@ -119,8 +119,10 @@
             startDiv = this;
         }
         function dropped() {
-            console.log(this.firstchild)
-        //    this.firstchild;
+            console.log(this.children[0])
+            endDivClass = this.children[0].className;
+            this.children[0].className = startDiv.className;
+            startDiv.className = endDivClass;
         }
 
         function cancelDefault(e) {
