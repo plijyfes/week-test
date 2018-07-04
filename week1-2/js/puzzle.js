@@ -2,26 +2,32 @@ var dragSource = document.getElementsByClassName('img');
 var startDiv;
 var endDivClass;
 var startMPos;
-var green = document.getElementById('green');
+var green;
 
 document.addEventListener('DOMContentLoaded', function (event) {
     for (var i = 0; i <= 8; i++) {
         dragSource[i].addEventListener('mousedown', dragStart);
         dragSource[i].addEventListener('mouseup', dropped,true)
     }
-    green.addEventListener('mouseup', www,true)
 });
 
 function dragStart(e) {
     pauseEvent(e);
+    var sq = document.createElement('div');
+    this.appendChild(sq);
+    // this.children[0].style.className = 'green';
+    green = this.children[0];
     startDiv = this;
     startMPos = [e.clientX, e.clientY];
+    green.className = 'img green';
     green.style.left = this.offsetLeft + 'px';
     green.style.top = this.offsetTop + 'px';
     green.style.visibility = 'visible';
     for (var i = 0; i <= 8; i++) {
         dragSource[i].addEventListener('mousemove', move);
     }
+    console.log(this.children[0])
+    green.addEventListener('mouseup', www,true)
 }
 
 function dropped(e) {
