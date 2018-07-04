@@ -1,59 +1,61 @@
+var dragSource = document.getElementsByClassName('img');
 var startDiv;
 var endDivClass;
-var startMRelativePos;
+var startMPos;
+var green = document.getElementById('green');
 
 document.addEventListener('DOMContentLoaded', function (event) {
-    var dragSource = document.getElementsByClassName('img');
-    var dropTarget = document.getElementsByClassName('img');
     for (var i = 0; i <= 8; i++) {
-        dragSource[i].addEventListener('dragstart', dragStart);
-        dropTarget[i].addEventListener('drop', dropped);
-        dropTarget[i].addEventListener('dragenter', cancelDefault)
-        dropTarget[i].addEventListener('dragover', cancelDefault)
+        dragSource[i].addEventListener('mousedown', dragStart);
+        dragSource[i].addEventListener('mouseup', dropped,true)
     }
+    green.addEventListener('mouseup', www,true)
 });
 
 function dragStart(e) {
+    pauseEvent(e);
     startDiv = this;
-    startMRelativePos = [e.clientX - this.offsetLeft, e.clientY - this.offsetTop];
-    if (navigator.userAgent.match('Firefox')) {
-        e.dataTransfer.setData('text/html', ''); //firefox需要setData 'text/html'
-    }
-    if (navigator.userAgent.match('MSIE')) {
-        e.dataTransfer.setData('text', ''); //IE需要setData 'text'
+    startMPos = [e.clientX, e.clientY];
+    green.style.left = this.offsetLeft + 'px';
+    green.style.top = this.offsetTop + 'px';
+    green.style.visibility = 'visible';
+    for (var i = 0; i <= 8; i++) {
+        dragSource[i].addEventListener('mousemove', move);
     }
 }
 
 function dropped(e) {
-    var endMRelativePos = [e.clientX - this.offsetLeft, e.clientY - this.offsetTop];
-    //方向判斷
-    if (startDiv.offsetLeft - this.offsetLeft == -150 && startDiv.offsetTop == this.offsetTop) { //向右
-        if (endMRelativePos[0] + (150 - startMRelativePos[0]) >= 75) {
-            change(this);
-        }
-    } else if (startDiv.offsetLeft - this.offsetLeft == 150 && startDiv.offsetTop == this.offsetTop) { //向左
-        if (endMRelativePos[0] - startMRelativePos[0] <= 75) {
-            change(this);
-        }
-    } else if (startDiv.offsetTop - this.offsetTop == 150 && startDiv.offsetLeft == this.offsetLeft) { //向上
-        if (endMRelativePos[1] - startMRelativePos[1] <= 75) {
-            change(this);
-        }
-    } else if (startDiv.offsetTop - this.offsetTop == -150 && startDiv.offsetLeft == this.offsetLeft) { //向下
-        if (endMRelativePos[1] + (150 - startMRelativePos[1]) >= 75) {
+    pauseEvent(e);
+    var endMPos = [e.clientX, e.clientY];
+    if (Math.abs(startDiv.offsetLeft - this.offsetLeft) + Math.abs(startDiv.offsetTop - this.offsetTop) == 150) { //判斷相鄰
+        if (Math.abs(endMPos[0] - startMPos[0]) >= 75 || Math.abs(endMPos[1] - startMPos[1]) >= 75) { //判斷過半
             change(this);
         }
     }
+    for (var i = 0; i <= 8; i++) {
+        dragSource[i].removeEventListener('mousemove', move);
+    }
+    green.style.visibility = 'hidden';
 }
 
-function cancelDefault(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
+function move(e) {
+    pauseEvent(e);
+    green.style.left = (e.clientX-50) + 'px';
+    green.style.top = (e.clientY-50) + 'px';
+    console.log(green.offsetLeft);
 }
 
 function change(end) {
     endDivClass = end.className;
     end.className = startDiv.className;
     startDiv.className = endDivClass;
+}
+
+function pauseEvent(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+
+function www(){
+    console.log('www')
 }

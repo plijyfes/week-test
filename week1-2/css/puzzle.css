@@ -50,3 +50,10 @@ body {
 .img9 {
     background-image: url("../test_img/dora-ironman-9.jpg");
 }
+
+#green {
+    border: 2px green solid;
+    visibility: hidden;
+    /* z-index: 1000; */
+    position: fixed;
+}
