@@ -6,131 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <style>
-        #container {
-            width: 450px;
-            height: 450px;
-        }
-
-        #blockContainer {
-            width: 450px;
-            height: 450px;
-        }
-
-        .block {
-            width: 150px;
-            height: 150px;
-            float: left;
-        }
-
-        .img {
-            width: 150px;
-            height: 150px;
-            float: left;
-        }
-
-        .img1 {
-            background-image: url("../test_img/dora-ironman-1.jpg");
-        }
-
-        .img2 {
-            background-image: url("../test_img/dora-ironman-2.jpg");
-        }
-
-        .img3 {
-            background-image: url("../test_img/dora-ironman-3.jpg");
-        }
-
-        .img4 {
-            background-image: url("../test_img/dora-ironman-4.jpg");
-        }
-
-        .img5 {
-            background-image: url("../test_img/dora-ironman-5.jpg");
-        }
-
-        .img6 {
-            background-image: url("../test_img/dora-ironman-6.jpg");
-        }
-
-        .img7 {
-            background-image: url("../test_img/dora-ironman-7.jpg");
-        }
-
-        .img8 {
-            background-image: url("../test_img/dora-ironman-8.jpg");
-        }
-
-        .img9 {
-            background-image: url("../test_img/dora-ironman-9.jpg");
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../css/puzzle.css">
 </head>
 
 <body>
-    <div id="container">
-        <div id="blockContainer">
-            <div class="block">
-                <div class="img img1" draggable="true"></div>
-            </div>
-            <div class="block">
-                <div class="img img2" draggable="true"></div>
-            </div>
-            <div class="block">
-                <div class="img img3" draggable="true"></div>
-            </div>
-            <div class="block">
-                <div class="img img4" draggable="true"></div>
-            </div>
-            <div class="block">
-                <div class="img img5" draggable="true"></div>
-            </div>
-            <div class="block">
-                <div class="img img6" draggable="true"></div>
-            </div>
-            <div class="block">
-                <div class="img img7" draggable="true"></div>
-            </div>
-            <div class="block">
-                <div class="img img8" draggable="true"></div>
-            </div>
-            <div class="block">
-                <div class="img img9" draggable="true"></div>
-            </div>
-        </div>
+    <div id="blockContainer">
+        <div class="img img1" draggable="true"></div>
+        <div class="img img2" draggable="true"></div>
+        <div class="img img3" draggable="true"></div>
+        <div class="img img4" draggable="true"></div>
+        <div class="img img5" draggable="true"></div>
+        <div class="img img6" draggable="true"></div>
+        <div class="img img7" draggable="true"></div>
+        <div class="img img8" draggable="true"></div>
+        <div class="img img9" draggable="true"></div>
     </div>
-    <script>
-        var startDiv;
-        var endDivClass;
-        document.addEventListener('DOMContentLoaded', function (event) {
-            var dragSource = document.getElementsByClassName('img');
-            var dropTarget = document.getElementsByClassName('block');
-
-            for (var i = 0; i <= 8; i++) {
-                dragSource[i].addEventListener('dragstart', dragStart);
-                dropTarget[i].addEventListener('drop', dropped);
-                dropTarget[i].addEventListener('dragenter', cancelDefault)
-                dropTarget[i].addEventListener('dragover', cancelDefault)
-            }
-
-        });
-        function dragStart() {
-            console.log(this)
-            startDiv = this;
-        }
-        function dropped() {
-            console.log(this.children[0])
-            endDivClass = this.children[0].className;
-            this.children[0].className = startDiv.className;
-            startDiv.className = endDivClass;
-        }
-
-        function cancelDefault(e) {
-            e.preventDefault()
-            e.stopPropagation()
-            return false
-        }
-    </script>
+    <script type="text/javascript" src="../js/puzzle.js"></script>
 </body>
 
 </html>

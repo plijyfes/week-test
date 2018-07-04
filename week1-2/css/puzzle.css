@@ -1,0 +1,52 @@
+body {
+    background-color: black;
+    margin: 0 0 0 0;
+}
+
+#blockContainer {
+    width: 450px;
+    height: 450px;
+    margin: 0 auto;
+}
+
+.img {
+    width: 150px;
+    height: 150px;
+    float: left;
+}
+
+.img1 {
+    background-image: url("../test_img/dora-ironman-1.jpg");
+}
+
+.img2 {
+    background-image: url("../test_img/dora-ironman-2.jpg");
+}
+
+.img3 {
+    background-image: url("../test_img/dora-ironman-3.jpg");
+}
+
+.img4 {
+    background-image: url("../test_img/dora-ironman-4.jpg");
+}
+
+.img5 {
+    background-image: url("../test_img/dora-ironman-5.jpg");
+}
+
+.img6 {
+    background-image: url("../test_img/dora-ironman-6.jpg");
+}
+
+.img7 {
+    background-image: url("../test_img/dora-ironman-7.jpg");
+}
+
+.img8 {
+    background-image: url("../test_img/dora-ironman-8.jpg");
+}
+
+.img9 {
+    background-image: url("../test_img/dora-ironman-9.jpg");
+}
