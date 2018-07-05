@@ -52,7 +52,7 @@ body {
 }
 
 .green {
-    border: 2px green solid;
+    border: 5px green solid;
     visibility: hidden;
     /* z-index: 1000; */
     position: fixed;
