@@ -1,0 +1,19 @@
+<zk>
+	<window title="Hello World!!" border="normal" width="500px"
+		apply="test.ctrl.DemoWindowComposer">
+		<imageSlider id="myComp" />
+	</window>
+		<div id="container">
+        <div id="leftButton"></div>
+        <div id="scrollDiv">
+            <div id="content">
+                <div class="img1 img">1</div>
+                <div class="img2 img">2</div>
+                <div class="img3 img">3</div>
+                <div class="img4 img">4</div>
+                <div class="img5 img">5</div>
+            </div>
+        </div>
+        <div id="rightButton"></div>
+    </div>
+</zk>
