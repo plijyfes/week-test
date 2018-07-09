@@ -1,19 +1,17 @@
 <zk>
-	<window title="Hello World!!" border="normal" width="500px"
-		apply="test.ctrl.DemoWindowComposer">
-		<imageSlider id="myComp" />
-	</window>
-		<div id="container">
-        <div id="leftButton"></div>
-        <div id="scrollDiv">
-            <div id="content">
-                <div class="img1 img">1</div>
-                <div class="img2 img">2</div>
-                <div class="img3 img">3</div>
-                <div class="img4 img">4</div>
-                <div class="img5 img">5</div>
+	<imageSlider id = "myComp">
+	<div width="680px" height="200px">
+        <image class="leftButton" src="test_img/40_40_left_wb.PNG"/>
+        <div width="600px" height="200px" style="overflow:hidden;float:left;">
+            <div width="1000px" height="200px" style="overflow:hidden;float:left;">
+                <image class="img" src="test_img/ironman-01.jpg"/>
+                <image class="img" src="test_img/ironman-02.jpg"/>
+                <image class="img" src="test_img/ironman-03.jpg"/>
+                <image class="img" src="test_img/ironman-04.jpg"/>
+                <image class="img" src="test_img/ironman-05.jpg"/>
             </div>
         </div>
-        <div id="rightButton"></div>
+        <image class="rightButton" src="test_img/40_40_right_wb.PNG"/>
     </div>
+    </imageSlider>
 </zk>

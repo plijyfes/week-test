@@ -22,7 +22,7 @@
 zk.$package('myImageSlider');
 myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	_text:'', //default value for text attribute
-	
+	_sliderClass:'',
 	/**
 	 * Don't use array/object as a member field, it's a restriction for ZK object,
 	 * it will work like a static , share with all the same Widget class instance.
@@ -49,6 +49,18 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 				//updated UI here.
 			}
 		}
+
+//		sliderClass: [
+//			function(v) {
+//				return !v ? '' : v;
+//			},
+//			function() {
+//				var n = this.$n;
+//				if(n){
+//					jq(n).addClass(this._sliderClass)
+//				}
+//			}
+//		]
 	},
 	/**
 	 * If you don't like the way in $define ,

@@ -16,6 +16,7 @@ public class DemoWindowComposer extends SelectorComposer {
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		myComp.setText("Hello ZK Component!! Please click me.");
+//		myComp.set_sliderClass("container");
 	}
 	
 	public void onFoo$myComp (ForwardEvent event) {

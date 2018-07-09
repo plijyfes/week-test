@@ -14,8 +14,15 @@ function (out) {
 	/*
 		class="${zcls} ${this.getSclass()}" id="${uuid}"
 	*/
+//	out.push('<div ', this.domAttrs_(), '>');
+//	for(var w = this.firstChild; w; w=w.nextSibling){
+//		w.redraw(out);
+//	}
+//	out.push('</div>');
 	out.push('<div ', this.domAttrs_(), '>');
-	out.push(this._text);
+	for(var w = this.firstChild; w; w=w.nextSibling){
+		w.redraw(out);
+	}
 	out.push('</div>');
 
 }
