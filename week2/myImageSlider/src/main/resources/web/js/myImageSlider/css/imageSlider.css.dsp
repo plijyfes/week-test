@@ -16,46 +16,35 @@ body{
     left: 50%;
     margin-top: -100px;
     margin-left: -340px;
-}
-
-.z-div{
-    float: left;
-}
-
-.container {
-    width: 680px;
-    height: 200px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -340px;
-}
-
-.content {
-    width: 1000px;
-    height: 200px;
-}
-
-.scrollDiv {
-    width: 600px;
     overflow: hidden;
 }
 
-.img {
+.z-imageslider-content {
+    width: 1000px;
+    height: 200px;
+    float: left;
+}
+
+#z-imageslider-scrollDiv {
+    height: 200px;
+    overflow: hidden;
+    float: left;
+}
+
+.z-image {
     width: 200px;
     height: 200px;
     float: left;
 }
 
-.leftButton {
+#z-imageslider-leftButton {
     width: 40px;
     height: 40px;
     margin-top: 80px;
     float: left;
 }
 
-.rightButton {
+#z-imageslider-rightButton {
     width: 40px;
     height: 40px;
     margin-top: 80px;

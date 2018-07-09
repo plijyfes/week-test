@@ -15,8 +15,9 @@ public class DemoWindowComposer extends SelectorComposer {
 	
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
-		myComp.setText("Hello ZK Component!! Please click me.");
-//		myComp.set_sliderClass("container");
+//		myComp.setText("Hello ZK Component!! Please click me.");
+		myComp.setViewportSize(600);
+		System.out.println(myComp.getViewportSize());
 	}
 	
 	public void onFoo$myComp (ForwardEvent event) {

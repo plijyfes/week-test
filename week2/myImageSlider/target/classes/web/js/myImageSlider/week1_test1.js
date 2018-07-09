@@ -3,7 +3,7 @@ var target = 0;
 var scrollDiv = document.getElementById('scrollDiv');
 
 document.addEventListener('DOMContentLoaded', function (event) {
-    document.getElementsByClassName('leftButton')[0].addEventListener('click', scroll);
+    document.getElementById('leftButton').addEventListener('click', scroll);
     document.getElementsByClassName('rightButton')[0].addEventListener('click', scroll);
 });
 

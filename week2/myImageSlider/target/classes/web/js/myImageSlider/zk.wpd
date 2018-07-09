@@ -57,6 +57,5 @@
 	====
 
 	-->
-	<script src="week1_test1.js" />
 	<widget name="ImageSlider" />
 </package>
