@@ -14,11 +14,14 @@
  * this.desktop exist , means it's after mold rendering.
  * 
  */
-var timer;
-var target = 0;
 zk.$package('myImageSlider');
 myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
-	_text : '', // default value for text attribute
+	_viewportSize: 3,
+	_target: 0,
+	_timer: 0,
+	_selectedIndex: -1,
+	_imageWidth: 200,
+	
 	/**
 	 * Don't use array/object as a member field, it's a restriction for ZK
 	 * object, it will work like a static , share with all the same Widget class
@@ -34,36 +37,28 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		/**
 		 * The member in $define means that it has its own setter/getter. (It's
 		 * a coding sugar.)
-		 * 
-		 * If you don't get this , you could see the comment below for another
-		 * way to do this.
-		 * 
-		 * It's more clear.
-		 * 
 		 */
-		text : function() { // this function will be called after setText() .
-
+		target : function(timer) {
+			
+		},
+		
+		timer : function(timer) {
+			
+		},
+		
+		selectedIndex : function(selectedIndex) {
 			if (this.desktop) {
-				// updated UI here.
+				console.log(this.$n('content').children[selectedIndex-1].className)
+				this.$n('content').children[selectedIndex-1].className = "z-imageslider-image-selected";
+				console.log(this.$n('content').children[selectedIndex-1].className)
 			}
 		},
 
-		selectedIndex : function(selectedIndex) {
-			var n = this.$n();
-			if (n)
-				n.selectedIndex = selectedIndex;
-		},
-
-		selectedItem : function(selectedItem) {
-			var n = this.$n();
-			if (n)
-				n.selectedItem = selectedItem;
-		},
-
 		viewportSize : function(viewportSize) {
-			var n = this.$n();
-			if (n)
-				n.viewportSize = viewportSize;
+			if (this.desktop) {
+				this.$n().style = "width:"+ (this.$n().imageWidth * viewportSize + 80) + "px;";
+				this.$n('scroll-div').style = "width:"+ viewportSize * this.$n().imageWidth + "px;";
+			}
 		},
 
 		imageWidth : function(imageWidth) {
@@ -71,17 +66,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 			if (n)
 				n.imageWidth = imageWidth;
 		},
-	// sliderClass: [
-	// function(v) {
-	// return !v ? '' : v;
-	// },
-	// function() {
-	// var n = this.$n;
-	// if(n){
-	// jq(n).addClass(this._sliderClass)
-	// }
-	// }
-	// ]
+	
 	},
 	/**
 	 * If you don't like the way in $define , you could do the setter/getter by
@@ -101,46 +86,47 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		 * you will get error.
 		 */
 		this.$supers(myImageSlider.ImageSlider, 'bind_', arguments);
-
 		// A example for domListen_ , REMEMBER to do domUnlisten in unbind_.
-		this.domListen_(document.getElementById(this.$s('leftButton')),
-				"onClick", "_doItemsClick");
-		this.domListen_(document.getElementById(this.$s('rightButton')),
-				"onClick", "_doItemsClick");
 	},
 	/*
 	 * A example for domListen_ listener.
 	 */
 
-	_doItemsClick : function(evt) {
+	_doButtonClick : function(evt) {
 		// alert("item click event fired");
-//		console.log(evt.domTarget);
-		var scrollDiv = document.getElementById(this.$s('scrollDiv'));
-
+		// console.log(evt.domTarget);
+		var scrollDiv = this.$n('scroll-div'),
+		    imageWidth = this.getImageWidth(),
+		    scrollLimit = imageWidth * (this.nChildren - this.getViewportSize()),
+		    timer = this._timer,
+		    target = this.getTarget();
+		
+//		 console.log(scrollLimit);
 		if (timer) {
 			clearInterval(timer);
+			return false;
 		}
-		if (evt.domTarget.id == this.$s('leftButton')) {
-			if (target >= 200) {
-				target -= 200;
+		if (evt.domTarget == this.$n('left-button')) {
+			if (target >= imageWidth) {
+				this.setTarget(target - imageWidth);
 			}
 			if (scrollDiv.scrollLeft > 0) {
 				timer = setInterval(function() {
 					if (scrollDiv.scrollLeft > target) {
-						scrollDiv.scrollLeft -= 4;
+						scrollDiv.scrollLeft -= (0.02 * imageWidth);
 					} else {
 						clearInterval(timer);
 					}
 				}, 10);
 			}
 		} else {
-			if (target <= 200) {
-				target += 200;
+			if (target <= scrollLimit - imageWidth) {
+				this.setTarget(target + imageWidth);
 			}
-			if (scrollDiv.scrollLeft < 400) {
+			if (scrollDiv.scrollLeft < scrollLimit) {
 				timer = setInterval(function() {
 					if (scrollDiv.scrollLeft < target) {
-						scrollDiv.scrollLeft += 4;
+						scrollDiv.scrollLeft += (0.02 * imageWidth);
 					} else {
 						clearInterval(timer);
 					}
@@ -148,6 +134,20 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 			}
 		}
 	},
+
+//	_doImageClick : function(evt) {
+//		for (var i = 0; i < this.nChildren; i++) {
+//			document.getElementById(this.$s('content')).children[i].style.border = "none";
+//		}
+//		this.setSelectedItem(evt.domTarget);
+//		this.getSelectedItem().style.border = "2px green solid;";
+//		zAu.send(new zk.Event(this, "onFoo", {
+//			foo : this.getSelectedItem().src
+//		}, {
+//			toServer : true
+//		}));
+//
+//	},
 
 	unbind_ : function() {
 
@@ -164,11 +164,13 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	 * widget event, more detail please refer to
 	 * http://books.zkoss.org/wiki/ZK%20Client-side%20Reference/Notifications
 	 */
-	doClick_ : function(evt) {
-		this.$super('doClick_', evt, true);// the super doClick_ should be
-											// called
-		this.fire('onFoo', {
-			foo : 'myData'
-		});
-	}
+ doClick_ : function(evt) {
+	this.$super('doClick_', evt, true);// the super doClick_ should be called
+	if (evt.domTarget == this.$n('left-button') || evt.domTarget == this.$n('right-button')) {
+//		console.log(evt.domTarget);
+		this._doButtonClick(evt);
+	} 
+	// make a selecter
+  	this.fire('onSelect', {selected : this.getSelectedIndex()+''}, {toServer : true});
+ }
 });

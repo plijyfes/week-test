@@ -9,23 +9,35 @@ function (out) {
 	
 	var zcls = this.getZclass(),
 		uuid = this.uuid,
-		viewportSize = this.getViewportSize();
-	console.log(this.domAttrs_());
+		viewportSize = this.getViewportSize(),
+		imageWidth = this.getImageWidth();
 
 	// The this.domAttrs_() means it will prepare some dom attributes,
 	// like the pseudo code below
 	/*
 	 * class="${zcls} ${this.getSclass()}" id="${uuid}"
 	 */
-// out.push('<div ', this.domAttrs_(), '>');
-// for(var w = this.firstChild; w; w=w.nextSibling){
-// w.redraw(out);
-// }
-// out.push('</div>');
-	out.push('<div ', this.domAttrs_(), '>', '<image id="', this.$s('leftButton'), '" src="test_img/40_40_left_wb.PNG"/>', '<div id="', this.$s('scrollDiv'), '" style="width:', viewportSize, 'px;">', '<div class="', this.$s('content'), '">');
-	for(var w = this.firstChild; w; w=w.nextSibling){
-		w.redraw(out);
-	}
-	out.push('</div>', '</div>', '<image id="', this.$s('rightButton'), '" src="test_img/40_40_right_wb.PNG"/>');
+		out.push('<div ', this.domAttrs_(), 'style="width:', imageWidth * viewportSize + 80, 'px;">'); 
+		if (viewportSize > this.nChildren) {
+			out.push('<div id="', uuid, '-left-button" class="', this.$s('left-button-d'), '"/>');
+		} else {
+			out.push('<div id="', uuid, '-left-button" class="', this.$s('left-button'), '"/>');
+		}
+		out.push('<div id="', uuid, '-scroll-div" class="', this.$s('scroll-div'), '" style="width:', imageWidth * viewportSize, 'px;">', 
+				'<div id="', uuid, '-content" class="', this.$s('content'), '" style="width:', imageWidth * this.nChildren,'px;">');
+		for (var w = this.firstChild; w; w=w.nextSibling){
+			out.push('<div id="', uuid, '-image" class="', this.$s('image'), '">')
+			w.redraw(out);
+			out.push('</div>');
+		}
+		out.push('</div>', 
+				'</div>');
+		if (viewportSize > this.nChildren) {
+			out.push('<div id="', uuid, '-right-button" class="', this.$s('right-button-d'), '"/>');
+		} else {
+			out.push('<div id="', uuid, '-right-button" class="', this.$s('right-button'), '"/>');
+		}
+	
+	
 
 }

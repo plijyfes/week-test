@@ -6,6 +6,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 
 public class DemoWindowComposer extends SelectorComposer {
@@ -15,14 +16,15 @@ public class DemoWindowComposer extends SelectorComposer {
 	
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
-//		myComp.setText("Hello ZK Component!! Please click me.");
-		myComp.setViewportSize(600);
-		System.out.println(myComp.getViewportSize());
+		myComp.setViewportSize(3);
+//		myComp.setSelectedIndex(1);
+		System.out.println(myComp.getChildren());
 	}
 	
+	@Listen("onClick = imageslider#myComp")
 	public void onFoo$myComp (ForwardEvent event) {
 		Event mouseEvent = (Event) event.getOrigin();
-		System.out.println("onFOO");
-		alert("You listen onFoo: " + mouseEvent.getTarget());
+		System.out.println("onClick");
+		alert("You listen onClick: " + mouseEvent.getTarget());
 	}
 }

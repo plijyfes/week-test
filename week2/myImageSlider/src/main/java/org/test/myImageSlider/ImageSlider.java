@@ -8,6 +8,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.SelectEvent;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listheader;
@@ -16,42 +17,14 @@ import org.zkoss.zul.impl.XulElement;
 public class ImageSlider extends XulElement {
 
 	static {
-		addClientEvent(ImageSlider.class, "onFoo", 0);
+		addClientEvent(ImageSlider.class, Events.ON_SELECT, CE_IMPORTANT);
 	}
 
-	/* Here's a simple example for how to implements a member field */
+	private int _selectedIndex = -1;
 
-	private String _text;
+	private int _viewportSize = 3;
 
-	private Image _selectedItem;
-
-	private int _selectedIndex;
-
-	private int _viewportSize;
-
-	private int _imageWidth;
-
-	public String getText() {
-		return _text;
-	}
-
-	public void setText(String text) {
-		if (!Objects.equals(_text, text)) {
-			_text = text;
-			smartUpdate("text", _text);
-		}
-	}
-
-	public Image getSelectedItem() {
-		return _selectedItem;
-	}
-
-	public void setSelectedItem(Image selectedItem) {
-		if (!Objects.equals(_selectedItem, selectedItem)) {
-			_selectedItem = selectedItem;
-			smartUpdate("selectedItem", _selectedItem);
-		}
-	}
+	private int _imageWidth = 200;
 
 	public int getSelectedIndex() {
 		return _selectedIndex;
@@ -89,22 +62,28 @@ public class ImageSlider extends XulElement {
 	// super//
 	protected void renderProperties(org.zkoss.zk.ui.sys.ContentRenderer renderer) throws java.io.IOException {
 		super.renderProperties(renderer);
-		render(renderer, "text", _text);
-		render(renderer, "selectedItem", _selectedItem);
-		render(renderer, "selectedIndex", _selectedIndex);
-		render(renderer, "viewportSize", _viewportSize);
-		render(renderer, "imageWidth", _imageWidth);
-		System.out.print("render");
+		if (!Objects.equals(_selectedIndex, -1)) {
+			render(renderer, "selectedIndex", _selectedIndex);
+		}
+		if (!Objects.equals(_viewportSize, 3)) {
+			render(renderer, "viewportSize", _viewportSize);
+		}
+		if (!Objects.equals(_imageWidth, 200)) {
+			render(renderer, "imageWidth", _imageWidth);
+		}
+		System.out.println("render");
 	}
 
 	public void service(AuRequest request, boolean everError) {
 		final String cmd = request.getCommand();
 		final Map data = request.getData();
 
-		if (cmd.equals("onFoo")) {
-			final String foo = (String) data.get("foo");
-			System.out.println("do onFoo, data:" + foo);
-			Events.postEvent(Event.getEvent(request));
+		if (cmd.equals(Events.ON_SELECT)) {
+			SelectEvent<ImageSlider, Object> evt = SelectEvent.getSelectEvent(request);
+			final String selected = (String) data.get("selected");
+			setSelectedIndex(Integer.valueOf(selected));
+			System.out.println("do onSelect, data:" + selected);
+			Events.postEvent(evt);
 		} else
 			super.service(request, everError);
 	}
@@ -116,10 +95,10 @@ public class ImageSlider extends XulElement {
 		return (this._zclass != null ? this._zclass : "z-imageSlider");
 	}
 
-	// public void beforeChildAdded(Component child,Component refChild) {
-	// if(!(child instanceof Listheader)) {
-	// throw new UiException();
-	// }
-	// super.beforeChildAdded(child, refChild);
-	// }
+	public void beforeChildAdded(Component child, Component refChild) {
+		if (!(child instanceof Image)) {
+			throw new UiException("Unsupported child: " + child);
+		}
+		super.beforeChildAdded(child, refChild);
+	}
 }
