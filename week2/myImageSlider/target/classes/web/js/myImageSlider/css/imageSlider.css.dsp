@@ -5,18 +5,15 @@
 
 .z-imageslider{
     color:black;
-    height: 200px;
     margin: 0 auto;
     overflow: hidden;
 }
 
 .z-imageslider-content {
-    height: 200px;
     float: left;
 }
 
 .z-imageslider-scroll-div {
-    height: 200px;
     overflow: hidden;
     float: left;
 }
@@ -27,14 +24,10 @@
 }
 
 .z-imageslider-image{
-	width: 200px;
-    height: 200px;
     float: left;
 }
 
 .z-imageslider-image-selected{
-	width: 200px;
-    height: 200px;
     float: left;
     border: 2px green solid;
 }
@@ -47,10 +40,24 @@
     float: left;
 }
 
+.z-imageslider-left-view {
+	background-image: url(${c:encodeURL('/test_img/40_40_left_wb.PNG')});
+    width: 40px;
+    height: 40px;
+    float: left;
+}
+
 .z-imageslider-right-button {
 	background-image: url(${c:encodeURL('/test_img/40_40_right_wb.PNG')});
     width: 40px;
     height: 40px;
     margin-top: 80px;
+    float: left;
+}
+
+.z-imageslider-right-view {
+	background-image: url(${c:encodeURL('/test_img/40_40_right_wb.PNG')});
+    width: 40px;
+    height: 40px;
     float: left;
 }

@@ -17,14 +17,8 @@ public class DemoWindowComposer extends SelectorComposer {
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		myComp.setViewportSize(3);
-//		myComp.setSelectedIndex(1);
-		System.out.println(myComp.getChildren());
+		myComp.setImageWidth(200);
+		myComp.setSelectedIndex(4);
 	}
-	
-	@Listen("onClick = imageslider#myComp")
-	public void onFoo$myComp (ForwardEvent event) {
-		Event mouseEvent = (Event) event.getOrigin();
-		System.out.println("onClick");
-		alert("You listen onClick: " + mouseEvent.getTarget());
-	}
+
 }

@@ -18,6 +18,7 @@ public class ImageSlider extends XulElement {
 
 	static {
 		addClientEvent(ImageSlider.class, Events.ON_SELECT, CE_IMPORTANT);
+		addClientEvent(ImageSlider.class, Events.ON_CLICK, CE_IMPORTANT);
 	}
 
 	private int _selectedIndex = -1;
@@ -71,7 +72,6 @@ public class ImageSlider extends XulElement {
 		if (!Objects.equals(_imageWidth, 200)) {
 			render(renderer, "imageWidth", _imageWidth);
 		}
-		System.out.println("render");
 	}
 
 	public void service(AuRequest request, boolean everError) {
@@ -82,10 +82,17 @@ public class ImageSlider extends XulElement {
 			SelectEvent<ImageSlider, Object> evt = SelectEvent.getSelectEvent(request);
 			final String selected = (String) data.get("selected");
 			setSelectedIndex(Integer.valueOf(selected));
-			System.out.println("do onSelect, data:" + selected);
+			System.out.println("do onSelect, SelectedIndex:" + selected);
 			Events.postEvent(evt);
-		} else
+		} else if(cmd.equals(Events.ON_CLICK)) {
+			Event evt = Event.getEvent(request);
+			final String click = (String) data.get("click");
+			setViewportSize(Integer.valueOf(click));
+			System.out.println("do onClick, ViewportSize:" + click);
+			Events.postEvent(evt);
+		}else {
 			super.service(request, everError);
+		}
 	}
 
 	/**
