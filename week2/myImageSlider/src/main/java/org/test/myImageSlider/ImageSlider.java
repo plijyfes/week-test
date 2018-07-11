@@ -18,9 +18,8 @@ public class ImageSlider extends XulElement {
 
 	static {
 		addClientEvent(ImageSlider.class, Events.ON_SELECT, CE_IMPORTANT);
-		addClientEvent(ImageSlider.class, Events.ON_CLICK, CE_IMPORTANT);
 	}
-
+// to DO :selectedItem
 	private int _selectedIndex = -1;
 
 	private int _viewportSize = 3;
@@ -32,7 +31,7 @@ public class ImageSlider extends XulElement {
 	}
 
 	public void setSelectedIndex(int selectedIndex) {
-		if (!Objects.equals(_selectedIndex, selectedIndex)) {
+		if (_selectedIndex != selectedIndex) {
 			_selectedIndex = selectedIndex;
 			smartUpdate("selectedIndex", _selectedIndex);
 		}
@@ -43,7 +42,7 @@ public class ImageSlider extends XulElement {
 	}
 
 	public void setViewportSize(int viewportSize) {
-		if (!Objects.equals(_viewportSize, viewportSize)) {
+		if (_viewportSize != viewportSize) {
 			_viewportSize = viewportSize;
 			smartUpdate("viewportSize", _viewportSize);
 		}
@@ -54,7 +53,7 @@ public class ImageSlider extends XulElement {
 	}
 
 	public void setImageWidth(int imageWidth) {
-		if (!Objects.equals(_imageWidth, imageWidth)) {
+		if (_imageWidth != imageWidth) {
 			_imageWidth = imageWidth;
 			smartUpdate("imageWidth", _imageWidth);
 		}
@@ -63,13 +62,13 @@ public class ImageSlider extends XulElement {
 	// super//
 	protected void renderProperties(org.zkoss.zk.ui.sys.ContentRenderer renderer) throws java.io.IOException {
 		super.renderProperties(renderer);
-		if (!Objects.equals(_selectedIndex, -1)) {
+		if (_selectedIndex != -1) {
 			render(renderer, "selectedIndex", _selectedIndex);
 		}
-		if (!Objects.equals(_viewportSize, 3)) {
+		if (_viewportSize != 3) {
 			render(renderer, "viewportSize", _viewportSize);
 		}
-		if (!Objects.equals(_imageWidth, 200)) {
+		if (_imageWidth != 200) {
 			render(renderer, "imageWidth", _imageWidth);
 		}
 	}
@@ -79,18 +78,12 @@ public class ImageSlider extends XulElement {
 		final Map data = request.getData();
 
 		if (cmd.equals(Events.ON_SELECT)) {
-			SelectEvent<ImageSlider, Object> evt = SelectEvent.getSelectEvent(request);
-			final String selected = (String) data.get("selected");
-			setSelectedIndex(Integer.valueOf(selected));
+			SelectEvent<Image, Object> evt = SelectEvent.getSelectEvent(request);
+			final int selected = (Integer) data.get("selected");
+			_selectedIndex = selected;
 			System.out.println("do onSelect, SelectedIndex:" + selected);
 			Events.postEvent(evt);
-		} else if(cmd.equals(Events.ON_CLICK)) {
-			Event evt = Event.getEvent(request);
-			final String click = (String) data.get("click");
-			setViewportSize(Integer.valueOf(click));
-			System.out.println("do onClick, ViewportSize:" + click);
-			Events.postEvent(evt);
-		}else {
+		} else {
 			super.service(request, everError);
 		}
 	}
@@ -104,7 +97,7 @@ public class ImageSlider extends XulElement {
 
 	public void beforeChildAdded(Component child, Component refChild) {
 		if (!(child instanceof Image)) {
-			throw new UiException("Unsupported child: " + child);
+			throw new UiException("Unsupported child: " + child); // image only
 		}
 		super.beforeChildAdded(child, refChild);
 	}

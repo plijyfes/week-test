@@ -18,7 +18,6 @@ zk.$package('myImageSlider');
 myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	_viewportSize: 3,
 	_target: 0,
-	_timer: setInterval(function() {}, 10),
 	_selectedIndex: -1,
 	_imageWidth: 200,
 	
@@ -38,13 +37,6 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		 * The member in $define means that it has its own setter/getter. (It's
 		 * a coding sugar.)
 		 */
-		target : function(timer) {
-			
-		},
-		
-		timer : function(timer) {
-			
-		},
 		
 		selectedIndex : function(selectedIndex) {
 			if (this.desktop) {
@@ -64,16 +56,15 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 
 		viewportSize : function(viewportSize) {
 			if (this.desktop) {
-				if (viewportSize >= this.nChildren) {
-					this.$n().style = "width:"+ (this.getImageWidth() * viewportSize + 80) + "px;";
-					this.$n('left-button').className = 'z-imageslider-left-button-d';
-					this.$n('right-button').className = 'z-imageslider-right-button-d';
+				this.$n().style.width = (this.getImageWidth() * viewportSize + 80) + "px;";
+				if (viewportSize >= this.nChildren) {		
+					this.$n('left-button').className = this.$s('left-button-d');
+					this.$n('right-button').className = this.$s('left-button-d');
 				} else {
-					this.$n().style = "width:"+ (this.getImageWidth() * viewportSize + 160) + "px;";
 					this.$n('left-button').className = this.$s('left-button');
 					this.$n('right-button').className = this.$s('right-button');
 				}
-				this.$n('scroll-div').style = "width:"+ viewportSize * this.getImageWidth() + "px;";
+				this.$n('scroll-div').style.width = viewportSize * this.getImageWidth() + 'px';
 			}
 		},
 
@@ -104,15 +95,6 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	 * getText:function(){ return this._text; }, setText:function(val){
 	 * this._text = val; if(this.desktop){ //update the UI here. } },
 	 */
-	bind_ : function() {
-		/**
-		 * For widget lifecycle , the super bind_ should be called as FIRST
-		 * STATEMENT in the function. DONT'T forget to call supers in bind_ , or
-		 * you will get error.
-		 */
-		this.$supers(myImageSlider.ImageSlider, 'bind_', arguments);
-		// A example for domListen_ , REMEMBER to do domUnlisten in unbind_.
-	},
 	/*
 	 * A example for domListen_ listener.
 	 */
@@ -191,9 +173,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	} else if (evt.domTarget.className == 'z-image'){
 		var contentposx = this.$n('content').offsetLeft;
 		this.setSelectedIndex(Math.floor((evt.domTarget.offsetLeft-contentposx)/this.getImageWidth()));
-		this.fire('onSelect', {selected : this.getSelectedIndex()+''}, {toServer : true});
-	} else if (evt.domTarget == this.$n('left-view') || evt.domTarget == this.$n('right-view')){
-		this._doViewClick(evt);
-	}
+		this.fire('onSelect', {selected : this.getSelectedIndex()});
+	} 
  }
 });

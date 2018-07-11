@@ -8,6 +8,7 @@ import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Image;
 
 public class DemoWindowComposer extends SelectorComposer {
 	
@@ -16,9 +17,11 @@ public class DemoWindowComposer extends SelectorComposer {
 	
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
-		myComp.setViewportSize(3);
-		myComp.setImageWidth(200);
-		myComp.setSelectedIndex(4);
 	}
-
+	
+	@Listen("onClick = #btn1")
+	public void onClick$btn1() {
+		Image img1 = new Image("/test_img/40_40_right_wb.PNG");
+		myComp.appendChild(img1);
+	}
 }
