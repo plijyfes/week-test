@@ -13,7 +13,7 @@ import org.zkoss.zul.Image;
 public class DemoWindowComposer extends SelectorComposer {
 	
 	@Wire
-	private ImageSlider myComp;
+	private ImageSlider myImageSlider;
 	
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
@@ -21,7 +21,7 @@ public class DemoWindowComposer extends SelectorComposer {
 	
 	@Listen("onClick = #btn1")
 	public void onClick$btn1() {
-		Image img1 = new Image("/test_img/40_40_right_wb.PNG");
-		myComp.appendChild(img1);
+		Image img1 = new Image("/test_img/ironman-01.jpg");
+		myImageSlider.appendChild(img1);
 	}
 }

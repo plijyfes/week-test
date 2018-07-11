@@ -19,7 +19,6 @@ function (out) {
 	/*
 	 * class="${zcls} ${this.getSclass()}" id="${uuid}"
 	 */
-		console.log(imageWidth * viewportSize);
 		out.push('<div ', this.domAttrs_(), 'style="width:', imageWidth * viewportSize + 80, 'px; height:', imageWidth, 'px;">'); 
 		out.push('<div id="', uuid, '-left-button" class="', this.$s('left-button' + (fullview ? '-d' : '')), '"/>');
 		out.push('<div id="', uuid, '-scroll-div" class="', this.$s('scroll-div'), '" style="width:', imageWidth * viewportSize, 'px; height:', imageWidth, 'px;">'); 
@@ -30,6 +29,6 @@ function (out) {
 			out.push('</div>');
 		}
 		out.push('</div></div>');	
-		out.push('<div id="', uuid, '-right-button" class="', this.$s(fullview ? 'right-button-d' : 'right-button'), '"/>');
+		out.push('<div id="', uuid, '-right-button" class="', this.$s('right-button' + (fullview ? '-d' : '')), '"/>');
 		out.push('</div>');
 }

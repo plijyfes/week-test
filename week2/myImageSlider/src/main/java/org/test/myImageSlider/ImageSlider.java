@@ -1,8 +1,10 @@
 package org.test.myImageSlider;
 
+import java.util.List;
 import java.util.Map;
 
 import org.zkoss.lang.Objects;
+import org.zkoss.util.CollectionsX.ArrayList;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.UiException;
@@ -19,12 +21,25 @@ public class ImageSlider extends XulElement {
 	static {
 		addClientEvent(ImageSlider.class, Events.ON_SELECT, CE_IMPORTANT);
 	}
-// to DO :selectedItem
+	// to DO :selectedItem
+	private Image _selectedItem;
+
 	private int _selectedIndex = -1;
 
 	private int _viewportSize = 3;
 
 	private int _imageWidth = 200;
+
+	public Image getSelectedItem() {
+		return _selectedItem;
+	}
+
+	public void setSelectedItem(Image selectedItem) {
+		if (!Objects.equals(_selectedItem, selectedItem)) {
+			_selectedItem = selectedItem;
+			smartUpdate("selectedItem", _selectedItem);
+		}
+	}
 
 	public int getSelectedIndex() {
 		return _selectedIndex;
@@ -62,6 +77,7 @@ public class ImageSlider extends XulElement {
 	// super//
 	protected void renderProperties(org.zkoss.zk.ui.sys.ContentRenderer renderer) throws java.io.IOException {
 		super.renderProperties(renderer);
+		render(renderer, "selectedItem", _selectedItem);
 		if (_selectedIndex != -1) {
 			render(renderer, "selectedIndex", _selectedIndex);
 		}
@@ -79,9 +95,12 @@ public class ImageSlider extends XulElement {
 
 		if (cmd.equals(Events.ON_SELECT)) {
 			SelectEvent<Image, Object> evt = SelectEvent.getSelectEvent(request);
-			final int selected = (Integer) data.get("selected");
-			_selectedIndex = selected;
-			System.out.println("do onSelect, SelectedIndex:" + selected);
+			 final int selected = (Integer) data.get("selected");
+			 List<Component> imagelist = getChildren();
+			 _selectedIndex = selected;
+			 _selectedItem = (Image) imagelist.get(selected);
+			 System.out.println("do onSelect, Selecteditem:" + imagelist.get(selected));
+			 System.out.println("do onSelect, SelectedIndex:" + selected);
 			Events.postEvent(evt);
 		} else {
 			super.service(request, everError);

@@ -23,6 +23,11 @@
     height: 100%;
 }
 
+.z-imageslider-image-selected .z-image {
+    width: 100%;
+    height: 100%;
+}
+
 .z-imageslider-image {
     float: left;
 }
