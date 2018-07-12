@@ -47,6 +47,9 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		
 		selectedIndex : function(selectedIndex) {
 			if (this.desktop) {
+				if(this._timer){
+					clearInterval(this._timer)
+				}
 				var scrollpos = this.$n('scroll-div').scrollLeft;
 				for (var i = 0; i < this.nChildren; i++) {
 					this.$n('content').children[i].className = this.$s('image');
@@ -61,15 +64,11 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 
 		viewportSize : function(viewportSize) {
 			if (this.desktop) {
-				this.$n().style.width = (this.getImageWidth() * viewportSize + 80) + "px";
-				if (viewportSize >= this.nChildren) {		
-					this.$n('left-button').className = this.$s('left-button-d');
-					this.$n('right-button').className = this.$s('left-button-d');
-				} else {
-					this.$n('left-button').className = this.$s('left-button');
-					this.$n('right-button').className = this.$s('right-button');
-				}
-				this.$n('scroll-div').style.width = viewportSize * this.getImageWidth() + 'px';
+				var fullview = (viewportSize >= this.nChildren);
+				this.$n().style = "width:" + (this.getImageWidth() * viewportSize + ((this.getViewportSize() >= this.nChildren) ? 0 : 80)) + 'px;';			
+				this.$n('left-button').className = this.$s('left-button' + (fullview ? '-d' : ''));
+				this.$n('right-button').className = this.$s('left-button-d' + (fullview ? '-d' : ''));
+				this.$n('scroll-div').style = "width:" + viewportSize * this.getImageWidth() + 'px;';
 			}
 		},
 
@@ -78,13 +77,9 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 				for (var i = 0; i < this.nChildren; i++) {
 					this.$n('content').children[i].style = 'width:' + this.getImageWidth() + 'px;';
 				}
-				this.$n('content').style = "width:"+ (this.getImageWidth() * this.nChildren) + "px;";
-				this.$n('scroll-div').style = "width:"+ (this.getViewportSize() * this.getImageWidth()) + "px;";
-				if (this.getViewportSize() >= this.nChildren) {
-					this.$n().style = "width:"+ (this.getImageWidth() * this.getViewportSize() + 80) + "px;";
-				} else {
-					this.$n().style = "width:"+ (this.getImageWidth() * this.getViewportSize() + 160) + "px;";
-				}
+				this.$n('content').style = "width:" + (this.getImageWidth() * this.nChildren) + 'px;';
+				this.$n('scroll-div').style = "width:" + (this.getViewportSize() * this.getImageWidth()) + 'px;';	
+				this.$n().style = "width:" + (this.getImageWidth() * this.getViewportSize() + ((this.getViewportSize() >= this.nChildren) ? 0 : 80)) + 'px;';
 			}
 		},
 	
@@ -175,10 +170,8 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	if (evt.domTarget == this.$n('left-button') || evt.domTarget == this.$n('right-button')) {
 		this._doButtonClick(evt);
 	} else if (evt.domTarget.className == 'z-image'){
-		var contentposx = this.$n('content').offsetLeft;
-		this.setSelectedIndex(Math.floor((evt.domTarget.offsetLeft-contentposx)/this.getImageWidth()));
+		this.setSelectedIndex(evt.currentTarget.getChildIndex());
 		this.fire('onSelect', {selected : this.getSelectedIndex()});
 	} 
-//	console.log(evt.currentTarget.getChildIndex())
  }
 });
