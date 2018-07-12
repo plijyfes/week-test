@@ -10,22 +10,24 @@
 			<image src="test_img/ironman-05.jpg" />
 		</imageSlider>
 		<div>
-		<button id="btnviewport1" label="viewport=1" onClick="myImageSlider.setViewportSize(1)" />
-		<button id="btnviewport3" label="viewport=3" onClick="myImageSlider.setViewportSize(3)" />
-		<button id="btnviewport5" label="viewport=5" onClick="myImageSlider.setViewportSize(5)" />
+			<button id="btnviewport1" label="viewport=1" onClick="myImageSlider.setViewportSize(1)" />
+			<button id="btnviewport3" label="viewport=3" onClick="myImageSlider.setViewportSize(3)" />
+			<button id="btnviewport5" label="viewport=5" onClick="myImageSlider.setViewportSize(5)" />
 		</div>
 		<div>
-		<button id="btnselectindex0" label="selectindex=0" onClick="myImageSlider.setSelectedIndex(0)" />
-		<button id="btnselectindex1" label="selectindex=1" onClick="myImageSlider.setSelectedIndex(1)" />
-		<button id="btnselectindex3" label="selectindex=3" onClick="myImageSlider.setSelectedIndex(3)" />
-		<button id="btnselectindex4" label="selectindex=4" onClick="myImageSlider.setSelectedIndex(4)" />
+			<button id="btnselectindex0" label="selectindex=0" onClick="myImageSlider.setSelectedIndex(0)" />
+			<button id="btnselectindex1" label="selectindex=1" onClick="myImageSlider.setSelectedIndex(1)" />
+			<button id="btnselectindex3" label="selectindex=3" onClick="myImageSlider.setSelectedIndex(3)" />
+			<button id="btnselectindex4" label="selectindex=4" onClick="myImageSlider.setSelectedIndex(4)" />
 		</div>
 		<div>
-		<button id="btnimagewidth150" label="imagewidth=150" onClick="myImageSlider.setImageWidth(150)" />
-		<button id="btnimagewidth200" label="imagewidth=200" onClick="myImageSlider.setImageWidth(200)" />
-		<button id="btnimagewidth250" label="imagewidth=250" onClick="myImageSlider.setImageWidth(250)" />
+			<button id="btnimagewidth150" label="imagewidth=150" onClick="myImageSlider.setImageWidth(150)" />
+			<button id="btnimagewidth200" label="imagewidth=200" onClick="myImageSlider.setImageWidth(200)" />
+			<button id="btnimagewidth250" label="imagewidth=250" onClick="myImageSlider.setImageWidth(250)" />
 		</div>
-		<button id="btn1" label="appendChild" />
-		<button id="btn2" label="removeChild" />
+		<div>
+			<button id="btn1" label="appendChild" />
+			<button id="btn2" label="removeChild" />
+		</div>
 	</window>
 </zk>

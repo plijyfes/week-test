@@ -19,7 +19,6 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	_viewportSize: 3,
 	_selectedIndex: -1,
 	_imageWidth: 200,
-	_selectedItem: null,
 	_target: 0,
 	_timer: clearInterval(0),
 	
@@ -38,13 +37,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		/**
 		 * The member in $define means that it has its own setter/getter. (It's
 		 * a coding sugar.)
-		 */
-		_selectedItem : function(selectedIndex) {
-			if (this.desktop) {
-				
-			}
-		},
-		
+		 */		
 		selectedIndex : function(selectedIndex) {
 			if (this.desktop && selectedIndex != -1) {
 				if(this._timer){
@@ -70,6 +63,10 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 				this.$n('left-button').className = this.$s('left-button' + (fullview ? '-d' : ''));
 				this.$n('right-button').className = this.$s('right-button' + (fullview ? '-d' : ''));
 				this.$n('scroll-div').style = "width:" + viewportSize * this.getImageWidth() + 'px;';
+				if(this._timer){
+					clearInterval(this._timer);
+					return false;
+				}
 			}
 		},
 
@@ -138,30 +135,6 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		}
 	},
 
-	_doViewClick : function(evt) {
-		if (evt.domTarget == this.$n('left-view')){
-			if(this.getViewportSize() > 1){
-				this.setViewportSize(this.getViewportSize() - 1);
-			}
-		} else {
-			if(this.getViewportSize() < this.nChildren){
-				this.setViewportSize(this.getViewportSize() + 1);
-			}
-		}
-		this.fire("onClick", { click : this.getViewportSize() + '' }, {toServer : true});
-	},
-
-	unbind_ : function() {
-
-		// A example for domUnlisten_ , should be paired with bind_
-		this.domUnlisten_(this.$n("leftButton"), "onClick", "_doItemsClick");
-
-		/*
-		 * For widget lifecycle , the super unbind_ should be called as LAST
-		 * STATEMENT in the function.
-		 */
-		this.$supers(myImageSlider.ImageSlider, 'unbind_', arguments);
-	},
 	/*
 	 * widget event, more detail please refer to
 	 * http://books.zkoss.org/wiki/ZK%20Client-side%20Reference/Notifications
@@ -187,7 +160,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	
 	insertChildHTML_: function (child, before, desktop) {
 		divforchild = document.createElement('div');
-		divforchild.id = this.uuid; // nextUuid() is not a function ?
+		divforchild.id = child.uuid;
 		divforchild.className = this.$s('image')
 		divforchild.style = 'width:' + this._imageWidth + 'px; height:' + this._imageWidth + 'px;'
 		divforchild.innerHTML = child.redrawHTML_();

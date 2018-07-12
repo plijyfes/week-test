@@ -4,16 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.zkoss.lang.Objects;
-import org.zkoss.util.CollectionsX.ArrayList;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.UiException;
-import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.SelectEvent;
 import org.zkoss.zul.Image;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listheader;
 import org.zkoss.zul.impl.XulElement;
 
 public class ImageSlider extends XulElement {
@@ -95,12 +91,12 @@ public class ImageSlider extends XulElement {
 
 		if (cmd.equals(Events.ON_SELECT)) {
 			SelectEvent<Image, Object> evt = SelectEvent.getSelectEvent(request);
-			 final int selected = (Integer) data.get("selected");
-			 List<Component> imagelist = getChildren();
-			 _selectedIndex = selected;
-			 _selectedItem = (Image) imagelist.get(selected);
-			 System.out.println("do onSelect, Selecteditem:" + imagelist.get(selected));
-			 System.out.println("do onSelect, SelectedIndex:" + selected);
+			final int selected = (Integer) data.get("selected");
+			List<Component> imagelist = getChildren();
+			_selectedIndex = selected;
+			_selectedItem = (Image) imagelist.get(selected);
+			System.out.println("do onSelect, Selecteditem:" + imagelist.get(selected));
+			System.out.println("do onSelect, SelectedIndex:" + selected);
 			Events.postEvent(evt);
 		} else {
 			super.service(request, everError);
