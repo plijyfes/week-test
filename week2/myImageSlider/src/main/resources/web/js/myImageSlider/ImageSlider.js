@@ -46,7 +46,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		},
 		
 		selectedIndex : function(selectedIndex) {
-			if (this.desktop) {
+			if (this.desktop && selectedIndex != -1) {
 				if(this._timer){
 					clearInterval(this._timer)
 				}
@@ -59,6 +59,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 						selectedIndex * this.getImageWidth() < scrollpos + this._viewportSize * this._imageWidth)) {
 					this.$n('scroll-div').scrollLeft = selectedIndex * this.getImageWidth();
 				}
+				this._target = this.$n('scroll-div').scrollLeft;
 			}
 		},
 
@@ -67,7 +68,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 				var fullview = (viewportSize >= this.nChildren);
 				this.$n().style = "width:" + (this.getImageWidth() * viewportSize + ((this.getViewportSize() >= this.nChildren) ? 0 : 80)) + 'px;';			
 				this.$n('left-button').className = this.$s('left-button' + (fullview ? '-d' : ''));
-				this.$n('right-button').className = this.$s('left-button-d' + (fullview ? '-d' : ''));
+				this.$n('right-button').className = this.$s('right-button' + (fullview ? '-d' : ''));
 				this.$n('scroll-div').style = "width:" + viewportSize * this.getImageWidth() + 'px;';
 			}
 		},
@@ -99,7 +100,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	 * A example for domListen_ listener.
 	 */
 
-	_doButtonClick : function(evt) {
+	_doScrollClick : function(evt) {
 		var scrollDiv = this.$n('scroll-div'),
 		    imageWidth = this.getImageWidth(),
 		    scrollLimit = imageWidth * (this.nChildren - this.getViewportSize()),
@@ -165,13 +166,33 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	 * widget event, more detail please refer to
 	 * http://books.zkoss.org/wiki/ZK%20Client-side%20Reference/Notifications
 	 */
- doClick_ : function(evt) {
-	this.$super('doClick_', evt, true);// the super doClick_ should be called
-	if (evt.domTarget == this.$n('left-button') || evt.domTarget == this.$n('right-button')) {
-		this._doButtonClick(evt);
-	} else if (evt.domTarget.className == 'z-image'){
-		this.setSelectedIndex(evt.currentTarget.getChildIndex());
-		this.fire('onSelect', {selected : this.getSelectedIndex()});
-	} 
- }
+	 doClick_ : function(evt) {
+		this.$super('doClick_', evt, true);// the super doClick_ should be called
+		if (evt.domTarget == this.$n('left-button') || evt.domTarget == this.$n('right-button')) {
+			this._doScrollClick(evt);
+		} else if (evt.domTarget.className == 'z-image'){
+			this.setSelectedIndex(evt.currentTarget.getChildIndex());
+			this.fire('onSelect', {selected : this.getSelectedIndex()});
+		} 
+ },
+	
+ 	removeChildHTML_: function (child) {
+ 		this.$supers('removeChildHTML_', arguments);
+ 		if(this._selectedIndex == this.nChildren -1){
+ 			this.setSelectedIndex(-1);
+ 		}
+		jq(this.$n('content').lastChild).remove();
+		this.$n('content').style = "width:" + (this.getImageWidth() * this.$n('content').children.length) + 'px;';
+	},
+	
+	insertChildHTML_: function (child, before, desktop) {
+		divforchild = document.createElement('div');
+		divforchild.id = this.uuid; // nextUuid() is not a function ?
+		divforchild.className = this.$s('image')
+		divforchild.style = 'width:' + this._imageWidth + 'px; height:' + this._imageWidth + 'px;'
+		divforchild.innerHTML = child.redrawHTML_();
+		this.$n('content').style = "width:" + (this.getImageWidth() * this.nChildren) + 'px;';
+		this.$n('content').appendChild(divforchild);
+		child.bind(desktop);
+	}
 });

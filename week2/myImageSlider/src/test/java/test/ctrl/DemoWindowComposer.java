@@ -24,4 +24,9 @@ public class DemoWindowComposer extends SelectorComposer {
 		Image img1 = new Image("/test_img/ironman-01.jpg");
 		myImageSlider.appendChild(img1);
 	}
+	
+	@Listen("onClick = #btn2")
+	public void onClick$btn2() {
+		myImageSlider.removeChild(myImageSlider.getLastChild());
+	}
 }

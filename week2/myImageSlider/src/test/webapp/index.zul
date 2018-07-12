@@ -26,5 +26,6 @@
 		<button id="btnimagewidth250" label="imagewidth=250" onClick="myImageSlider.setImageWidth(250)" />
 		</div>
 		<button id="btn1" label="appendChild" />
+		<button id="btn2" label="removeChild" />
 	</window>
 </zk>
