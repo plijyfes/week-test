@@ -178,10 +178,10 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	
  	removeChildHTML_: function (child) {
  		this.$supers('removeChildHTML_', arguments);
- 		if(this._selectedIndex == this.nChildren -1){
+ 		if(this._selectedIndex == child.getChildIndex()){
  			this.setSelectedIndex(-1);
  		}
-		jq(this.$n('content').lastChild).remove();
+		jq(this.$n('content').children[child.getChildIndex()]).remove();
 		this.$n('content').style = "width:" + (this.getImageWidth() * this.$n('content').children.length) + 'px;';
 	},
 	

@@ -28,5 +28,6 @@ public class DemoWindowComposer extends SelectorComposer {
 	@Listen("onClick = #btn2")
 	public void onClick$btn2() {
 		myImageSlider.removeChild(myImageSlider.getLastChild());
+//		myImageSlider.removeChild(myImageSlider.getFirstChild());
 	}
 }
