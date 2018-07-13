@@ -20,7 +20,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	_selectedIndex: -1,
 	_imageWidth: 200,
 	_target: 0,
-	_timer: clearInterval(0),
+	_timer: clearInterval(0), // not need
 	
 	/**
 	 * Don't use array/object as a member field, it's a restriction for ZK
@@ -53,31 +53,36 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 					this.$n('scroll-div').scrollLeft = selectedIndex * this.getImageWidth();
 				}
 				this._target = this.$n('scroll-div').scrollLeft;
+			} else {
+				// -1 的情形
 			}
 		},
 
-		viewportSize : function(viewportSize) {
+		viewportSize : function (viewportSize) {
 			if (this.desktop) {
+				if (this._timer) { // not need
+					clearInterval(this._timer);
+				}
 				var fullview = (viewportSize >= this.nChildren);
-				this.$n().style = "width:" + (this.getImageWidth() * viewportSize + ((this.getViewportSize() >= this.nChildren) ? 0 : 80)) + 'px;';			
+				this.$n().style = "width:" + (this.getImageWidth() * viewportSize + (fullview ? 0 : 80)) + 'px;';			
 				this.$n('left-button').className = this.$s('left-button' + (fullview ? '-d' : ''));
 				this.$n('right-button').className = this.$s('right-button' + (fullview ? '-d' : ''));
 				this.$n('scroll-div').style = "width:" + viewportSize * this.getImageWidth() + 'px;';
-				if(this._timer){
-					clearInterval(this._timer);
-					return false;
-				}
 			}
 		},
 
-		imageWidth : function(imageWidth) {
+		imageWidth : function (imageWidth) {
 			if (this.desktop) {
+				if (this._timer) { // not need
+					clearInterval(this._timer);
+				}
 				for (var i = 0; i < this.nChildren; i++) {
 					this.$n('content').children[i].style = 'width:' + this.getImageWidth() + 'px;';
 				}
 				this.$n('content').style = "width:" + (this.getImageWidth() * this.nChildren) + 'px;';
 				this.$n('scroll-div').style = "width:" + (this.getViewportSize() * this.getImageWidth()) + 'px;';	
 				this.$n().style = "width:" + (this.getImageWidth() * this.getViewportSize() + ((this.getViewportSize() >= this.nChildren) ? 0 : 80)) + 'px;';
+				this.$n('scroll-div').scrollLeft = Math.floor(this.$n('scroll-div').scrollLeft / this._imageWidth) * this._imageWidth;
 			}
 		},
 	
@@ -97,7 +102,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	 * A example for domListen_ listener.
 	 */
 
-	_doScrollClick : function(evt) {
+	_doScrollClick : function(evt) { // 重構
 		var scrollDiv = this.$n('scroll-div'),
 		    imageWidth = this.getImageWidth(),
 		    scrollLimit = imageWidth * (this.nChildren - this.getViewportSize()),
@@ -111,7 +116,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 				this._target -= imageWidth;
 			}
 			if (scrollDiv.scrollLeft > 0) {
-				this._timer = setInterval(function() {
+				this._timer = setInterval(function() { // 閉包 self = this 放外面
 					if (scrollDiv.scrollLeft > target) {
 						scrollDiv.scrollLeft -= (0.02 * imageWidth);
 					} else {
@@ -143,7 +148,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		this.$super('doClick_', evt, true);// the super doClick_ should be called
 		if (evt.domTarget == this.$n('left-button') || evt.domTarget == this.$n('right-button')) {
 			this._doScrollClick(evt);
-		} else if (evt.domTarget.className == 'z-image'){
+		} else if (evt.domTarget.className == 'z-image'){ // 先拿衣服確認是否是衣服
 			this.setSelectedIndex(evt.currentTarget.getChildIndex());
 			this.fire('onSelect', {selected : this.getSelectedIndex()});
 		} 
@@ -163,9 +168,10 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		divforchild.id = child.uuid;
 		divforchild.className = this.$s('image')
 		divforchild.style = 'width:' + this._imageWidth + 'px; height:' + this._imageWidth + 'px;'
-		divforchild.innerHTML = child.redrawHTML_();
+		divforchild.innerHTML = child.redrawHTML_(); //ZK buffer 串DIV字串  out 給child.redraw 參考Box.js
 		this.$n('content').style = "width:" + (this.getImageWidth() * this.nChildren) + 'px;';
 		this.$n('content').appendChild(divforchild);
+//		this.$n('content').insertBefore(divforchild, (before) ? before.$n() : null); // before.$n() is not a Node
 		child.bind(desktop);
-	}
+	}// to do: 新增物件多次完處理一次畫面更新
 });

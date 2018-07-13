@@ -19,12 +19,13 @@ public class DemoWindowComposer extends SelectorComposer {
 	@Listen("onClick = #btn1")
 	public void onClick$btn1() {
 		Image img1 = new Image("/test_img/ironman-01.jpg");
-		myImageSlider.appendChild(img1);
+//		myImageSlider.appendChild(img1);
+		myImageSlider.insertBefore(img1, myImageSlider.getFirstChild());
 	}
 
 	@Listen("onClick = #btn2")
 	public void onClick$btn2() {
-		myImageSlider.removeChild(myImageSlider.getLastChild());
-		// myImageSlider.removeChild(myImageSlider.getFirstChild());
+//		myImageSlider.removeChild(myImageSlider.getLastChild());
+		 myImageSlider.removeChild(myImageSlider.getFirstChild());
 	}
 }

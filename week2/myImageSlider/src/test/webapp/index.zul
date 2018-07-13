@@ -29,5 +29,7 @@
 			<button id="btn1" label="appendChild" />
 			<button id="btn2" label="removeChild" />
 		</div>
+		<button label="viewport=1" onClick='alert(myImageSlider.getSelectedItem() + " ")' />
+		<button label="viewport=1" onClick='alert(myImageSlider.getSelectedIndex() + " ")' />
 	</window>
 </zk>

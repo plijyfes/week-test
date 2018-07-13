@@ -3,7 +3,6 @@ package org.test.myImageSlider;
 import java.util.List;
 import java.util.Map;
 
-import org.zkoss.lang.Objects;
 import org.zkoss.zk.au.AuRequest;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.UiException;
@@ -17,8 +16,6 @@ public class ImageSlider extends XulElement {
 	static {
 		addClientEvent(ImageSlider.class, Events.ON_SELECT, CE_IMPORTANT);
 	}
-	// to DO :selectedItem
-	private Image _selectedItem;
 
 	private int _selectedIndex = -1;
 
@@ -27,13 +24,22 @@ public class ImageSlider extends XulElement {
 	private int _imageWidth = 200;
 
 	public Image getSelectedItem() {
-		return _selectedItem;
+		if (_selectedIndex != -1) {	  // 邊界判斷
+			List<Component> imagelist = getChildren();
+			return (Image) imagelist.get(_selectedIndex);
+		}
+		return null;
 	}
 
 	public void setSelectedItem(Image selectedItem) {
-		if (!Objects.equals(_selectedItem, selectedItem)) {
-			_selectedItem = selectedItem;
-			smartUpdate("selectedItem", _selectedItem);
+		if (selectedItem != null) {	
+			if (selectedItem.getParent() == this) {
+				setSelectedIndex(getChildren().indexOf(selectedItem));
+			} else {
+				throw new UiException("Invalid selectedItem: " + selectedItem);
+			}
+		} else {
+			setSelectedIndex(-1);
 		}
 	}
 
@@ -42,9 +48,13 @@ public class ImageSlider extends XulElement {
 	}
 
 	public void setSelectedIndex(int selectedIndex) {
-		if (_selectedIndex != selectedIndex) {
-			_selectedIndex = selectedIndex;
-			smartUpdate("selectedIndex", _selectedIndex);
+		if (selectedIndex < getChildren().size() && selectedIndex >= -1) {
+			if (_selectedIndex != selectedIndex) {
+				_selectedIndex = selectedIndex;
+				smartUpdate("selectedIndex", _selectedIndex);
+			} 
+		} else {
+			throw new UiException("Invalid selectedIndex" + selectedIndex);
 		}
 	}
 
@@ -52,7 +62,7 @@ public class ImageSlider extends XulElement {
 		return _viewportSize;
 	}
 
-	public void setViewportSize(int viewportSize) {
+	public void setViewportSize(int viewportSize) { // 可判斷邊界
 		if (_viewportSize != viewportSize) {
 			_viewportSize = viewportSize;
 			smartUpdate("viewportSize", _viewportSize);
@@ -63,17 +73,34 @@ public class ImageSlider extends XulElement {
 		return _imageWidth;
 	}
 
-	public void setImageWidth(int imageWidth) {
+	public void setImageWidth(int imageWidth) { //邊界判斷
 		if (_imageWidth != imageWidth) {
 			_imageWidth = imageWidth;
 			smartUpdate("imageWidth", _imageWidth);
 		}
 	}
 
+	@Override
+	public void onChildAdded(Component child) {
+		super.onChildAdded(child);
+		List<Component> imagelist = getChildren();
+		setSelectedIndex(imagelist.indexOf(getSelectedItem())); // bug to be fix
+	}
+
+	@Override
+	public void beforeChildRemoved(Component child) {
+		int childIndex = getChildren().indexOf(child);
+		if (getSelectedIndex() == childIndex) {
+			setSelectedIndex(-1);
+		} else if (getSelectedIndex() > childIndex) {
+			setSelectedIndex(getSelectedIndex() - 1);
+		}
+		super.beforeChildRemoved(child);
+	}
+
 	// super//
 	protected void renderProperties(org.zkoss.zk.ui.sys.ContentRenderer renderer) throws java.io.IOException {
 		super.renderProperties(renderer);
-		render(renderer, "selectedItem", _selectedItem);
 		if (_selectedIndex != -1) {
 			render(renderer, "selectedIndex", _selectedIndex);
 		}
@@ -92,11 +119,9 @@ public class ImageSlider extends XulElement {
 		if (cmd.equals(Events.ON_SELECT)) {
 			SelectEvent<Image, Object> evt = SelectEvent.getSelectEvent(request);
 			final int selected = (Integer) data.get("selected");
-			List<Component> imagelist = getChildren();
 			_selectedIndex = selected;
-			_selectedItem = (Image) imagelist.get(selected);
-			System.out.println("do onSelect, Selecteditem:" + imagelist.get(selected));
-			System.out.println("do onSelect, SelectedIndex:" + selected);
+//			System.out.println("do onSelect, Selecteditem:" + imagelist.get(selected));
+//			System.out.println("do onSelect, SelectedIndex:" + selected);
 			Events.postEvent(evt);
 		} else {
 			super.service(request, everError);
@@ -112,7 +137,7 @@ public class ImageSlider extends XulElement {
 
 	public void beforeChildAdded(Component child, Component refChild) {
 		if (!(child instanceof Image)) {
-			throw new UiException("Unsupported child: " + child); // image only
+			throw new UiException("Unsupported child: " + child + ("(Image only)")); // image only
 		}
 		super.beforeChildAdded(child, refChild);
 	}
