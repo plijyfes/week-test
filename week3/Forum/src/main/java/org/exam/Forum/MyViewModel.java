@@ -1,8 +1,9 @@
 package org.exam.Forum;
 
-import org.exam.Forum.entity.Log;
-import org.exam.Forum.services.MyService;
 import java.util.List;
+
+import org.exam.Forum.entity.Log;
+import org.exam.Forum.services.ForumService;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
@@ -16,13 +17,13 @@ import org.zkoss.zul.ListModelList;
 public class MyViewModel {
 
 	@WireVariable
-	private MyService myService;
+	private ForumService forumService;
 	private ListModelList<Log> logListModel;
 	private String message;
 
 	@Init
 	public void init() {
-		List<Log> logList = myService.getLogs();
+		List<Log> logList = forumService.getLogs();
 		logListModel = new ListModelList<Log>(logList);
 	}
 
@@ -44,13 +45,13 @@ public class MyViewModel {
 			return;
 		}
 		Log log = new Log(message);
-		log = myService.addLog(log);
+		log = forumService.addLog(log);
 		logListModel.add(log);
 	}
 
 	@Command
 	public void deleteLog(@BindingParam("log") Log log) {
-		myService.deleteLog(log);
+		forumService.deleteLog(log);
 		logListModel.remove(log);
 	}
 

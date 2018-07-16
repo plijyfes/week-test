@@ -10,12 +10,13 @@
 			<property name="hibernate.connection.password" value="" />
 			<property name="hibernate.show_sql" value="true" />
 			<!-- data store in data/db under project folder -->
-			<property name="hibernate.connection.url" value="jdbc:hsqldb:http://localhost:9001/testdb" />
+			<property name="hibernate.connection.url" value="jdbc:hsqldb:file:data/db" />
 			<!-- db is not persistent to disk
 			<property name="hibernate.connection.url" value="jdbc:hsqldb:mem:data/store" /> -->
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<!-- drop table every time
 			<property name="hibernate.hbm2ddl.auto" value="create" /> -->
+			<property name="hibernate.enable_lazy_load_no_trans" value="true"/>
 		</properties>
 	</persistence-unit>
 </persistence>

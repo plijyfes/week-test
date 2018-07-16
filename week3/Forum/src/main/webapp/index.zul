@@ -1,14 +1,14 @@
 <zk>
 	<window apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('vm')@init('org.exam.Forum.MyViewModel')"
-		validationMessages="@id('vmsgs')" width="600px" vflex="1">
+		viewModel="@id('avm')@init('org.exam.Forum.ArticleViewModel')"
+		validationMessages="@id('vmsgs')" width="600px" vflex="3">
 		<vlayout>
 			<hbox align="center" hflex="1">
-				Log message: <textbox value="@save(vm.message)"
-					onOK="@command('addLog')" hflex="1" placeholder="What happened?" />
-				<button label="add" onClick="@command('addLog')" />
+				article subject: <textbox value="@save(avm.subject)"
+					onOK="@command('addArticle')" hflex="1" placeholder="What happened?" />
+				<button label="add" onClick="@command('addArticle')" />
 			</hbox>
-			<listbox model="@bind(vm.logListModel)" rows="10">
+			<listbox model="@bind(avm.logListModel)" rows="10">
 				<listhead>
 					<listheader hflex="min" />
 					<listheader hflex="min" />
@@ -17,17 +17,27 @@
 				<template name="model">
 					<listitem>
 						<listcell>
-							<button label="delete" onClick="@command('deleteLog', log=each)" />
+							<button label="delete" onClick="@command('deleteArticle', article=each)" />
 						</listcell>
 						<listcell>
-							<label value="@bind(each.date) @converter('formattedDate', format='yyyy/MM/dd HH:mm:ss')" />
+							<label value="@bind(each.updateTime) @converter('formattedDate', format='yyyy/MM/dd HH:mm:ss')" />
 						</listcell>
 						<listcell>
-							<label value="@bind(each.message)" />
+							<label value="@bind(each.subject)" />
+						</listcell>
+						<listcell>
+							<label value="@bind(each.content)" />
+						</listcell>
+						<listcell>
+							<label value="@bind(each.visible)" />
 						</listcell>
 					</listitem>
 				</template>
 			</listbox>
 		</vlayout>
 	</window>
+	<div vflex="1">
+		<a href="https://razorsql.com/download_win.html">click</a>
+	</div>
+	
 </zk>
