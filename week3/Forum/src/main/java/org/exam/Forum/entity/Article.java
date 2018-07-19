@@ -41,17 +41,17 @@ public class Article implements Serializable, Cloneable {
 	@Column(name = "VISIBLE")
 	private Boolean visible = true;
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "PARENT_ARTICLE_ID", referencedColumnName = "ID")
 	private Article parentArticle;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentArticle", fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentArticle", fetch = FetchType.EAGER)
 	private List<Article> childArticle;
 
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "articles")
 	private List<Tag> tags;
-	
-	@ManyToOne(fetch=FetchType.EAGER)
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "AUTHOR", referencedColumnName = "ID")
 	private User author;
 

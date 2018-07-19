@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,9 +28,8 @@ public class Tag implements Cloneable, Serializable {
 	private String name;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "TagDetail", 
-			   joinColumns = { @JoinColumn(name = "TAG_FK") }, 
-			   inverseJoinColumns = { @JoinColumn(name = "ARTICLE_FK") })
+	@JoinTable(name = "TagDetail", joinColumns = { @JoinColumn(name = "TAG_FK") }, inverseJoinColumns = {
+			@JoinColumn(name = "ARTICLE_FK") })
 	private List<Article> articles;
 
 	public Integer getId() {

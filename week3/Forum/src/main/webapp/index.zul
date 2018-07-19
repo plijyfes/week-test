@@ -134,12 +134,12 @@
 			</window>
 		</center>
 	</borderlayout>
-	<borderlayout>
-		<west size="30%" title="All Articles">
-			<window apply="org.zkoss.bind.BindComposer"
-				viewModel="@id('amvm')@init('org.exam.Forum.ArticleMainViewModel')"
-				validationMessages="@id('vmsgs')" width="100%" height="100%"
-				style="padding:0px;">
+	<window apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('amvm')@init('org.exam.Forum.ArticleMainViewModel')"
+		validationMessages="@id('vmsgs')" width="100%" height="100%"
+		style="padding:0px;">
+		<borderlayout>
+			<west size="25%" title="All Articles">
 				<tabbox>
 					<tabs>
 						<tab label="list view" />
@@ -188,7 +188,8 @@
 										<treecol label="Subject"></treecol>
 									</treecols>
 									<template name="model">
-										<treeitem>
+										<treeitem
+											onClick="@command('click',target=event.target.value)">
 											<treerow>
 												<treecell
 													label="@bind(each.data.updateTime) @converter('formattedDate', format='MM/dd')">
@@ -204,8 +205,38 @@
 						</tabpanel>
 					</tabpanels>
 				</tabbox>
-			</window>
-		</west>
-		<center></center>
-	</borderlayout>
+
+			</west>
+			<center>
+				<vlayout hflex="1">
+					<tree model="@bind(amvm.centerTreeModel)">
+						<treecols>
+							<treecol></treecol>
+							<treecol></treecol>
+						</treecols>
+						<template name="model">
+							<treeitem>
+								<treerow>
+									
+									<treecell>
+										<html><![CDATA[ 
+										   <div>
+										   		${each.data.subject},${each.data.tags[0].name}
+										   		<br/>
+										   		${each.data.content} 
+										   </div>
+										]]></html>
+									</treecell>
+									<treecell>
+										<button label="reply"
+											onClick="@command('reply')" />
+									</treecell>
+								</treerow>
+							</treeitem>
+						</template>
+					</tree>
+				</vlayout>
+			</center>
+		</borderlayout>
+	</window>
 </zk>

@@ -7,6 +7,8 @@ import org.exam.Forum.services.AuthenticationService;
 import org.exam.Forum.services.ForumService;
 import org.exam.Forum.services.impl.ArticleTreeModel;
 import org.exam.Forum.services.impl.ArticleTreeNode;
+import org.zkoss.bind.annotation.BindingParam;
+import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
@@ -22,6 +24,7 @@ public class ArticleMainViewModel {
 
 	private ListModelList<Article> allListModel;
 	private ArticleTreeModel treeModel;
+	private ArticleTreeModel centerTreeModel;
 
 	@Init
 	public void init() {
@@ -30,6 +33,7 @@ public class ArticleMainViewModel {
 		allListModel = new ListModelList<Article>(allList);
 		ArticleTreeNode rootNode = loadOnce(root);
 		treeModel = new ArticleTreeModel(rootNode);
+		centerTreeModel = new ArticleTreeModel(rootNode);
 	}
 
 	public ListModelList<Article> getAllListModel() {
@@ -38,6 +42,14 @@ public class ArticleMainViewModel {
 
 	public ArticleTreeModel getTreeModel() {
 		return treeModel;
+	}
+
+	public ArticleTreeModel getCenterTreeModel() {
+		return centerTreeModel;
+	}
+
+	public void setCenterTreeModel(ArticleTreeModel centerTreeModel) {
+		this.centerTreeModel = centerTreeModel;
 	}
 
 	private ArticleTreeNode loadOnce(Article article) {
@@ -50,5 +62,13 @@ public class ArticleMainViewModel {
 			}
 		}
 		return node;
+	}
+	
+	@Command
+	public void click(@BindingParam("target") ArticleTreeNode target) {
+		Article newRoot = target.getData();
+		ArticleTreeNode newNode = loadOnce(newRoot);
+//		centerTreeModel = new ArticleTreeModel(loadOnce(target.getData()));
+		centerTreeModel = new ArticleTreeModel(newNode); //not working in zul
 	}
 }
