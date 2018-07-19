@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.exam.Forum.services.impl.Md5Util;
+
 @Entity
 @Table(name = "USER")
 public class User implements Serializable, Cloneable {
@@ -24,7 +26,7 @@ public class User implements Serializable, Cloneable {
 	@Column(name = "NICK_NAME")
 	private String nickName;
 	
-	@Column(name = "PASSWORD")//safty
+	@Column(name = "PASSWORD")
 	private String password;
 
 	public Integer getId() {
@@ -56,11 +58,11 @@ public class User implements Serializable, Cloneable {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = Md5Util.md5(password);
 	}
 
 	@Override
 	public String toString() {
-		return "User [nickName=" + nickName + "]";
+		return "Author:" + nickName;
 	}
 }

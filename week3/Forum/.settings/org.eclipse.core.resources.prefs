@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/main/java/org/exam/Forum/entity/User.java=UTF-8
+encoding//src/main/java/org/exam/Forum/services/AuthenticationService.java=UTF-8
+encoding//src/main/java/org/exam/Forum/services/impl/AuthenticationServiceImpl.java=UTF-8
+encoding//src/main/java/org/exam/Forum/services/impl/Md5Util.java=UTF-8

@@ -1,0 +1,36 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<hbox self="@define(content)" vflex="1" hflex="1" align="center"
+		pack="center" spacing="20px">
+		<vlayout>
+			<window id="loginWin" apply="org.zkoss.bind.BindComposer"
+				viewModel="@id('loginvm')@init('org.exam.Forum.LoginViewModel')"
+				title="Login" border="normal" hflex="min">
+				<vbox hflex="min" align="center">
+					<grid hflex="min">
+						<columns>
+							<column hflex="min" align="right" />
+							<column />
+						</columns>
+						<rows>
+							<row>
+								Account :
+								<textbox id="account" width="200px"
+									value="@save(loginvm.account)" onOK="@command('logIn')" />
+							</row>
+							<row>
+								Password :
+								<textbox id="password" type="password"
+									value="@save(loginvm.password)" onOK="@command('logIn')"
+									width="200px" />
+							</row>
+						</rows>
+					</grid>
+					<label id="message" value="@load(loginvm.message, after='logIn')" />
+					<button id="login" label="Login"
+						onClick="@command('logIn')" />
+				</vbox>
+			</window>
+		</vlayout>
+	</hbox>
+</zk>

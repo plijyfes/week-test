@@ -3,14 +3,15 @@ package org.exam.Forum.services.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.exam.Forum.dao.ArticleDao;
+import org.exam.Forum.dao.LogDao;
+import org.exam.Forum.dao.TagDao;
+import org.exam.Forum.dao.UserDao;
 import org.exam.Forum.entity.Article;
 import org.exam.Forum.entity.Log;
 import org.exam.Forum.entity.Tag;
 import org.exam.Forum.entity.User;
-import org.exam.Forum.services.ArticleDao;
 import org.exam.Forum.services.ForumService;
-import org.exam.Forum.services.TagDao;
-import org.exam.Forum.services.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -54,6 +55,10 @@ public class ForumServiceImpl implements ForumService {
 		return userDao.getOne(id);
 	}
 	
+	public User findOneUserByAccount(String account) {
+		return userDao.findByAccount(account);
+	}
+	
 	public void saveUser(User user) {
 		userDao.save(user);
 	}
@@ -88,10 +93,15 @@ public class ForumServiceImpl implements ForumService {
 		tagDao.save(tag);
 	}
 
-	@Override
-	public List<Article> findNew10Article(Boolean visible) {
-		return articleDao.findTop10ByVisibleOrderByUpdateTimeDesc(visible);
+	public List<Article> findNew10MainArticle(Article parent) {
+		return articleDao.findTop10ByVisibleTrueAndParentArticleOrderByUpdateTimeDesc(parent);
 	}
 	
+	public List<Article> findNew10ChildArticle() {
+		return articleDao.findTop10ByVisibleTrueAndParentArticleIsNotNullOrderByUpdateTimeDesc();
+	}
 	
+	public List<Article> findNew10ArticleByUser(User user) {
+		return articleDao.findTop10ByVisibleTrueAndAuthorOrderByUpdateTimeDesc(user);
+	}
 }

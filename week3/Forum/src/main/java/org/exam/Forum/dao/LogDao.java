@@ -1,4 +1,4 @@
-package org.exam.Forum.services.impl;
+package org.exam.Forum.dao;
 
 import org.exam.Forum.entity.Log;
 import java.util.List;

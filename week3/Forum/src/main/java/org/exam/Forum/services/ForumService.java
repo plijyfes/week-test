@@ -17,6 +17,8 @@ public interface ForumService {
 	
 	List<User> findAllUsers();
 	
+	User findOneUserByAccount(String account);
+	
 	List<Article> findAllArticles();
 	
 	void saveArticle(Article article);
@@ -26,6 +28,10 @@ public interface ForumService {
 	Article findOneArticleById(Integer id);
 	
 	void deleteArticle(Article article);
+
+	List<Article> findNew10MainArticle(Article parent);
 	
-	List<Article> findNew10Article(Boolean status);
+	List<Article> findNew10ChildArticle();
+	
+	List<Article> findNew10ArticleByUser(User user);
 }

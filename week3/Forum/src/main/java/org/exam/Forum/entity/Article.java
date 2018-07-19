@@ -45,7 +45,7 @@ public class Article implements Serializable, Cloneable {
 	@JoinColumn(name = "PARENT_ARTICLE_ID", referencedColumnName = "ID")
 	private Article parentArticle;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentArticle")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentArticle", fetch=FetchType.EAGER)
 	private List<Article> childArticle;
 
 	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "articles")

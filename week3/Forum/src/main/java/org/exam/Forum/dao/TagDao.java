@@ -1,4 +1,4 @@
-package org.exam.Forum.services;
+package org.exam.Forum.dao;
 
 import org.exam.Forum.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
