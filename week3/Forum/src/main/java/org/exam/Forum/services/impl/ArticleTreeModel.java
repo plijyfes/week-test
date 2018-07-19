@@ -1,4 +1,4 @@
-package org.exam.Forum;
+package org.exam.Forum.services.impl;
 
 import org.exam.Forum.entity.Article;
 import org.zkoss.zul.DefaultTreeModel;

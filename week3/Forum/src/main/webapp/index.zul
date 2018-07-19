@@ -137,7 +137,7 @@
 	<borderlayout>
 		<west size="30%" title="All Articles">
 			<window apply="org.zkoss.bind.BindComposer"
-				viewModel="@id('avm')@init('org.exam.Forum.ArticleViewModel')"
+				viewModel="@id('amvm')@init('org.exam.Forum.ArticleMainViewModel')"
 				validationMessages="@id('vmsgs')" width="100%" height="100%"
 				style="padding:0px;">
 				<tabbox>
@@ -149,7 +149,7 @@
 						<tabpanel>
 							<vlayout hflex="1">
 								<listbox
-									model="@bind(avm.allListModel)">
+									model="@bind(amvm.allListModel)">
 									<listhead>
 										<listheader hflex="min">
 											<label value="Date"></label>
@@ -182,7 +182,7 @@
 						</tabpanel>
 						<tabpanel>
 							<vlayout hflex="1">
-								<tree model="@bind(avm.treeModel)">
+								<tree model="@bind(amvm.treeModel)">
 									<treecols>
 										<treecol label="Date"></treecol>
 										<treecol label="Subject"></treecol>
