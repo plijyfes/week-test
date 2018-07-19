@@ -3,13 +3,13 @@
 <zk>
 	<style>
 		.z-west-body, .z-center-body, .z-east-body, .z-north-body,
-		.z-window-content { padding:0px; margin:0px; }
+		.z-window-content { padding:0px; margin:0px; height:100%;}
 	</style>
 	<borderlayout>
-		<north size="10%" splittable="true" collapsible="true">
+		<north size="15%" splittable="false" collapsible="false">
 			<window id="header" apply="org.zkoss.bind.BindComposer"
 				viewModel="@id('headvm')@init('org.exam.Forum.HeaderViewModel')"
-				border="normal">
+				border="normal" height="100%">
 				<label value="@load(headvm.title)"></label>
 				<div style="float:right;">
 					<label value="@load(headvm.message)"></label>
@@ -19,161 +19,193 @@
 			</window>
 		</north>
 		<center>
-			<borderlayout>
-				<west size="33%" title="Most latest 10 main articles">
-					<window apply="org.zkoss.bind.BindComposer"
-						viewModel="@id('avm')@init('org.exam.Forum.ArticleViewModel')"
-						validationMessages="@id('vmsgs')" width="100%" height="100%"
-						style="padding:0px;">
-						<tabbox>
-							<tabs>
-								<tab label="list view" />
-								<tab label="tree view" />
-							</tabs>
-							<tabpanels>
-								<tabpanel>
-									<vlayout hflex="1">
-										<listbox
-											model="@bind(avm.westListModel)" rows="10">
-											<listhead>
-												<listheader hflex="min" />
-												<listheader hflex="min" />
-												<listheader />
-											</listhead>
-											<template name="model">
-												<listitem>
-													<listcell>
-														<label
-															value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
-													</listcell>
-													<listcell>
-														<label
-															value="@bind(each.subject)" />
-													</listcell>
-													<listcell>
-														<label
-															value="@bind(each.author)" />
-													</listcell>
-												</listitem>
-											</template>
-										</listbox>
-									</vlayout>
-								</tabpanel>
-								<tabpanel>
-									<vlayout hflex="1">
-										<window
-											apply="org.zkoss.bind.BindComposer"
-											viewModel="@id('avm')@init('org.exam.Forum.ArticleViewModel')"
-											validationMessages="@id('vmsgs')" width="100%" height="100%"
-											style="padding:0px;">
-											<tree
-												model="@load(avm.treeModel)">
-											</tree>
-										</window>
-									</vlayout>
-								</tabpanel>
-							</tabpanels>
-						</tabbox>
-					</window>
-				</west>
-				<center title="Most latest 10 replied articles">
-					<window apply="org.zkoss.bind.BindComposer"
-						viewModel="@id('avm')@init('org.exam.Forum.ArticleViewModel')"
-						validationMessages="@id('vmsgs')" width="100%" height="100%"
-						style="padding:0px;">
-						<tabbox>
-							<tabs>
-								<tab label="list view" />
-								<tab label="tree view" />
-							</tabs>
-							<tabpanels>
-								<tabpanel>
-									<vlayout hflex="1">
-										<listbox
-											model="@bind(avm.centerListModel)" rows="10">
-											<listhead>
-												<listheader hflex="min" />
-												<listheader hflex="min" />
-												<listheader />
-											</listhead>
-											<template name="model">
-												<listitem>
-													<listcell>
-														<label
-															value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
-													</listcell>
-													<listcell>
-														<label
-															value="@bind(each.subject)" />
-													</listcell>
-													<listcell>
-														<label
-															value="@bind(each.author)" />
-													</listcell>
-												</listitem>
-											</template>
-										</listbox>
-									</vlayout>
-								</tabpanel>
-								<tabpanel>
-									<vlayout hflex="1">
-										<span>center</span>
-									</vlayout>
-								</tabpanel>
-							</tabpanels>
-						</tabbox>
-					</window>
-				</center>
-				<east size="33%"
-					title="Most latest 10 articles related to the current user">
-					<window apply="org.zkoss.bind.BindComposer"
-						viewModel="@id('avm')@init('org.exam.Forum.ArticleViewModel')"
-						validationMessages="@id('vmsgs')" width="100%" height="100%"
-						style="padding:0px;">
-						<tabbox>
-							<tabs>
-								<tab label="list view" />
-								<tab label="tree view" />
-							</tabs>
-							<tabpanels>
-								<tabpanel>
-									<vlayout hflex="1">
-										<listbox
-											model="@bind(avm.eastListModel)" rows="10">
-											<listhead>
-												<listheader hflex="min" />
-												<listheader hflex="min" />
-												<listheader />
-											</listhead>
-											<template name="model">
-												<listitem>
-													<listcell>
-														<label
-															value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
-													</listcell>
-													<listcell>
-														<label
-															value="@bind(each.subject)" />
-													</listcell>
-													<listcell>
-														<label
-															value="@bind(each.author)" />
-													</listcell>
-												</listitem>
-											</template>
-										</listbox>
-									</vlayout>
-								</tabpanel>
-								<tabpanel>
-									<vlayout hflex="1">
-										<span>center</span>
-									</vlayout>
-								</tabpanel>
-							</tabpanels>
-						</tabbox>
-					</window>
-				</east>
-			</borderlayout>
+			<window apply="org.zkoss.bind.BindComposer"
+				viewModel="@id('avm')@init('org.exam.Forum.ArticleViewModel')"
+				validationMessages="@id('vmsgs')" width="100%" height="100%"
+				style="padding:0px;">
+				<borderlayout>
+					<west size="33%"
+						title="Most latest 10 main articles">
+						<vlayout hflex="1">
+							<listbox model="@bind(avm.westListModel)"
+								rows="10">
+								<listhead>
+									<listheader hflex="min">
+										<label value="Date"></label>
+									</listheader>
+									<listheader hflex="min">
+										<label value="Subject"></label>
+									</listheader>
+									<listheader>
+										<label value="Author"></label>
+									</listheader>
+								</listhead>
+								<template name="model">
+									<listitem>
+										<listcell>
+											<label
+												value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+										</listcell>
+										<listcell>
+											<label
+												value="@bind(each.subject)" />
+										</listcell>
+										<listcell>
+											<label
+												value="@bind(each.author)" />
+										</listcell>
+									</listitem>
+								</template>
+							</listbox>
+						</vlayout>
+
+					</west>
+					<center title="Most latest 10 replied articles">
+						<vlayout hflex="1">
+							<listbox model="@bind(avm.centerListModel)"
+								rows="10">
+								<listhead>
+									<listheader hflex="min">
+										<label value="Date"></label>
+									</listheader>
+									<listheader hflex="min">
+										<label value="Subject"></label>
+									</listheader>
+									<listheader>
+										<label value="Author"></label>
+									</listheader>
+								</listhead>
+								<template name="model">
+									<listitem>
+										<listcell>
+											<label
+												value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+										</listcell>
+										<listcell>
+											<label
+												value="@bind(each.subject)" />
+										</listcell>
+										<listcell>
+											<label
+												value="@bind(each.author)" />
+										</listcell>
+									</listitem>
+								</template>
+							</listbox>
+						</vlayout>
+
+					</center>
+					<east size="33%"
+						title="Most latest 10 articles related to the current user">
+						<vlayout hflex="1">
+							<listbox model="@bind(avm.eastListModel)"
+								rows="10">
+								<listhead>
+									<listheader hflex="min">
+										<label value="Date"></label>
+									</listheader>
+									<listheader hflex="min">
+										<label value="Subject"></label>
+									</listheader>
+									<listheader>
+										<label value="Author"></label>
+									</listheader>
+								</listhead>
+								<template name="model">
+									<listitem>
+										<listcell>
+											<label
+												value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+										</listcell>
+										<listcell>
+											<label
+												value="@bind(each.subject)" />
+										</listcell>
+										<listcell>
+											<label
+												value="@bind(each.author)" />
+										</listcell>
+									</listitem>
+								</template>
+							</listbox>
+						</vlayout>
+					</east>
+				</borderlayout>
+			</window>
 		</center>
+	</borderlayout>
+	<borderlayout>
+		<west size="30%" title="All Articles">
+			<window apply="org.zkoss.bind.BindComposer"
+				viewModel="@id('avm')@init('org.exam.Forum.ArticleViewModel')"
+				validationMessages="@id('vmsgs')" width="100%" height="100%"
+				style="padding:0px;">
+				<tabbox>
+					<tabs>
+						<tab label="list view" />
+						<tab label="tree view" />
+					</tabs>
+					<tabpanels>
+						<tabpanel>
+							<vlayout hflex="1">
+								<listbox
+									model="@bind(avm.allListModel)">
+									<listhead>
+										<listheader hflex="min">
+											<label value="Date"></label>
+										</listheader>
+										<listheader hflex="min">
+											<label value="Subject"></label>
+										</listheader>
+										<listheader>
+											<label value="Author"></label>
+										</listheader>
+									</listhead>
+									<template name="model">
+										<listitem>
+											<listcell>
+												<label
+													value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+											</listcell>
+											<listcell>
+												<label
+													value="@bind(each.subject)" />
+											</listcell>
+											<listcell>
+												<label
+													value="@bind(each.author)" />
+											</listcell>
+										</listitem>
+									</template>
+								</listbox>
+							</vlayout>
+						</tabpanel>
+						<tabpanel>
+							<vlayout hflex="1">
+								<tree model="@bind(avm.treeModel)">
+									<treecols>
+										<treecol label="Date"></treecol>
+										<treecol label="Subject"></treecol>
+									</treecols>
+									<template name="model">
+										<treeitem>
+											<treerow>
+												<treecell
+													label="@bind(each.data.updateTime) @converter('formattedDate', format='MM/dd')">
+												</treecell>
+												<treecell
+													label="@bind(each.data.subject)">
+												</treecell>
+											</treerow>
+										</treeitem>
+									</template>
+								</tree>
+							</vlayout>
+						</tabpanel>
+					</tabpanels>
+				</tabbox>
+			</window>
+		</west>
+		<center></center>
 	</borderlayout>
 </zk>

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ArticleDao extends JpaRepository<Article, Integer> {
+	
+	List<Article> findByVisibleTrueOrderByUpdateTimeDesc();
 
 	List<Article> findTop10ByVisibleTrueAndParentArticleOrderByUpdateTimeDesc(Article parent);
 	

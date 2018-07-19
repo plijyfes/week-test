@@ -8,10 +8,8 @@ import org.exam.Forum.services.ForumService;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zul.DefaultTreeNode;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.TreeNode;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class ArticleViewModel {
@@ -24,6 +22,7 @@ public class ArticleViewModel {
 	private ListModelList<Article> westListModel;
 	private ListModelList<Article> centerListModel;
 	private ListModelList<Article> eastListModel;
+	private ListModelList<Article> allListModel;
 	private ArticleTreeModel treeModel;
 	private String subject;
 
@@ -34,23 +33,29 @@ public class ArticleViewModel {
 		List<Article> centerList = forumService.findNew10ChildArticle();
 		String account = authenticationService.getUserCredential().getAccount();
 		List<Article> eastList = forumService.findNew10ArticleByUser(forumService.findOneUserByAccount(account));
+		List<Article> allList = forumService.findAllVisible();
 		westListModel = new ListModelList<Article>(westList);
 		centerListModel = new ListModelList<Article>(centerList);
 		eastListModel = new ListModelList<Article>(eastList);
-		DefaultTreeNode<Article> rootNode = new DefaultTreeNode<Article>(root);
+		allListModel = new ListModelList<Article>(allList);
+		ArticleTreeNode rootNode = loadOnce(root);
 		treeModel = new ArticleTreeModel(rootNode);
 	}
 
 	public ListModel<Article> getWestListModel() {
 		return westListModel;
 	}
-	
+
 	public ListModel<Article> getCenterListModel() {
 		return centerListModel;
 	}
-	
+
 	public ListModel<Article> getEastListModel() {
 		return eastListModel;
+	}
+
+	public ListModelList<Article> getAllListModel() {
+		return allListModel;
 	}
 
 	public ArticleTreeModel getTreeModel() {
@@ -63,5 +68,17 @@ public class ArticleViewModel {
 
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	private ArticleTreeNode loadOnce(Article article) {
+		ArticleTreeNode node = new ArticleTreeNode(article);
+		node.setLoaded(true);
+		for (Article sub : article.getChildArticle()) {
+			if (sub.getVisible() != false) {
+				ArticleTreeNode n = loadOnce(sub);
+				node.add(n);
+			}
+		}
+		return node;
 	}
 }

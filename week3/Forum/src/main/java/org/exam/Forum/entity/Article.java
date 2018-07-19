@@ -41,7 +41,7 @@ public class Article implements Serializable, Cloneable {
 	@Column(name = "VISIBLE")
 	private Boolean visible = true;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "PARENT_ARTICLE_ID", referencedColumnName = "ID")
 	private Article parentArticle;
 

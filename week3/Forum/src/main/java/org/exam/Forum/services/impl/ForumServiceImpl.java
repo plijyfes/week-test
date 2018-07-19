@@ -92,7 +92,11 @@ public class ForumServiceImpl implements ForumService {
 	public void saveTag(Tag tag) {
 		tagDao.save(tag);
 	}
-
+	
+	public List<Article> findAllVisible() {
+		return articleDao.findByVisibleTrueOrderByUpdateTimeDesc();
+	}
+	
 	public List<Article> findNew10MainArticle(Article parent) {
 		return articleDao.findTop10ByVisibleTrueAndParentArticleOrderByUpdateTimeDesc(parent);
 	}

@@ -63,6 +63,6 @@ public class User implements Serializable, Cloneable {
 
 	@Override
 	public String toString() {
-		return "Author:" + nickName;
+		return nickName;
 	}
 }

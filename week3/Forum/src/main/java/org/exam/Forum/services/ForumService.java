@@ -34,4 +34,6 @@ public interface ForumService {
 	List<Article> findNew10ChildArticle();
 	
 	List<Article> findNew10ArticleByUser(User user);
+	
+	List<Article> findAllVisible();
 }
