@@ -1,0 +1,45 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="http://www.zkoss.org/2005/zk/native">
+	<hbox self="@define(content)" vflex="1" hflex="1" align="center"
+		pack="center">
+		<groupbox
+			form="@id('fx') @load(amvm.formArticle) @save(amvm.formArticle, before='save')">
+			<grid width="100%">
+				<columns>
+					<column />
+					<column />
+				</columns>
+				<rows>
+					<row width="800px">
+						<div>
+							<label>subject:</label>
+							<textbox value="@bind(fx.subject)" />
+							<label>parent:</label>
+							<label
+								value="@load(amvm.parent.subject, after='goReply') ">
+							</label>
+						</div>
+					</row>
+					<row width="800px">
+						<div>
+							<label>content:</label>
+							<ckeditor width="100%"
+								value="@bind(fx.content)"
+								customConfigurationsPath="/pages/config.js">
+							</ckeditor>
+						</div>
+					</row>
+					<row>
+						<chosenbox hflex="1"
+							model="@load(amvm.tagListModel)"
+							emptyMessage="choose one or more labels" 
+							value="@bind(fx.tags)"/>
+					</row>
+					<row>
+						<button label="post" onClick="@command('save')" />
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</hbox>
+</zk>

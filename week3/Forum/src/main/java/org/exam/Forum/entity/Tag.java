@@ -1,17 +1,16 @@
 package org.exam.Forum.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -30,7 +29,7 @@ public class Tag implements Cloneable, Serializable {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "TagDetail", joinColumns = { @JoinColumn(name = "TAG_FK") }, inverseJoinColumns = {
 			@JoinColumn(name = "ARTICLE_FK") })
-	private List<Article> articles;
+	private Set<Article> articles;
 
 	public Integer getId() {
 		return id;
@@ -48,11 +47,11 @@ public class Tag implements Cloneable, Serializable {
 		this.name = name;
 	}
 
-	public List<Article> getArticles() {
+	public Set<Article> getArticles() {
 		return articles;
 	}
 
-	public void setArticles(List<Article> articles) {
+	public void setArticles(Set<Article> articles) {
 		this.articles = articles;
 	}
 }

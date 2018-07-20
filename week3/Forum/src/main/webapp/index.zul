@@ -23,220 +23,24 @@
 				viewModel="@id('avm')@init('org.exam.Forum.ArticleViewModel')"
 				validationMessages="@id('vmsgs')" width="100%" height="100%"
 				style="padding:0px;">
-				<borderlayout>
-					<west size="33%"
-						title="Most latest 10 main articles">
-						<vlayout hflex="1">
-							<listbox model="@bind(avm.westListModel)"
-								rows="10">
-								<listhead>
-									<listheader hflex="min">
-										<label value="Date"></label>
-									</listheader>
-									<listheader hflex="min">
-										<label value="Subject"></label>
-									</listheader>
-									<listheader>
-										<label value="Author"></label>
-									</listheader>
-								</listhead>
-								<template name="model">
-									<listitem>
-										<listcell>
-											<label
-												value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
-										</listcell>
-										<listcell>
-											<label
-												value="@bind(each.subject)" />
-										</listcell>
-										<listcell>
-											<label
-												value="@bind(each.author)" />
-										</listcell>
-									</listitem>
-								</template>
-							</listbox>
-						</vlayout>
-
-					</west>
-					<center title="Most latest 10 replied articles">
-						<vlayout hflex="1">
-							<listbox model="@bind(avm.centerListModel)"
-								rows="10">
-								<listhead>
-									<listheader hflex="min">
-										<label value="Date"></label>
-									</listheader>
-									<listheader hflex="min">
-										<label value="Subject"></label>
-									</listheader>
-									<listheader>
-										<label value="Author"></label>
-									</listheader>
-								</listhead>
-								<template name="model">
-									<listitem>
-										<listcell>
-											<label
-												value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
-										</listcell>
-										<listcell>
-											<label
-												value="@bind(each.subject)" />
-										</listcell>
-										<listcell>
-											<label
-												value="@bind(each.author)" />
-										</listcell>
-									</listitem>
-								</template>
-							</listbox>
-						</vlayout>
-
-					</center>
-					<east size="33%"
-						title="Most latest 10 articles related to the current user">
-						<vlayout hflex="1">
-							<listbox model="@bind(avm.eastListModel)"
-								rows="10">
-								<listhead>
-									<listheader hflex="min">
-										<label value="Date"></label>
-									</listheader>
-									<listheader hflex="min">
-										<label value="Subject"></label>
-									</listheader>
-									<listheader>
-										<label value="Author"></label>
-									</listheader>
-								</listhead>
-								<template name="model">
-									<listitem>
-										<listcell>
-											<label
-												value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
-										</listcell>
-										<listcell>
-											<label
-												value="@bind(each.subject)" />
-										</listcell>
-										<listcell>
-											<label
-												value="@bind(each.author)" />
-										</listcell>
-									</listitem>
-								</template>
-							</listbox>
-						</vlayout>
-					</east>
-				</borderlayout>
+				<include src="/pages/threeList.zul" />
 			</window>
 		</center>
 	</borderlayout>
 	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('amvm')@init('org.exam.Forum.ArticleMainViewModel')"
-		validationMessages="@id('vmsgs')" width="100%" height="100%"
+		validationMessages="@id('vmsgs')" width="100%" height="1700px"
 		style="padding:0px;">
 		<borderlayout>
-			<west size="25%" title="All Articles">
-				<tabbox>
-					<tabs>
-						<tab label="list view" />
-						<tab label="tree view" />
-					</tabs>
-					<tabpanels>
-						<tabpanel>
-							<vlayout hflex="1">
-								<listbox
-									model="@bind(amvm.allListModel)">
-									<listhead>
-										<listheader hflex="min">
-											<label value="Date"></label>
-										</listheader>
-										<listheader hflex="min">
-											<label value="Subject"></label>
-										</listheader>
-										<listheader>
-											<label value="Author"></label>
-										</listheader>
-									</listhead>
-									<template name="model">
-										<listitem>
-											<listcell>
-												<label
-													value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
-											</listcell>
-											<listcell>
-												<label
-													value="@bind(each.subject)" />
-											</listcell>
-											<listcell>
-												<label
-													value="@bind(each.author)" />
-											</listcell>
-										</listitem>
-									</template>
-								</listbox>
-							</vlayout>
-						</tabpanel>
-						<tabpanel>
-							<vlayout hflex="1">
-								<tree model="@bind(amvm.treeModel)">
-									<treecols>
-										<treecol label="Date"></treecol>
-										<treecol label="Subject"></treecol>
-									</treecols>
-									<template name="model">
-										<treeitem
-											onClick="@command('click',target=event.target.value)">
-											<treerow>
-												<treecell
-													label="@bind(each.data.updateTime) @converter('formattedDate', format='MM/dd')">
-												</treecell>
-												<treecell
-													label="@bind(each.data.subject)">
-												</treecell>
-											</treerow>
-										</treeitem>
-									</template>
-								</tree>
-							</vlayout>
-						</tabpanel>
-					</tabpanels>
-				</tabbox>
-
+			<west size="30%" title="All Articles">
+				<include src="/pages/treeAndList.zul" />
 			</west>
 			<center>
-				<vlayout hflex="1">
-					<tree model="@bind(amvm.centerTreeModel)">
-						<treecols>
-							<treecol></treecol>
-							<treecol></treecol>
-						</treecols>
-						<template name="model">
-							<treeitem>
-								<treerow>
-									
-									<treecell>
-										<html><![CDATA[ 
-										   <div>
-										   		${each.data.subject},${each.data.tags[0].name}
-										   		<br/>
-										   		${each.data.content} 
-										   </div>
-										]]></html>
-									</treecell>
-									<treecell>
-										<button label="reply"
-											onClick="@command('reply')" />
-									</treecell>
-								</treerow>
-							</treeitem>
-						</template>
-					</tree>
-				</vlayout>
+				<include src="/pages/content.zul" />
 			</center>
+			<south size="40%" id="form">
+				<include src="/pages/post.zul" />
+			</south>
 		</borderlayout>
 	</window>
 </zk>

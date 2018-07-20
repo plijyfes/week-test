@@ -1,0 +1,29 @@
+<zk>
+	<vlayout hflex="1">
+		<tree model="@bind(amvm.centerTreeModel)">
+			<treecols>
+				<treecol></treecol>
+				<treecol></treecol>
+			</treecols>
+			<template name="model">
+				<treeitem>
+					<treerow>
+						<treecell>
+							<html>
+								<![CDATA[ <div>
+								${each.data.subject},TAG:${each.data.tags[0].name}
+								<br/>
+								${each.data.content},time:${each.data.updateTime},by:${each.data.author}
+								</div> ]]>
+										</html>
+						</treecell>
+						<treecell>
+							<button label="reply"
+								onClick="@command('goReply',target=each)" />
+						</treecell>
+					</treerow>
+				</treeitem>
+			</template>
+		</tree>
+	</vlayout>
+</zk>

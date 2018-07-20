@@ -1,8 +1,10 @@
 package org.exam.Forum.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,8 +50,8 @@ public class Article implements Serializable, Cloneable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentArticle", fetch = FetchType.EAGER)
 	private List<Article> childArticle;
 
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "articles")
-	private List<Tag> tags;
+	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "articles", fetch = FetchType.EAGER)
+	private Set<Tag> tags;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "AUTHOR", referencedColumnName = "ID")
@@ -112,10 +114,10 @@ public class Article implements Serializable, Cloneable {
 	}
 
 	public List<Tag> getTags() {
-		return tags;
+		return new ArrayList<Tag>(tags);
 	}
 
-	public void setTags(List<Tag> tags) {
+	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
 	}
 

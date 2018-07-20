@@ -68,7 +68,11 @@
 			<artifactId>zhtml</artifactId>
 			<version>${zk.version}</version>
 		</dependency>
-
+		<dependency>
+		    <groupId>org.zkoss.zkforge</groupId>
+		    <artifactId>ckez</artifactId>
+		    <version>4.7.0.0</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>

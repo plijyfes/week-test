@@ -1,0 +1,101 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<borderlayout>
+		<west size="33%" title="Most latest 10 main articles">
+			<vlayout hflex="1">
+				<listbox model="@bind(avm.westListModel)" rows="10">
+					<listhead>
+						<listheader hflex="min">
+							<label value="Date"></label>
+						</listheader>
+						<listheader hflex="min">
+							<label value="Subject"></label>
+						</listheader>
+						<listheader>
+							<label value="Author"></label>
+						</listheader>
+					</listhead>
+					<template name="model">
+						<listitem>
+							<listcell>
+								<label
+									value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.subject)" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.author)" />
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
+			</vlayout>
+
+		</west>
+		<center title="Most latest 10 replied articles">
+			<vlayout hflex="1">
+				<listbox model="@bind(avm.centerListModel)" rows="10">
+					<listhead>
+						<listheader hflex="min">
+							<label value="Date"></label>
+						</listheader>
+						<listheader hflex="min">
+							<label value="Subject"></label>
+						</listheader>
+						<listheader>
+							<label value="Author"></label>
+						</listheader>
+					</listhead>
+					<template name="model">
+						<listitem>
+							<listcell>
+								<label
+									value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.subject)" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.author)" />
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
+			</vlayout>
+
+		</center>
+		<east size="33%"
+			title="Most latest 10 articles related to the current user">
+			<vlayout hflex="1">
+				<listbox model="@bind(avm.eastListModel)" rows="10">
+					<listhead>
+						<listheader hflex="min">
+							<label value="Date"></label>
+						</listheader>
+						<listheader hflex="min">
+							<label value="Subject"></label>
+						</listheader>
+						<listheader>
+							<label value="Author"></label>
+						</listheader>
+					</listhead>
+					<template name="model">
+						<listitem>
+							<listcell>
+								<label
+									value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.subject)" />
+							</listcell>
+							<listcell>
+								<label value="@bind(each.author)" />
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
+			</vlayout>
+		</east>
+	</borderlayout>
+</zk>
