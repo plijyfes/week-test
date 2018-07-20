@@ -26,20 +26,21 @@ public class ArticleMainViewModel {
 	private AuthenticationService authenticationService;
 
 	private ListModelList<Article> allListModel;
-	private ListModelList<String> tagListModel;
+	private ListModelList<Tag> tagListModel;
 	private ArticleTreeModel treeModel;
 	private ArticleTreeModel centerTreeModel;
 	private Article parent;
-	private Article formArticle = new Article();
+	private Article formArticle;
 
 	@Init
 	public void init() {
 		Article root = forumService.findOneArticleById(1);
 		parent = root;
+		formArticle = new Article();
 		List<Article> allList = forumService.findAllVisible();
 		allListModel = new ListModelList<Article>(allList);
-		List<String> tagList = forumService.findAllTagsName();
-		tagListModel = new ListModelList<String>(tagList);
+		List<Tag> tagList = forumService.findAllTags();
+		tagListModel = new ListModelList<Tag>(tagList);
 		ArticleTreeNode rootNode = loadOnce(root);
 		treeModel = new ArticleTreeModel(rootNode);
 		centerTreeModel = new ArticleTreeModel(rootNode);
@@ -77,14 +78,22 @@ public class ArticleMainViewModel {
 		this.formArticle = formArticle;
 	}
 
-	public ListModelList<String> getTagListModel() {
+	public ListModelList<Tag> getTagListModel() {
 		return tagListModel;
 	}
 
-	public void setTagListModel(ListModelList<String> tagListModel) {
+	public void setTagListModel(ListModelList<Tag> tagListModel) {
 		this.tagListModel = tagListModel;
 	}
 
+	public void setAllListModel(ListModelList<Article> allListModel) {
+		this.allListModel = allListModel;
+	}
+
+	public void setTreeModel(ArticleTreeModel treeModel) {
+		this.treeModel = treeModel;
+	}
+	
 	private ArticleTreeNode loadOnce(Article article) {
 		ArticleTreeNode node = new ArticleTreeNode(article);
 		node.setLoaded(true);
@@ -112,15 +121,22 @@ public class ArticleMainViewModel {
 //		formArticle.setParentArticle(parent);
 //		Executions.sendRedirect("/pages/post.zul");
 	}
-
 	// insert
 	@Command
 	public void save() {
 		User login = forumService.findOneUserByAccount(authenticationService.getUserCredential().getAccount());
-		formArticle.getTags();
-		forumService.saveArticle(formArticle, parent, login, formArticle.getTags());
+		System.out.println(formArticle.getSubject());
+		System.out.println("this is save p:" + parent.getId());
+		forumService.saveArticle(formArticle, parent, login);
+//		init();
 		Executions.sendRedirect("/index.zul");
+	}
 
+	@Command
+	public void delete(@BindingParam("target") ArticleTreeNode target) {
+		target.getData().setVisible(false);//to do :setchildren visible & check User
+		forumService.saveArticle(target.getData());
+		Executions.sendRedirect("/index.zul");
 	}
 
 }

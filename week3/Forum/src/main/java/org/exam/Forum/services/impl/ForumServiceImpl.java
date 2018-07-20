@@ -3,7 +3,6 @@ package org.exam.Forum.services.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.exam.Forum.dao.ArticleDao;
 import org.exam.Forum.dao.LogDao;
@@ -73,12 +72,15 @@ public class ForumServiceImpl implements ForumService {
 		return articleDao.getOne(id);
 	}
 	
-	public void saveArticle(Article article, Article parent, User author, Set<Tag> tags) { //insert or update(to do:check User and child) 
+	public void saveArticle(Article article) {
+		articleDao.save(article);
+	}
+	
+	public void saveArticle(Article article, Article parent, User author) { //insert or update(to do:check User and child) 
 		article.setParentArticle(parent);
 		article.setUpdateTime(new Date(System.currentTimeMillis()));
 		article.setAuthor(author);
 		article.setVisible(true);
-		article.setTags(tags);
 		articleDao.save(article);
 	}
 	

@@ -29,7 +29,7 @@
 	</borderlayout>
 	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('amvm')@init('org.exam.Forum.ArticleMainViewModel')"
-		validationMessages="@id('vmsgs')" width="100%" height="1700px"
+		validationMessages="@id('vmsgs')" width="100%" height="1800px"
 		style="padding:0px;">
 		<borderlayout>
 			<west size="30%" title="All Articles">
@@ -38,7 +38,7 @@
 			<center>
 				<include src="/pages/content.zul" />
 			</center>
-			<south size="40%" id="form">
+			<south size="45%" id="form">
 				<include src="/pages/post.zul" />
 			</south>
 		</borderlayout>

@@ -21,6 +21,10 @@
 							<button label="reply"
 								onClick="@command('goReply',target=each)" />
 						</treecell>
+						<treecell>
+							<button label="delete"
+								onClick="@command('delete',target=each)" />
+						</treecell>
 					</treerow>
 				</treeitem>
 			</template>

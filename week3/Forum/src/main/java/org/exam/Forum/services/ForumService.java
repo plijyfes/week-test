@@ -7,7 +7,6 @@ import org.exam.Forum.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 public interface ForumService {
 
@@ -26,8 +25,10 @@ public interface ForumService {
 	public List<String> findAllTagsName();
 
 	List<Article> findAllArticles();
+	
+	public void saveArticle(Article article);
 
-	void saveArticle(Article article, Article parent, User author, Set<Tag> tags);
+	void saveArticle(Article article, Article parent, User author);
 
 	User findOneUserById(Integer id);
 

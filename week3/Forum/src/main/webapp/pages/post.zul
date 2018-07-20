@@ -32,8 +32,12 @@
 					<row>
 						<chosenbox hflex="1"
 							model="@load(amvm.tagListModel)"
-							emptyMessage="choose one or more labels" 
-							value="@bind(fx.tags)"/>
+							emptyMessage="choose one or more labels">
+							<template name="children" var="node">
+								<label value="@bind(node.name)"
+									style="padding-left:10px" />
+							</template>
+						</chosenbox>
 					</row>
 					<row>
 						<button label="post" onClick="@command('save')" />
