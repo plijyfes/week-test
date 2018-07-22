@@ -29,16 +29,43 @@
 	</borderlayout>
 	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('amvm')@init('org.exam.Forum.ArticleMainViewModel')"
-		validationMessages="@id('vmsgs')" width="100%" height="1800px"
+		validationMessages="@id('vmsgs')" width="100%" height="1600px"
 		style="padding:0px;">
 		<borderlayout>
-			<west size="30%" title="All Articles">
-				<include src="/pages/treeAndList.zul" />
-			</west>
 			<center>
-				<include src="/pages/content.zul" />
+				<tabbox>
+					<tabs>
+						<tab label="list view" />
+						<tab label="tree view" />
+					</tabs>
+					<tabpanels>
+						<tabpanel>
+							<hlayout>
+								<div hflex="1">
+									<include
+										src="/pages/listView.zul" />
+								</div>
+								<div hflex="3">
+									<include src="/pages/content.zul" />
+								</div>
+							</hlayout>
+						</tabpanel>
+						<tabpanel>
+							<hlayout>
+								<div hflex="1">
+									<include
+										src="/pages/treeView.zul" />
+								</div>
+								<div hflex="3">
+									<include src="/pages/singleArticle.zul" />
+								</div>
+							</hlayout>
+						</tabpanel>
+					</tabpanels>
+				</tabbox>
+
 			</center>
-			<south size="45%" id="form">
+			<south size="50%" id="form">
 				<include src="/pages/post.zul" />
 			</south>
 		</borderlayout>

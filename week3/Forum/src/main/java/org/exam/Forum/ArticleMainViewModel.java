@@ -35,11 +35,13 @@ public class ArticleMainViewModel {
 	private ArticleTreeModel centerTreeModel;
 	private Article parent;
 	private Article formArticle;
+	private Article singleArticleView;
 
 	@Init
 	public void init() {
 		Article root = forumService.findOneArticleById(1);
 		parent = root;
+		singleArticleView = new Article();
 		formArticle = new Article();
 		List<Article> allList = forumService.findAllVisible();
 		allListModel = new ListModelList<Article>(allList);
@@ -98,6 +100,14 @@ public class ArticleMainViewModel {
 		this.treeModel = treeModel;
 	}
 
+	public Article getSingleArticleView() {
+		return singleArticleView;
+	}
+
+	public void setSingleArticleView(Article singleArticleView) {
+		this.singleArticleView = singleArticleView;
+	}
+
 	private ArticleTreeNode loadOnce(Article article) {
 		ArticleTreeNode node = new ArticleTreeNode(article);
 		node.setLoaded(true);
@@ -126,12 +136,18 @@ public class ArticleMainViewModel {
 
 	@NotifyChange("centerTreeModel")
 	@Command
-	public void click(@BindingParam("target") ArticleTreeNode target) {
+	public void clickOnList(@BindingParam("target") ArticleTreeNode target) {
 		Article newRoot = target.getData();
-		// logger.warn("click:" + newRoot.getSubject());
 		ArticleTreeNode newNode = loadOnce(newRoot);
 		centerTreeModel = new ArticleTreeModel(newNode); // not working in VIEW
 		// centerTreeModel = new ArticleTreeModel(loadOnce(target.getData()));
+	}
+	
+	@NotifyChange("singleArticleView")
+	@Command
+	public void clickOnTree(@BindingParam("target") ArticleTreeNode target) {
+		System.out.println("tree click");
+		singleArticleView = target.getData();
 	}
 
 	@Command

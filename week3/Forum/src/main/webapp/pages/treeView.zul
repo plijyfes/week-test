@@ -1,0 +1,23 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<vlayout hflex="1">
+		<tree model="@bind(amvm.treeModel)">
+			<treecols>
+				<treecol label="Date"></treecol>
+				<treecol label="Subject"></treecol>
+			</treecols>
+			<template name="model">
+				<treeitem
+					onClick="@command('clickOnTree',target=event.target.value)">
+					<treerow>
+						<treecell
+							label="@bind(each.data.updateTime) @converter('formattedDate', format='MM/dd')">
+						</treecell>
+						<treecell label="@bind(each.data.subject)">
+						</treecell>
+					</treerow>
+				</treeitem>
+			</template>
+		</tree>
+	</vlayout>
+</zk>

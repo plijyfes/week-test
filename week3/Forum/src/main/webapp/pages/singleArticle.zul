@@ -1,0 +1,29 @@
+<zk>
+	<vlayout hflex="1">
+		<div>
+			<label
+				value="@load(amvm.singleArticleView.subject, after='clickOnTree')">
+			</label>
+
+			<html>
+
+
+				
+				<![CDATA[ <div>TAG: <br/>
+				${content},time:${amvm.singleArticleView.updateTime},by:${amvm.singleArticleView.author}
+				</div> ]]>
+				
+				
+				
+										</html>
+
+			<button label="reply"
+				onClick="@command('goReply',target=each)" />
+
+			<button label="delete"
+				onClick="@command('delete',target=each)" />
+
+		</div>
+
+	</vlayout>
+</zk>

@@ -1,0 +1,32 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<vlayout hflex="1">
+		<listbox model="@bind(amvm.allListModel)">
+			<listhead>
+				<listheader hflex="min">
+					<label value="Date"></label>
+				</listheader>
+				<listheader hflex="min">
+					<label value="Subject"></label>
+				</listheader>
+				<listheader>
+					<label value="Author"></label>
+				</listheader>
+			</listhead>
+			<template name="model">
+				<listitem onClick="@command('clickOnList',target=event.target.value)">
+					<listcell>
+						<label
+							value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+					</listcell>
+					<listcell>
+						<label value="@bind(each.subject)" />
+					</listcell>
+					<listcell>
+						<label value="@bind(each.author)" />
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+	</vlayout>
+</zk>
