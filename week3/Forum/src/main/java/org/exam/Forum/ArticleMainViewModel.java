@@ -2,6 +2,7 @@ package org.exam.Forum;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.exam.Forum.entity.Article;
 import org.exam.Forum.entity.Tag;
 import org.exam.Forum.entity.User;
@@ -12,6 +13,7 @@ import org.exam.Forum.services.impl.ArticleTreeNode;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
+import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
@@ -19,6 +21,8 @@ import org.zkoss.zul.ListModelList;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class ArticleMainViewModel {
+
+	final static Logger logger = Logger.getLogger(ArticleMainViewModel.class);
 
 	@WireVariable
 	private ForumService forumService;
@@ -93,7 +97,7 @@ public class ArticleMainViewModel {
 	public void setTreeModel(ArticleTreeModel treeModel) {
 		this.treeModel = treeModel;
 	}
-	
+
 	private ArticleTreeNode loadOnce(Article article) {
 		ArticleTreeNode node = new ArticleTreeNode(article);
 		node.setLoaded(true);
@@ -106,9 +110,25 @@ public class ArticleMainViewModel {
 		return node;
 	}
 
+	private void setChildrenVisible(Article deleteTarget) {
+		List<Article> childrenList = deleteTarget.getChildArticle();
+		if (childrenList != null && !childrenList.isEmpty()) {
+			for (Article child : childrenList) {
+				if (child.getVisible() != false) {
+					child.setVisible(false);
+					logger.warn("delete article: " + child.getSubject() + " author: " + child.getAuthor().getAccount());
+					forumService.saveArticle(child);
+					setChildrenVisible(child);
+				}
+			}
+		}
+	}
+
+	@NotifyChange("centerTreeModel")
 	@Command
 	public void click(@BindingParam("target") ArticleTreeNode target) {
 		Article newRoot = target.getData();
+		// logger.warn("click:" + newRoot.getSubject());
 		ArticleTreeNode newNode = loadOnce(newRoot);
 		centerTreeModel = new ArticleTreeModel(newNode); // not working in VIEW
 		// centerTreeModel = new ArticleTreeModel(loadOnce(target.getData()));
@@ -118,24 +138,34 @@ public class ArticleMainViewModel {
 	public void goReply(@BindingParam("target") ArticleTreeNode target) {
 		System.out.println(target.getData().getId());
 		parent = target.getData();
-//		formArticle.setParentArticle(parent);
-//		Executions.sendRedirect("/pages/post.zul");
+		// formArticle.setParentArticle(parent);
+		// Executions.sendRedirect("/pages/post.zul");
 	}
+
 	// insert
 	@Command
 	public void save() {
 		User login = forumService.findOneUserByAccount(authenticationService.getUserCredential().getAccount());
-		System.out.println(formArticle.getSubject());
-		System.out.println("this is save p:" + parent.getId());
+//		System.out.println(formArticle.getSubject());
+//		System.out.println("this is save p:" + parent.getId());
 		forumService.saveArticle(formArticle, parent, login);
-//		init();
+		// init();
 		Executions.sendRedirect("/index.zul");
 	}
 
 	@Command
 	public void delete(@BindingParam("target") ArticleTreeNode target) {
-		target.getData().setVisible(false);//to do :setchildren visible & check User
-		forumService.saveArticle(target.getData());
+		Article targetArticle = target.getData();
+		String loginAccount = authenticationService.getUserCredential().getAccount();
+		if (!loginAccount.equals(targetArticle.getAuthor().getAccount())) {
+			return; // to do : alert user or hide the delete button.
+		}
+		targetArticle.setVisible(false);
+		logger.warn("delete article: " + targetArticle.getSubject() + 
+					" author: "+ targetArticle.getAuthor().getAccount() + 
+					" byUser: " + loginAccount);
+		forumService.saveArticle(targetArticle);
+		setChildrenVisible(targetArticle);
 		Executions.sendRedirect("/index.zul");
 	}
 

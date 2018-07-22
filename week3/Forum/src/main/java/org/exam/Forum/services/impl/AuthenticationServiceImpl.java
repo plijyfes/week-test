@@ -2,6 +2,7 @@ package org.exam.Forum.services.impl;
 
 import java.io.Serializable;
 
+import org.apache.log4j.Logger;
 import org.exam.Forum.dao.UserDao;
 import org.exam.Forum.entity.User;
 import org.exam.Forum.services.AuthenticationService;
@@ -13,10 +14,14 @@ import org.zkoss.zk.ui.Sessions;
 @Service("authenticationService")
 public class AuthenticationServiceImpl implements Serializable, AuthenticationService {
 
+	final static Logger logger = Logger.getLogger(AuthenticationServiceImpl.class);
+
 	@Autowired
 	UserDao userDao;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.exam.Forum.services.AuthenticationService#getUserCredential()
 	 */
 	@Override
@@ -30,8 +35,11 @@ public class AuthenticationServiceImpl implements Serializable, AuthenticationSe
 		return cre;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.exam.Forum.services.AuthenticationService#login(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.exam.Forum.services.AuthenticationService#login(java.lang.String,
+	 * java.lang.String)
 	 */
 	@Override
 	public boolean login(String account, String password) throws Exception {
@@ -43,15 +51,19 @@ public class AuthenticationServiceImpl implements Serializable, AuthenticationSe
 		UserCredential cre = new UserCredential(user.getAccount(), user.getNickName());
 
 		sess.setAttribute("userCredential", cre);
+		logger.warn("login account : " + cre.getAccount());
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.exam.Forum.services.AuthenticationService#logout()
 	 */
 	@Override
 	public void logout() {
 		Session sess = Sessions.getCurrent();
+		logger.warn("logout account : " + ((UserCredential) sess.getAttribute("userCredential")).getAccount());
 		sess.removeAttribute("userCredential");
 	}
 }
