@@ -9,4 +9,9 @@ public class ArticleTreeModel extends DefaultTreeModel<Article> {
 	public ArticleTreeModel(TreeNode<Article> root) {
 		super(root);
 	}
+
+	public ArticleTreeModel(TreeNode<Article> root, boolean emptyChildAsLeaf) {
+		super(root, emptyChildAsLeaf);
+	}
+	
 }

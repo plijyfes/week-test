@@ -1,29 +1,42 @@
 <zk>
-	<vlayout hflex="1">
-		<div>
-			<label
-				value="@load(amvm.singleArticleView.subject, after='clickOnTree')">
-			</label>
-
-			<html>
-
-
-				
-				<![CDATA[ <div>TAG: <br/>
-				${content},time:${amvm.singleArticleView.updateTime},by:${amvm.singleArticleView.author}
-				</div> ]]>
-				
-				
-				
-										</html>
-
-			<button label="reply"
-				onClick="@command('goReply',target=each)" />
-
-			<button label="delete"
-				onClick="@command('delete',target=each)" />
-
-		</div>
-
-	</vlayout>
+	<window>
+		<vlayout hflex="1" model="@bind(amvm.singleArticleView)">
+			<div>
+				<label value="${labels.subject}:"></label>
+				<label
+					value="@load(amvm.singleArticleView.subject, after='clickOnTree')">
+				</label>
+				<label value="${labels.author}:"></label>
+				<label
+					value="@load(amvm.singleArticleView.author, after='clickOnTree')">
+				</label>
+				<label value="${labels.updatetime}:"></label>
+				<label
+					value="@load(amvm.singleArticleView.updateTime, after='clickOnTree')">
+				</label>
+				<div>
+					<forEach
+						items="@load(amvm.singleArticleView.tags)">
+						<label value="#"></label>
+						<label value="@load(each)" />
+					</forEach>
+				</div>
+				<div>
+					<label value="${labels.content}:"></label>
+					<html
+						content="@load(amvm.singleArticleView.content, after='clickOnTree')" />
+				</div>
+				<if test="@bind(amvm.singleArticleView.visible)">
+					<div style="float:right;">
+						<button label="${labels.reply}"
+							onClick="@command('goReply',target=amvm.singleArticleView)" />
+						<button label="${labels.edit}"
+							onClick="@command('edit',target=amvm.singleArticleView)" />
+						<button label="${labels.delete}"
+							onClick="@command('delete',target=amvm.singleArticleView)" />
+					</div>
+				</if>
+			</div>
+		</vlayout>
+	</window>
 </zk>

@@ -4,13 +4,13 @@
 		<listbox model="@bind(amvm.allListModel)">
 			<listhead>
 				<listheader hflex="min">
-					<label value="Date"></label>
+					<label value="${labels.date}"></label>
 				</listheader>
 				<listheader hflex="min">
-					<label value="Subject"></label>
+					<label value="${labels.subject}"></label>
 				</listheader>
 				<listheader>
-					<label value="Author"></label>
+					<label value="${labels.author}"></label>
 				</listheader>
 			</listhead>
 			<template name="model">

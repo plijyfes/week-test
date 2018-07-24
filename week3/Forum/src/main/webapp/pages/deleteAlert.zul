@@ -1,7 +1,0 @@
-<?page title="new page title" contentType="text/html;charset=UTF-8"?>
-<zk>
-	<window title="Not enough authority" border="normal"
-		position="center,center" width="300px">
-		<label>not enough authority.</label>
-	</window>
-</zk>

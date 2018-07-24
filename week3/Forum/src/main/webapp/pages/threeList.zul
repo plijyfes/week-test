@@ -1,18 +1,18 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<borderlayout>
-		<west size="33%" title="Most latest 10 main articles">
+		<west size="33%" title="${labels.westlist}">
 			<vlayout hflex="1">
 				<listbox model="@bind(avm.westListModel)" rows="10">
 					<listhead>
 						<listheader hflex="min">
-							<label value="Date"></label>
+							<label value="${labels.date}"></label>
 						</listheader>
 						<listheader hflex="min">
-							<label value="Subject"></label>
+							<label value="${labels.subject}"></label>
 						</listheader>
 						<listheader>
-							<label value="Author"></label>
+							<label value="${labels.author}"></label>
 						</listheader>
 					</listhead>
 					<template name="model">
@@ -33,18 +33,18 @@
 			</vlayout>
 
 		</west>
-		<center title="Most latest 10 replied articles">
+		<center title="${labels.centerlist}">
 			<vlayout hflex="1">
 				<listbox model="@bind(avm.centerListModel)" rows="10">
 					<listhead>
 						<listheader hflex="min">
-							<label value="Date"></label>
+							<label value="${labels.date}"></label>
 						</listheader>
 						<listheader hflex="min">
-							<label value="Subject"></label>
+							<label value="${labels.subject}"></label>
 						</listheader>
 						<listheader>
-							<label value="Author"></label>
+							<label value="${labels.author}"></label>
 						</listheader>
 					</listhead>
 					<template name="model">
@@ -66,18 +66,18 @@
 
 		</center>
 		<east size="33%"
-			title="Most latest 10 articles related to the current user">
+			title="${labels.eastlist}">
 			<vlayout hflex="1">
 				<listbox model="@bind(avm.eastListModel)" rows="10">
 					<listhead>
 						<listheader hflex="min">
-							<label value="Date"></label>
+							<label value="${labels.date}"></label>
 						</listheader>
 						<listheader hflex="min">
-							<label value="Subject"></label>
+							<label value="${labels.subject}"></label>
 						</listheader>
 						<listheader>
-							<label value="Author"></label>
+							<label value="${labels.author}"></label>
 						</listheader>
 					</listhead>
 					<template name="model">

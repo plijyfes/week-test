@@ -1,6 +1,7 @@
 package org.exam.Forum.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -20,16 +21,17 @@ public class Tag implements Cloneable, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "NAME")
 	private String name;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "TagDetail", joinColumns = { @JoinColumn(name = "TAG_FK") }, inverseJoinColumns = {
-			@JoinColumn(name = "ARTICLE_FK") })
-	private Set<Article> articles;
+	@ManyToMany(targetEntity = Article.class, cascade = CascadeType.MERGE)
+	@JoinTable(name = "TagDetail", joinColumns = {
+			@JoinColumn(name = "TAG_FK", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "ARTICLE_FK", referencedColumnName = "id") })
+	private Set<Article> articles = new HashSet<Article>();
 
 	public Integer getId() {
 		return id;
@@ -53,5 +55,10 @@ public class Tag implements Cloneable, Serializable {
 
 	public void setArticles(Set<Article> articles) {
 		this.articles = articles;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

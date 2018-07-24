@@ -3,7 +3,7 @@
 	<hbox self="@define(content)" vflex="1" hflex="1" align="center"
 		pack="center">
 		<groupbox
-			form="@id('fx') @load(amvm.formArticle) @save(amvm.formArticle, before='save')">
+			form="@id('fx') @load(amvm.formArticle, after={'edit','goReply'}) @save(amvm.formArticle, before='save')">
 			<grid width="100%">
 				<columns>
 					<column />
@@ -12,17 +12,18 @@
 				<rows>
 					<row width="800px">
 						<div>
-							<label>subject:</label>
+							<label>${labels.subject}:</label>
 							<textbox value="@bind(fx.subject)" />
-							<label>parent:</label>
+							<label>${labels.parent}:</label>
 							<label
-								value="@load(amvm.parent.subject, after='goReply') ">
+								value="@load(amvm.parent.subject, after={'edit','goReply','init','newPost'}) ">
 							</label>
+							<button label="${labels.newpost}" onClick="@command('newPost')" />
 						</div>
 					</row>
 					<row width="800px">
 						<div>
-							<label>content:</label>
+							<label>${labels.content}:</label>
 							<ckeditor width="100%"
 								value="@bind(fx.content)"
 								customConfigurationsPath="/pages/config.js">
@@ -32,15 +33,15 @@
 					<row>
 						<chosenbox hflex="1"
 							model="@load(amvm.tagListModel)"
-							emptyMessage="choose one or more labels">
-							<template name="children" var="node">
-								<label value="@bind(node.name)"
-									style="padding-left:10px" />
+							emptyMessage="choose one or more labels"
+							selectedObjects="@save(fx.tags)">
+							<template name="model">
+								<label value="@load(each.name)" />
 							</template>
 						</chosenbox>
 					</row>
 					<row>
-						<button label="post" onClick="@command('save')" />
+						<button label="${labels.submit}" onClick="@command('save')" />
 					</row>
 				</rows>
 			</grid>

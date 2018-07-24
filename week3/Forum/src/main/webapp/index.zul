@@ -10,10 +10,10 @@
 			<window id="header" apply="org.zkoss.bind.BindComposer"
 				viewModel="@id('headvm')@init('org.exam.Forum.HeaderViewModel')"
 				border="normal" height="100%">
-				<label value="@load(headvm.title)"></label>
+				<label value="${labels.wellcome}"></label>
 				<div style="float:right;">
 					<label value="@load(headvm.message)"></label>
-					<button id="logout" label="Logout"
+					<button id="logout" label="${labels.logout}"
 						onClick="@command('logout')" />
 				</div>
 			</window>
@@ -63,7 +63,6 @@
 						</tabpanel>
 					</tabpanels>
 				</tabbox>
-
 			</center>
 			<south size="50%" id="form">
 				<include src="/pages/post.zul" />

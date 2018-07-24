@@ -17,7 +17,7 @@ public class HeaderViewModel {
 	
 	@Init
 	public void init() {
-		title = "Wellcome to week3!";
+		title = "week3!";
 		message = "Hi, " + authenticationService.getUserCredential().getName();
 	}
 

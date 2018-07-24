@@ -1,5 +1,6 @@
 package org.exam.Forum;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -29,13 +30,14 @@ public class ArticleMainViewModel {
 	@WireVariable
 	private AuthenticationService authenticationService;
 
-	private ListModelList<Article> allListModel;
+	private ListModelList<Article> rootListModel;
 	private ListModelList<Tag> tagListModel;
 	private ArticleTreeModel treeModel;
 	private ArticleTreeModel centerTreeModel;
 	private Article parent;
 	private Article formArticle;
 	private Article singleArticleView;
+	private User loginUser;
 
 	@Init
 	public void init() {
@@ -43,17 +45,19 @@ public class ArticleMainViewModel {
 		parent = root;
 		singleArticleView = new Article();
 		formArticle = new Article();
-		List<Article> allList = forumService.findAllVisible();
-		allListModel = new ListModelList<Article>(allList);
+		List<Article> mainList = forumService.findAllVisibleMain(root);
+		rootListModel = new ListModelList<Article>(mainList);
 		List<Tag> tagList = forumService.findAllTags();
 		tagListModel = new ListModelList<Tag>(tagList);
 		ArticleTreeNode rootNode = loadOnce(root);
-		treeModel = new ArticleTreeModel(rootNode);
-		centerTreeModel = new ArticleTreeModel(rootNode);
+		treeModel = new ArticleTreeModel(rootNode, true);
+		centerTreeModel = new ArticleTreeModel(rootNode, true);
+		loginUser = forumService.findOneUserByAccount(authenticationService.getUserCredential().getAccount());
+		// System.out.println(forumService.findOneArticleById(21).getTags());
 	}
 
 	public ListModelList<Article> getAllListModel() {
-		return allListModel;
+		return rootListModel;
 	}
 
 	public ArticleTreeModel getTreeModel() {
@@ -93,7 +97,7 @@ public class ArticleMainViewModel {
 	}
 
 	public void setAllListModel(ListModelList<Article> allListModel) {
-		this.allListModel = allListModel;
+		this.rootListModel = allListModel;
 	}
 
 	public void setTreeModel(ArticleTreeModel treeModel) {
@@ -108,11 +112,31 @@ public class ArticleMainViewModel {
 		this.singleArticleView = singleArticleView;
 	}
 
+	public User getLoginUser() {
+		return loginUser;
+	}
+
+	public void setLoginUser(User loginUser) {
+		this.loginUser = loginUser;
+	}
+
 	private ArticleTreeNode loadOnce(Article article) {
 		ArticleTreeNode node = new ArticleTreeNode(article);
 		node.setLoaded(true);
 		for (Article sub : article.getChildArticle()) {
 			if (sub.getVisible() != false) {
+				ArticleTreeNode n = loadOnce(sub);
+				node.add(n);
+			}
+		}
+		return node;
+	}
+
+	private ArticleTreeNode listClickLoad(Article article, Article target) {
+		ArticleTreeNode node = new ArticleTreeNode(article);
+		node.setLoaded(true);
+		for (Article sub : article.getChildArticle()) {
+			if (sub.getVisible() != false && sub.equals(target)) {
 				ArticleTreeNode n = loadOnce(sub);
 				node.add(n);
 			}
@@ -137,49 +161,71 @@ public class ArticleMainViewModel {
 	@NotifyChange("centerTreeModel")
 	@Command
 	public void clickOnList(@BindingParam("target") ArticleTreeNode target) {
-		Article newRoot = target.getData();
-		ArticleTreeNode newNode = loadOnce(newRoot);
-		centerTreeModel = new ArticleTreeModel(newNode); // not working in VIEW
+		Article newRoot = target.getData().getParentArticle();
+		ArticleTreeNode newNode = listClickLoad(newRoot, target.getData());
+		centerTreeModel = new ArticleTreeModel(newNode, true);
 		// centerTreeModel = new ArticleTreeModel(loadOnce(target.getData()));
 	}
-	
+
 	@NotifyChange("singleArticleView")
 	@Command
 	public void clickOnTree(@BindingParam("target") ArticleTreeNode target) {
-		System.out.println("tree click");
+		// System.out.println("tree click");
 		singleArticleView = target.getData();
 	}
 
+	@NotifyChange("formArticle")
 	@Command
-	public void goReply(@BindingParam("target") ArticleTreeNode target) {
-		System.out.println(target.getData().getId());
-		parent = target.getData();
-		// formArticle.setParentArticle(parent);
-		// Executions.sendRedirect("/pages/post.zul");
+	public void newPost() {
+		parent = forumService.findOneArticleById(1);
+		formArticle = new Article();
 	}
 
-	// insert
+	@NotifyChange("formArticle")
+	@Command
+	public void goReply(@BindingParam("target") ArticleTreeNode target) {
+		if (target != null) {
+			parent = target.getData();
+			formArticle = new Article();
+			// Executions.sendRedirect("/pages/post.zul");
+		}
+	}
+
+	@NotifyChange("formArticle")
+	@Command
+	public void edit(@BindingParam("target") ArticleTreeNode target) throws Exception {
+		if (target.getData().getAuthor().equals(loginUser) && target.getData().getChildArticle().isEmpty()) {
+			parent = target.getData().getParentArticle();
+			formArticle = target.getData();
+		} else {
+			throw new Exception("you are not Author or the Article are not allowed to edit.");
+		}
+	}
+
+	// insert or update
 	@Command
 	public void save() {
 		User login = forumService.findOneUserByAccount(authenticationService.getUserCredential().getAccount());
-//		System.out.println(formArticle.getSubject());
-//		System.out.println("this is save p:" + parent.getId());
-		forumService.saveArticle(formArticle, parent, login);
-		// init();
+		formArticle.setParentArticle(parent);
+		formArticle.setAuthor(login);
+		formArticle.setUpdateTime(new Date(System.currentTimeMillis()));
+		formArticle.setVisible(true);
+		forumService.saveArticle(formArticle);
+		// forumService.saveArticle(formArticle, parent, login);
 		Executions.sendRedirect("/index.zul");
 	}
 
 	@Command
-	public void delete(@BindingParam("target") ArticleTreeNode target) {
+	public void delete(@BindingParam("target") ArticleTreeNode target) throws Exception {
 		Article targetArticle = target.getData();
-		String loginAccount = authenticationService.getUserCredential().getAccount();
-		if (!loginAccount.equals(targetArticle.getAuthor().getAccount())) {
-			return; // to do : alert user or hide the delete button.
+		// String loginAccount = authenticationService.getUserCredential().getAccount();
+		if (!loginUser.getAccount().equals(targetArticle.getAuthor().getAccount())) {
+			throw new Exception("you are not Author.");
+			// return;
 		}
 		targetArticle.setVisible(false);
-		logger.warn("delete article: " + targetArticle.getSubject() + 
-					" author: "+ targetArticle.getAuthor().getAccount() + 
-					" byUser: " + loginAccount);
+		logger.warn("delete article: " + targetArticle.getSubject() + " author: "
+				+ targetArticle.getAuthor().getAccount() + " byUser: " + loginUser.getAccount());
 		forumService.saveArticle(targetArticle);
 		setChildrenVisible(targetArticle);
 		Executions.sendRedirect("/index.zul");

@@ -5,7 +5,7 @@
 		<vlayout>
 			<window id="loginWin" apply="org.zkoss.bind.BindComposer"
 				viewModel="@id('loginvm')@init('org.exam.Forum.LoginViewModel')"
-				title="Login" border="normal" hflex="min">
+				title="${labels.login}" border="normal" hflex="min">
 				<vbox hflex="min" align="center">
 					<grid hflex="min">
 						<columns>
@@ -14,12 +14,12 @@
 						</columns>
 						<rows>
 							<row>
-								Account :
+								${labels.account} :
 								<textbox id="account" width="200px"
 									value="@save(loginvm.account)" onOK="@command('logIn')" />
 							</row>
 							<row>
-								Password :
+								${labels.password} :
 								<textbox id="password" type="password"
 									value="@save(loginvm.password)" onOK="@command('logIn')"
 									width="200px" />
@@ -27,7 +27,7 @@
 						</rows>
 					</grid>
 					<label id="message" value="@load(loginvm.message, after='logIn')" />
-					<button id="login" label="Login"
+					<button id="login" label="${labels.login}"
 						onClick="@command('logIn')" />
 				</vbox>
 			</window>

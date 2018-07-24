@@ -14,6 +14,10 @@ public class ArticleTreeNode extends DefaultTreeNode<Article> {
 	public ArticleTreeNode(Article article) {
 		super(article, new LinkedList<ArticleTreeNode>());
 	}
+	
+	public ArticleTreeNode(Article data, boolean nullAsMax) {
+		super(data, nullAsMax);
+	}
 
 	// equals getData,
 	public Article getArticle() {

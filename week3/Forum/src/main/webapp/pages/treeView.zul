@@ -3,8 +3,8 @@
 	<vlayout hflex="1">
 		<tree model="@bind(amvm.treeModel)">
 			<treecols>
-				<treecol label="Date"></treecol>
-				<treecol label="Subject"></treecol>
+				<treecol label="${labels.date}"></treecol>
+				<treecol label="${labels.subject}"></treecol>
 			</treecols>
 			<template name="model">
 				<treeitem

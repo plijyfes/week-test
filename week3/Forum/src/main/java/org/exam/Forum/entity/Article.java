@@ -3,6 +3,7 @@ package org.exam.Forum.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public class Article implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "SUBJECT")
@@ -47,11 +48,11 @@ public class Article implements Serializable, Cloneable {
 	@JoinColumn(name = "PARENT_ARTICLE_ID", referencedColumnName = "ID")
 	private Article parentArticle;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentArticle", fetch = FetchType.EAGER)
-	private List<Article> childArticle;
+	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "parentArticle", fetch = FetchType.EAGER)
+	private List<Article> childArticle = new ArrayList<Article>();
 
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "articles", fetch = FetchType.EAGER)
-	private Set<Tag> tags;
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private Set<Tag> tags = new HashSet<Tag>();
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "AUTHOR", referencedColumnName = "ID")
@@ -113,8 +114,11 @@ public class Article implements Serializable, Cloneable {
 		this.childArticle = childArticle;
 	}
 
-	public List<Tag> getTags() {
-		return new ArrayList<Tag>(tags);
+	public Set<Tag> getTags() {
+		if (tags == null || tags.isEmpty()) {
+			return new HashSet<Tag>();
+		}
+		return tags;
 	}
 
 	public void setTags(Set<Tag> tags) {

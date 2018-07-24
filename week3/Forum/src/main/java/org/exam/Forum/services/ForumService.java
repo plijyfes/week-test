@@ -10,12 +10,6 @@ import java.util.List;
 
 public interface ForumService {
 
-	Log addLog(Log log);
-
-	List<Log> getLogs();
-
-	void deleteLog(Log log);
-
 	List<User> findAllUsers();
 
 	User findOneUserByAccount(String account);
@@ -43,4 +37,6 @@ public interface ForumService {
 	List<Article> findNew10ArticleByUser(User user);
 
 	List<Article> findAllVisible();
+	
+	public List<Article> findAllVisibleMain(Article parent);
 }
