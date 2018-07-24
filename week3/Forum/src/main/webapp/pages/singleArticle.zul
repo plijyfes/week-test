@@ -26,7 +26,7 @@
 					<html
 						content="@load(amvm.singleArticleView.content, after='clickOnTree')" />
 				</div>
-				<if test="@bind(amvm.singleArticleView.visible)">
+				<if test="@load(amvm.singleArticleView.visible)">
 					<div style="float:right;">
 						<button label="${labels.reply}"
 							onClick="@command('goReply',target=amvm.singleArticleView)" />

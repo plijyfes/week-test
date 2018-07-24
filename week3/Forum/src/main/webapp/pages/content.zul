@@ -9,30 +9,33 @@
 				<treeitem>
 					<treerow>
 						<treecell>
-							<label value="${labels.subject}:"></label>
-							<label value="@load(each.data.subject)"></label>
-							<div>
-								<label value="${labels.author}:"></label>
+							<window>
+								<label value="${labels.subject}:"></label>
 								<label
-									value="@load(each.data.author)">
+									value="@load(each.data.subject)">
 								</label>
-								<label value="/${labels.updatetime}:"></label>
-								<label
-									value="@load(each.data.updateTime)">
-								</label>
-							</div>
-							<forEach items="@load(each.data.tags)">
-								<label value="#"></label>
-								<label value="@load(each)" />
-							</forEach>
-							<html>
-
-								
-								<![CDATA[ <div> ${each.data.content}
-								</div> ]]>
-								
-										
+								<div>
+									<label value="${labels.author}:"></label>
+									<label
+										value="@load(each.data.author)">
+									</label>
+									<label
+										value="/${labels.updatetime}:">
+									</label>
+									<label
+										value="@load(each.data.updateTime)">
+									</label>
+								</div>
+								<forEach
+									items="@load(each.data.tags)">
+									<label value="#"></label>
+									<label value="@load(each)" />
+								</forEach>
+								<html>								
+									<![CDATA[ <div> ${each.data.content}
+									</div> ]]>				
 							</html>
+							</window>
 						</treecell>
 						<treecell>
 							<button label="${labels.reply}"

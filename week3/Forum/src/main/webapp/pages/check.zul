@@ -1,0 +1,12 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window apply="org.zkoss.bind.BindComposer" mode="modal" title="check" border="normal" position="center,center"
+		viewModel="@id('vm') @init('org.exam.Forum.CheckViewModel',param1=arg.param1)" width="300px">
+		<hbox>
+			<textbox value="@load(vm.value) @save(vm.value,before='close')" constraint="no empty"/>
+		</hbox>
+		<hbox>
+			<button label="close" onClick="@command('close') @global-command('checkClose',result=vm.value)" />
+		</hbox>
+	</window>
+</zk>

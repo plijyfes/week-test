@@ -29,10 +29,10 @@
 	</borderlayout>
 	<window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('amvm')@init('org.exam.Forum.ArticleMainViewModel')"
-		validationMessages="@id('vmsgs')" width="100%" height="1600px"
+		validationMessages="@id('vmsgs')" width="100%" height="1400px"
 		style="padding:0px;">
 		<borderlayout>
-			<center>
+			<center autoscroll="true">
 				<tabbox>
 					<tabs>
 						<tab label="list view" />

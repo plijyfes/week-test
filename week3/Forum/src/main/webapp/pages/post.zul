@@ -3,7 +3,7 @@
 	<hbox self="@define(content)" vflex="1" hflex="1" align="center"
 		pack="center">
 		<groupbox
-			form="@id('fx') @load(amvm.formArticle, after={'edit','goReply'}) @save(amvm.formArticle, before='save')">
+			form="@id('fx') @load(amvm.formArticle, after={'edit','goReply','newPost'}) @save(amvm.formArticle, before='save')">
 			<grid width="100%">
 				<columns>
 					<column />
@@ -34,7 +34,7 @@
 						<chosenbox hflex="1"
 							model="@load(amvm.tagListModel)"
 							emptyMessage="choose one or more labels"
-							selectedObjects="@save(fx.tags)">
+							selectedObjects="@load(fx.tags, after='edit') @save(fx.tags)">
 							<template name="model">
 								<label value="@load(each.name)" />
 							</template>

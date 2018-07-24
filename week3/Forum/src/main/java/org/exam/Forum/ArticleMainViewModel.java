@@ -1,7 +1,16 @@
 package org.exam.Forum;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.exam.Forum.entity.Article;
@@ -11,8 +20,10 @@ import org.exam.Forum.services.AuthenticationService;
 import org.exam.Forum.services.ForumService;
 import org.exam.Forum.services.impl.ArticleTreeModel;
 import org.exam.Forum.services.impl.ArticleTreeNode;
+import org.exam.Forum.services.impl.WaitTask;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
+import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
@@ -38,9 +49,12 @@ public class ArticleMainViewModel {
 	private Article formArticle;
 	private Article singleArticleView;
 	private User loginUser;
+	private String value = "v";
+	private ScheduledExecutorService executorService;
 
 	@Init
 	public void init() {
+		executorService = Executors.newSingleThreadScheduledExecutor();
 		Article root = forumService.findOneArticleById(1);
 		parent = root;
 		singleArticleView = new Article();
@@ -56,8 +70,12 @@ public class ArticleMainViewModel {
 		// System.out.println(forumService.findOneArticleById(21).getTags());
 	}
 
-	public ListModelList<Article> getAllListModel() {
+	public ListModelList<Article> getRootListModel() {
 		return rootListModel;
+	}
+
+	public void setRootListModel(ListModelList<Article> rootListModel) {
+		this.rootListModel = rootListModel;
 	}
 
 	public ArticleTreeModel getTreeModel() {
@@ -118,6 +136,14 @@ public class ArticleMainViewModel {
 
 	public void setLoginUser(User loginUser) {
 		this.loginUser = loginUser;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	private ArticleTreeNode loadOnce(Article article) {
@@ -197,22 +223,54 @@ public class ArticleMainViewModel {
 		if (target.getData().getAuthor().equals(loginUser) && target.getData().getChildArticle().isEmpty()) {
 			parent = target.getData().getParentArticle();
 			formArticle = target.getData();
+			System.out.println(formArticle.getTags());
 		} else {
 			throw new Exception("you are not Author or the Article are not allowed to edit.");
 		}
 	}
 
 	// insert or update
+	@NotifyChange("formArticle")
 	@Command
 	public void save() {
-		User login = forumService.findOneUserByAccount(authenticationService.getUserCredential().getAccount());
-		formArticle.setParentArticle(parent);
-		formArticle.setAuthor(login);
-		formArticle.setUpdateTime(new Date(System.currentTimeMillis()));
-		formArticle.setVisible(true);
-		forumService.saveArticle(formArticle);
-		// forumService.saveArticle(formArticle, parent, login);
-		Executions.sendRedirect("/index.zul");
+		String result = null;
+		Map<String, Object> arg = new HashMap<String, Object>();
+		arg.put("param1", value);
+		Executions.createComponents("/pages/check.zul", null, arg);
+
+		try {
+			List<Callable<String>> taskList = new ArrayList<Callable<String>>();
+			taskList.add(new WaitTask("submit", 5));
+			System.out.println("taskstart");
+			List<Future<String>> resultList = executorService.invokeAll(taskList, 5, TimeUnit.SECONDS);
+			for (Future<String> future : resultList) {
+				System.out.println(future.get());
+				result = future.get();
+			}
+			if (result.equals("sucess")) {
+				formArticle.setParentArticle(parent);
+				formArticle.setAuthor(loginUser);
+				formArticle.setUpdateTime(new Date(System.currentTimeMillis()));
+				formArticle.setVisible(true);
+				forumService.saveArticle(formArticle);
+				// forumService.saveArticle(formArticle, parent, login);
+				Executions.sendRedirect("/index.zul");
+				System.out.println("save");
+			}
+//			System.out.println("shutdown");
+//			executorService.shutdown();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@GlobalCommand
+	@NotifyChange("value")
+	public void checkClose(@BindingParam("result") String result) {
+		this.value = result;
+		System.out.println(value);
+		executorService.shutdown();
 	}
 
 	@Command
