@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -20,16 +22,21 @@ import org.exam.Forum.services.AuthenticationService;
 import org.exam.Forum.services.ForumService;
 import org.exam.Forum.services.impl.ArticleTreeModel;
 import org.exam.Forum.services.impl.ArticleTreeNode;
+import org.exam.Forum.services.impl.InsertTask;
 import org.exam.Forum.services.impl.WaitTask;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Messagebox.ClickEvent;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class ArticleMainViewModel {
@@ -51,10 +58,11 @@ public class ArticleMainViewModel {
 	private User loginUser;
 	private String value = "v";
 	private ScheduledExecutorService executorService;
+	private ScheduledFuture<?> future;
 
 	@Init
 	public void init() {
-		executorService = Executors.newSingleThreadScheduledExecutor();
+		executorService = Executors.newScheduledThreadPool(1);
 		Article root = forumService.findOneArticleById(1);
 		parent = root;
 		singleArticleView = new Article();
@@ -232,37 +240,23 @@ public class ArticleMainViewModel {
 	// insert or update
 	@NotifyChange("formArticle")
 	@Command
-	public void save() {
-		String result = null;
-		Map<String, Object> arg = new HashMap<String, Object>();
-		arg.put("param1", value);
-		Executions.createComponents("/pages/check.zul", null, arg);
-
-		try {
-			List<Callable<String>> taskList = new ArrayList<Callable<String>>();
-			taskList.add(new WaitTask("submit", 5));
-			System.out.println("taskstart");
-			List<Future<String>> resultList = executorService.invokeAll(taskList, 5, TimeUnit.SECONDS);
-			for (Future<String> future : resultList) {
-				System.out.println(future.get());
-				result = future.get();
+	public void save() throws InterruptedException, ExecutionException {
+		EventListener<ClickEvent> listener = new org.zkoss.zk.ui.event.EventListener<ClickEvent>() {
+			public void onEvent(ClickEvent e) {
+				if (e.getName().equals("onCancel")) {
+					future.cancel(true);
+					System.out.println(future.isCancelled());
+		        }
 			}
-			if (result.equals("sucess")) {
-				formArticle.setParentArticle(parent);
-				formArticle.setAuthor(loginUser);
-				formArticle.setUpdateTime(new Date(System.currentTimeMillis()));
-				formArticle.setVisible(true);
-				forumService.saveArticle(formArticle);
-				// forumService.saveArticle(formArticle, parent, login);
-				Executions.sendRedirect("/index.zul");
-				System.out.println("save");
-			}
-//			System.out.println("shutdown");
-//			executorService.shutdown();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		};
+		Messagebox.Button[] btn = {Messagebox.Button.CANCEL};
+		Messagebox.show("Something is changed. Are you sure?", "Question", btn, Messagebox.QUESTION, Messagebox.Button.CANCEL, listener);
+		formArticle.setParentArticle(parent);
+		formArticle.setAuthor(loginUser);
+		formArticle.setUpdateTime(new Date(System.currentTimeMillis()));
+		formArticle.setVisible(true);
+		InsertTask task = new InsertTask(formArticle, forumService);
+		future = executorService.schedule(task, 5, TimeUnit.SECONDS);
 	}
 
 	@GlobalCommand
