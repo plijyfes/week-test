@@ -1,15 +1,9 @@
 package org.exam.Forum;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -23,15 +17,15 @@ import org.exam.Forum.services.ForumService;
 import org.exam.Forum.services.impl.ArticleTreeModel;
 import org.exam.Forum.services.impl.ArticleTreeNode;
 import org.exam.Forum.services.impl.InsertTask;
-import org.exam.Forum.services.impl.WaitTask;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.util.resource.Labels;
-import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.EventQueue;
+import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.ListModelList;
@@ -59,9 +53,12 @@ public class ArticleMainViewModel {
 	private String value = "v";
 	private ScheduledExecutorService executorService;
 	private ScheduledFuture<?> future;
+	private EventQueue<Event> que;
 
 	@Init
 	public void init() {
+		que = EventQueues.lookup("update", EventQueues.APPLICATION, true);
+		subscribe();
 		executorService = Executors.newScheduledThreadPool(1);
 		Article root = forumService.findOneArticleById(1);
 		parent = root;
@@ -78,10 +75,28 @@ public class ArticleMainViewModel {
 		// System.out.println(forumService.findOneArticleById(21).getTags());
 	}
 
+	
+	public void subscribe() {
+		que.subscribe(new EventListener<Event>() {
+			public void onEvent(Event evt) {
+				Article root = forumService.findOneArticleById(1);
+				List<Article> mainList = forumService.findAllVisibleMain(root);
+				rootListModel = new ListModelList<Article>(mainList);
+				List<Tag> tagList = forumService.findAllTags();
+				tagListModel = new ListModelList<Tag>(tagList);
+				ArticleTreeNode rootNode = loadOnce(root);
+				treeModel = new ArticleTreeModel(rootNode, true);
+				centerTreeModel = new ArticleTreeModel(rootNode, true);
+				System.out.println("listener");
+			}
+		});
+	}
+	
 	public ListModelList<Article> getRootListModel() {
 		return rootListModel;
 	}
-
+	
+	@NotifyChange
 	public void setRootListModel(ListModelList<Article> rootListModel) {
 		this.rootListModel = rootListModel;
 	}
@@ -120,10 +135,6 @@ public class ArticleMainViewModel {
 
 	public void setTagListModel(ListModelList<Tag> tagListModel) {
 		this.tagListModel = tagListModel;
-	}
-
-	public void setAllListModel(ListModelList<Article> allListModel) {
-		this.rootListModel = allListModel;
 	}
 
 	public void setTreeModel(ArticleTreeModel treeModel) {
@@ -238,25 +249,26 @@ public class ArticleMainViewModel {
 	}
 
 	// insert or update
-	@NotifyChange("formArticle")
+	@NotifyChange("*")
 	@Command
 	public void save() throws InterruptedException, ExecutionException {
 		EventListener<ClickEvent> listener = new org.zkoss.zk.ui.event.EventListener<ClickEvent>() {
 			public void onEvent(ClickEvent e) {
 				if (e.getName().equals("onCancel")) {
 					future.cancel(true);
-					System.out.println(future.isCancelled());
-		        }
+					// System.out.println(future.isCancelled());
+				}
 			}
 		};
-		Messagebox.Button[] btn = {Messagebox.Button.CANCEL};
-		Messagebox.show("Something is changed. Are you sure?", "Question", btn, Messagebox.QUESTION, Messagebox.Button.CANCEL, listener);
+		Messagebox.Button[] btn = { Messagebox.Button.CANCEL };
+		Messagebox.show("Something is changed. Are you sure?", "Question", btn, Messagebox.QUESTION,
+				Messagebox.Button.CANCEL, listener);
 		formArticle.setParentArticle(parent);
 		formArticle.setAuthor(loginUser);
 		formArticle.setUpdateTime(new Date(System.currentTimeMillis()));
 		formArticle.setVisible(true);
 		InsertTask task = new InsertTask(formArticle, forumService);
-		future = executorService.schedule(task, 5, TimeUnit.SECONDS);
+		future = executorService.schedule(task, 5, TimeUnit.SECONDS); // how to close messagebox after sec?
 	}
 
 	@GlobalCommand
@@ -266,7 +278,8 @@ public class ArticleMainViewModel {
 		System.out.println(value);
 		executorService.shutdown();
 	}
-
+	
+	@NotifyChange("*")
 	@Command
 	public void delete(@BindingParam("target") ArticleTreeNode target) throws Exception {
 		Article targetArticle = target.getData();
@@ -280,7 +293,26 @@ public class ArticleMainViewModel {
 				+ targetArticle.getAuthor().getAccount() + " byUser: " + loginUser.getAccount());
 		forumService.saveArticle(targetArticle);
 		setChildrenVisible(targetArticle);
-		Executions.sendRedirect("/index.zul");
+		refreshViewFromDB();
+	}
+
+	public void refreshViewFromDB() {
+		Article root = forumService.findOneArticleById(1);
+		parent = root;
+		singleArticleView = new Article();
+		formArticle = new Article();
+		List<Article> mainList = forumService.findAllVisibleMain(root);
+		rootListModel = new ListModelList<Article>(mainList);
+		List<Tag> tagList = forumService.findAllTags();
+		tagListModel = new ListModelList<Tag>(tagList);
+		ArticleTreeNode rootNode = loadOnce(root);
+		treeModel = new ArticleTreeModel(rootNode, true);
+		centerTreeModel = new ArticleTreeModel(rootNode, true);
+		loginUser = forumService.findOneUserByAccount(authenticationService.getUserCredential().getAccount());
+	}
+	
+	public void publish() {
+		que.publish(new Event("onUpdate", null));
 	}
 
 }
