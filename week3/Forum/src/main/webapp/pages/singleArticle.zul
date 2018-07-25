@@ -30,10 +30,12 @@
 					<div style="float:right;">
 						<button label="${labels.reply}"
 							onClick="@command('goReply',target=amvm.singleArticleView)" />
-						<button label="${labels.edit}"
-							onClick="@command('edit',target=amvm.singleArticleView)" />
-						<button label="${labels.delete}"
-							onClick="@command('delete',target=amvm.singleArticleView)" />
+						<if test="@load(amvm.singleArticleView.author.id eq amvm.loginUser.id)">
+							<button label="${labels.edit}"
+								onClick="@command('edit',target=amvm.singleArticleView)" />
+							<button label="${labels.delete}"
+								onClick="@command('delete',target=amvm.singleArticleView)" />
+						</if>
 					</div>
 				</if>
 			</div>

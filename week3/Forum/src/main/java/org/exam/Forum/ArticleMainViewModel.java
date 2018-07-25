@@ -17,9 +17,9 @@ import org.exam.Forum.services.ForumService;
 import org.exam.Forum.services.impl.ArticleTreeModel;
 import org.exam.Forum.services.impl.ArticleTreeNode;
 import org.exam.Forum.services.impl.InsertTask;
+import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
-import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.event.Event;
@@ -50,7 +50,6 @@ public class ArticleMainViewModel {
 	private Article formArticle;
 	private Article singleArticleView;
 	private User loginUser;
-	private String value = "v";
 	private ScheduledExecutorService executorService;
 	private ScheduledFuture<?> future;
 	private EventQueue<Event> que;
@@ -73,21 +72,13 @@ public class ArticleMainViewModel {
 		centerTreeModel = new ArticleTreeModel(rootNode, true);
 		loginUser = forumService.findOneUserByAccount(authenticationService.getUserCredential().getAccount());
 		// System.out.println(forumService.findOneArticleById(21).getTags());
+		
 	}
 
-	
 	public void subscribe() {
 		que.subscribe(new EventListener<Event>() {
 			public void onEvent(Event evt) {
-				Article root = forumService.findOneArticleById(1);
-				List<Article> mainList = forumService.findAllVisibleMain(root);
-				rootListModel = new ListModelList<Article>(mainList);
-				List<Tag> tagList = forumService.findAllTags();
-				tagListModel = new ListModelList<Tag>(tagList);
-				ArticleTreeNode rootNode = loadOnce(root);
-				treeModel = new ArticleTreeModel(rootNode, true);
-				centerTreeModel = new ArticleTreeModel(rootNode, true);
-				System.out.println("listener");
+				refreshViewFromDB();
 			}
 		});
 	}
@@ -96,19 +87,30 @@ public class ArticleMainViewModel {
 		return rootListModel;
 	}
 	
-	@NotifyChange
-	public void setRootListModel(ListModelList<Article> rootListModel) {
-		this.rootListModel = rootListModel;
+
+	public ListModelList<Tag> getTagListModel() {
+		return tagListModel;
+	}
+
+	@NotifyChange("tagListModel")
+	public void setTagListModel(ListModelList<Tag> tagListModel) {
+		this.tagListModel = tagListModel;
 	}
 
 	public ArticleTreeModel getTreeModel() {
 		return treeModel;
 	}
 
+	@NotifyChange("treeModel")
+	public void setTreeModel(ArticleTreeModel treeModel) {
+		this.treeModel = treeModel;
+	}
+
 	public ArticleTreeModel getCenterTreeModel() {
 		return centerTreeModel;
 	}
 
+	@NotifyChange("centerTreeModel")
 	public void setCenterTreeModel(ArticleTreeModel centerTreeModel) {
 		this.centerTreeModel = centerTreeModel;
 	}
@@ -117,6 +119,7 @@ public class ArticleMainViewModel {
 		return parent;
 	}
 
+	@NotifyChange("parent")
 	public void setParent(Article parent) {
 		this.parent = parent;
 	}
@@ -125,26 +128,16 @@ public class ArticleMainViewModel {
 		return formArticle;
 	}
 
+	@NotifyChange("formArticle")
 	public void setFormArticle(Article formArticle) {
 		this.formArticle = formArticle;
-	}
-
-	public ListModelList<Tag> getTagListModel() {
-		return tagListModel;
-	}
-
-	public void setTagListModel(ListModelList<Tag> tagListModel) {
-		this.tagListModel = tagListModel;
-	}
-
-	public void setTreeModel(ArticleTreeModel treeModel) {
-		this.treeModel = treeModel;
 	}
 
 	public Article getSingleArticleView() {
 		return singleArticleView;
 	}
 
+	@NotifyChange("singleArticleView")
 	public void setSingleArticleView(Article singleArticleView) {
 		this.singleArticleView = singleArticleView;
 	}
@@ -153,16 +146,14 @@ public class ArticleMainViewModel {
 		return loginUser;
 	}
 
+	@NotifyChange("loginUser")
 	public void setLoginUser(User loginUser) {
 		this.loginUser = loginUser;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
+	@NotifyChange("rootListModel")
+	public void setRootListModel(ListModelList<Article> rootListModel) {
+		this.rootListModel = rootListModel;
 	}
 
 	private ArticleTreeNode loadOnce(Article article) {
@@ -256,8 +247,7 @@ public class ArticleMainViewModel {
 			public void onEvent(ClickEvent e) {
 				if (e.getName().equals("onCancel")) {
 					future.cancel(true);
-					// System.out.println(future.isCancelled());
-				}
+				} 
 			}
 		};
 		Messagebox.Button[] btn = { Messagebox.Button.CANCEL };
@@ -267,16 +257,8 @@ public class ArticleMainViewModel {
 		formArticle.setAuthor(loginUser);
 		formArticle.setUpdateTime(new Date(System.currentTimeMillis()));
 		formArticle.setVisible(true);
-		InsertTask task = new InsertTask(formArticle, forumService);
+		InsertTask task = new InsertTask(formArticle, forumService, que);
 		future = executorService.schedule(task, 5, TimeUnit.SECONDS); // how to close messagebox after sec?
-	}
-
-	@GlobalCommand
-	@NotifyChange("value")
-	public void checkClose(@BindingParam("result") String result) {
-		this.value = result;
-		System.out.println(value);
-		executorService.shutdown();
 	}
 	
 	@NotifyChange("*")
@@ -297,6 +279,7 @@ public class ArticleMainViewModel {
 	}
 
 	public void refreshViewFromDB() {
+//		logger.debug("refreshViewFromDB() start.");
 		Article root = forumService.findOneArticleById(1);
 		parent = root;
 		singleArticleView = new Article();
@@ -308,11 +291,12 @@ public class ArticleMainViewModel {
 		ArticleTreeNode rootNode = loadOnce(root);
 		treeModel = new ArticleTreeModel(rootNode, true);
 		centerTreeModel = new ArticleTreeModel(rootNode, true);
-		loginUser = forumService.findOneUserByAccount(authenticationService.getUserCredential().getAccount());
-	}
-	
-	public void publish() {
-		que.publish(new Event("onUpdate", null));
+		BindUtils.postNotifyChange(null, null, this, "rootListModel");
+		BindUtils.postNotifyChange(null, null, this, "tagListModel");
+		BindUtils.postNotifyChange(null, null, this, "treeModel");
+		BindUtils.postNotifyChange(null, null, this, "centerTreeModel");
+		BindUtils.postNotifyChange(null, null, this, "formArticle");
+		BindUtils.postNotifyChange(null, null, this, "parent");
 	}
 
 }

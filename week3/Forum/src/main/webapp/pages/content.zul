@@ -40,10 +40,12 @@
 						<treecell>
 							<button label="${labels.reply}"
 								onClick="@command('goReply',target=each)" />
-							<button label="${labels.edit}"
-								onClick="@command('edit',target=each)" />
-							<button label="${labels.delete}"
-								onClick="@command('delete',target=each)" />
+							<if test="@load(each.data.author.id eq amvm.loginUser.id)">
+								<button label="${labels.edit}"
+									onClick="@command('edit',target=each)" />
+								<button label="${labels.delete}"
+									onClick="@command('delete',target=each)" />
+							</if>
 						</treecell>
 					</treerow>
 				</treeitem>

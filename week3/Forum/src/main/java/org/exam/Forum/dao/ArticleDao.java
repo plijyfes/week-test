@@ -14,9 +14,9 @@ public interface ArticleDao extends JpaRepository<Article, Integer> {
 	
 	List<Article> findByVisibleTrueAndParentArticleOrderByUpdateTimeDesc(Article parent);
 
-	List<Article> findTop10ByVisibleTrueAndParentArticleOrderByUpdateTimeDesc(Article parent);
+	List<Article> findTop10ByVisibleTrueAndParentArticleNotOrderByUpdateTimeDesc(Article parent);
 	
-	List<Article> findTop10ByVisibleTrueAndParentArticleIsNotNullOrderByUpdateTimeDesc();
+	List<Article> findTop10ByVisibleTrueAndParentArticleOrderByUpdateTimeDesc(Article parent);
 	
 	List<Article> findTop10ByVisibleTrueAndAuthorOrderByUpdateTimeDesc(User user);
 }

@@ -115,8 +115,8 @@ public class ForumServiceImpl implements ForumService {
 		return articleDao.findTop10ByVisibleTrueAndParentArticleOrderByUpdateTimeDesc(parent);
 	}
 
-	public List<Article> findNew10ChildArticle() {
-		return articleDao.findTop10ByVisibleTrueAndParentArticleIsNotNullOrderByUpdateTimeDesc();
+	public List<Article> findNew10ChildArticle(Article parent) {
+		return articleDao.findTop10ByVisibleTrueAndParentArticleNotOrderByUpdateTimeDesc(parent);
 	}
 
 	public List<Article> findNew10ArticleByUser(User user) {
