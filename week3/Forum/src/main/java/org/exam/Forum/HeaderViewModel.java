@@ -9,12 +9,12 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class HeaderViewModel {
-	
+
 	@WireVariable
 	private AuthenticationService authenticationService;
 	private String message;
 	private String title;
-	
+
 	@Init
 	public void init() {
 		title = "week3!";
@@ -24,7 +24,7 @@ public class HeaderViewModel {
 	public String getMessage() {
 		return message;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -34,5 +34,5 @@ public class HeaderViewModel {
 		authenticationService.logout();
 		Executions.sendRedirect("/index.zul");
 	}
-	
+
 }

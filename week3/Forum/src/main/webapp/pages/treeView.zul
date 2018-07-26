@@ -1,7 +1,7 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<vlayout hflex="1">
-		<tree model="@bind(amvm.treeModel)">
+		<tree model="@load(amvm.treeModel)">
 			<treecols>
 				<treecol label="${labels.date}"></treecol>
 				<treecol label="${labels.subject}"></treecol>
@@ -11,9 +11,9 @@
 					onClick="@command('clickOnTree',target=event.target.value)">
 					<treerow>
 						<treecell
-							label="@bind(each.data.updateTime) @converter('formattedDate', format='MM/dd')">
+							label="@load(each.data.updateTime) @converter('formattedDate', format='MM/dd')">
 						</treecell>
-						<treecell label="@bind(each.data.subject)">
+						<treecell label="@load(each.data.subject)">
 						</treecell>
 					</treerow>
 				</treeitem>

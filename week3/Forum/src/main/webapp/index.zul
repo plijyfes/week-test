@@ -64,7 +64,7 @@
 					</tabpanels>
 				</tabbox>
 			</center>
-			<south size="50%" id="form">
+			<south size="50%" id="form" autoscroll="true">
 				<include src="/pages/post.zul" />
 			</south>
 		</borderlayout>

@@ -1,7 +1,11 @@
 package org.exam.Forum;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,6 +26,7 @@ import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.EventQueue;
@@ -44,21 +49,24 @@ public class ArticleMainViewModel {
 
 	private ListModelList<Article> rootListModel;
 	private ListModelList<Tag> tagListModel;
+	private ListModelList<Tag> selectedtagListModel;
 	private ArticleTreeModel treeModel;
 	private ArticleTreeModel centerTreeModel;
 	private Article parent;
 	private Article formArticle;
 	private Article singleArticleView;
 	private User loginUser;
+	// for post
+	private boolean loading;
+	private int waitTime;
+	private int countdown;
 	private ScheduledExecutorService executorService;
 	private ScheduledFuture<?> future;
 	private EventQueue<Event> que;
 
 	@Init
 	public void init() {
-		que = EventQueues.lookup("update", EventQueues.APPLICATION, true);
-		subscribe();
-		executorService = Executors.newScheduledThreadPool(1);
+		// view
 		Article root = forumService.findOneArticleById(1);
 		parent = root;
 		singleArticleView = new Article();
@@ -67,12 +75,18 @@ public class ArticleMainViewModel {
 		rootListModel = new ListModelList<Article>(mainList);
 		List<Tag> tagList = forumService.findAllTags();
 		tagListModel = new ListModelList<Tag>(tagList);
+		selectedtagListModel = new ListModelList<Tag>();
 		ArticleTreeNode rootNode = loadOnce(root);
 		treeModel = new ArticleTreeModel(rootNode, true);
 		centerTreeModel = new ArticleTreeModel(rootNode, true);
+		// event
+		que = EventQueues.lookup("update", EventQueues.APPLICATION, true);
+		subscribe();
+		executorService = Executors.newScheduledThreadPool(1);
 		loginUser = forumService.findOneUserByAccount(authenticationService.getUserCredential().getAccount());
-		// System.out.println(forumService.findOneArticleById(21).getTags());
-		
+		loading = false;
+		waitTime = 5;
+		countdown = waitTime;
 	}
 
 	public void subscribe() {
@@ -82,11 +96,15 @@ public class ArticleMainViewModel {
 			}
 		});
 	}
-	
+
 	public ListModelList<Article> getRootListModel() {
 		return rootListModel;
 	}
-	
+
+	@NotifyChange("rootListModel")
+	public void setRootListModel(ListModelList<Article> rootListModel) {
+		this.rootListModel = rootListModel;
+	}
 
 	public ListModelList<Tag> getTagListModel() {
 		return tagListModel;
@@ -95,6 +113,15 @@ public class ArticleMainViewModel {
 	@NotifyChange("tagListModel")
 	public void setTagListModel(ListModelList<Tag> tagListModel) {
 		this.tagListModel = tagListModel;
+	}
+
+	public ListModelList<Tag> getSelectedtagListModel() {
+		return selectedtagListModel;
+	}
+
+	@NotifyChange("selectedtagListModel")
+	public void setSelectedtagListModel(ListModelList<Tag> selectedtagListModel) {
+		this.selectedtagListModel = selectedtagListModel;
 	}
 
 	public ArticleTreeModel getTreeModel() {
@@ -151,9 +178,30 @@ public class ArticleMainViewModel {
 		this.loginUser = loginUser;
 	}
 
-	@NotifyChange("rootListModel")
-	public void setRootListModel(ListModelList<Article> rootListModel) {
-		this.rootListModel = rootListModel;
+	public boolean isLoading() {
+		return loading;
+	}
+
+	@NotifyChange("loading")
+	public void setLoading(boolean loading) {
+		this.loading = loading;
+	}
+
+	public int getCountdown() {
+		return countdown;
+	}
+
+	@NotifyChange("countdown")
+	public void setCountdown(int countdown) {
+		this.countdown = countdown;
+	}
+
+	public int getWaitTime() {
+		return waitTime;
+	}
+
+	public void setWaitTime(int waitTime) {
+		this.waitTime = waitTime;
 	}
 
 	private ArticleTreeNode loadOnce(Article article) {
@@ -172,7 +220,7 @@ public class ArticleMainViewModel {
 		ArticleTreeNode node = new ArticleTreeNode(article);
 		node.setLoaded(true);
 		for (Article sub : article.getChildArticle()) {
-			if (sub.getVisible() != false && sub.equals(target)) {
+			if (sub.getVisible() != false && sub.getId() == target.getId()) {
 				ArticleTreeNode n = loadOnce(sub);
 				node.add(n);
 			}
@@ -210,80 +258,102 @@ public class ArticleMainViewModel {
 		singleArticleView = target.getData();
 	}
 
-	@NotifyChange("formArticle")
+	@NotifyChange({ "formArticle", "parent", "selectedtagListModel" })
 	@Command
 	public void newPost() {
 		parent = forumService.findOneArticleById(1);
+		selectedtagListModel = new ListModelList<Tag>();
 		formArticle = new Article();
 	}
 
-	@NotifyChange("formArticle")
+	@NotifyChange({ "formArticle", "parent", "selectedtagListModel" })
 	@Command
 	public void goReply(@BindingParam("target") ArticleTreeNode target) {
 		if (target != null) {
 			parent = target.getData();
+			selectedtagListModel = new ListModelList<Tag>();
 			formArticle = new Article();
 			// Executions.sendRedirect("/pages/post.zul");
 		}
 	}
 
-	@NotifyChange("formArticle")
+	@NotifyChange({ "formArticle", "parent", "selectedtagListModel" })
 	@Command
 	public void edit(@BindingParam("target") ArticleTreeNode target) throws Exception {
-		if (target.getData().getAuthor().equals(loginUser) && target.getData().getChildArticle().isEmpty()) {
+		if (target.getData().getAuthor().getId() == loginUser.getId() && target.getData().getChildArticle().isEmpty()) {
 			parent = target.getData().getParentArticle();
 			formArticle = target.getData();
-			System.out.println(formArticle.getTags());
+			ArrayList<Tag> subtaglist = new ArrayList<Tag>(formArticle.getTags());
+			selectedtagListModel = new ListModelList<Tag>(subtaglist);
 		} else {
-			throw new Exception("you are not Author or the Article are not allowed to edit.");
+			logger.warn("fail edit articleId:" + target.getData().getId() + " by:" + loginUser.getAccount());
+			throw new Exception(Labels.getLabel("editalert"));
 		}
 	}
 
 	// insert or update
-	@NotifyChange("*")
+	@NotifyChange({ "loading", "selectedtagListModel", "formArticle" })
 	@Command
 	public void save() throws InterruptedException, ExecutionException {
-		EventListener<ClickEvent> listener = new org.zkoss.zk.ui.event.EventListener<ClickEvent>() {
-			public void onEvent(ClickEvent e) {
-				if (e.getName().equals("onCancel")) {
-					future.cancel(true);
-				} 
-			}
-		};
-		Messagebox.Button[] btn = { Messagebox.Button.CANCEL };
-		Messagebox.show("Something is changed. Are you sure?", "Question", btn, Messagebox.QUESTION,
-				Messagebox.Button.CANCEL, listener);
 		formArticle.setParentArticle(parent);
 		formArticle.setAuthor(loginUser);
 		formArticle.setUpdateTime(new Date(System.currentTimeMillis()));
 		formArticle.setVisible(true);
-		InsertTask task = new InsertTask(formArticle, forumService, que);
-		future = executorService.schedule(task, 5, TimeUnit.SECONDS); // how to close messagebox after sec?
+		ArrayList<Tag> tagarray = new ArrayList<Tag>();
+		Object[] objarray = selectedtagListModel.toArray();
+		for (Object obj : objarray) {
+			tagarray.add((Tag) obj);
+		}
+		Set<Tag> mySet = new HashSet<Tag>(tagarray);
+		formArticle.setTags(mySet);
+		if (formArticle.getId() == null) {
+			loading = true;
+			InsertTask task = new InsertTask(formArticle, forumService, que, this);
+			future = executorService.schedule(task, waitTime, TimeUnit.SECONDS);
+		} else {
+			forumService.saveArticle(formArticle);
+			selectedtagListModel = new ListModelList<Tag>();
+			formArticle = new Article();
+		}
 	}
-	
+
+	@NotifyChange("loading")
+	@Command
+	public void cancelSave() throws InterruptedException, ExecutionException {
+		EventListener<ClickEvent> listener = new org.zkoss.zk.ui.event.EventListener<ClickEvent>() {
+			public void onEvent(ClickEvent e) {
+				if (e.getName().equals("onYes")) {
+					future.cancel(true);
+					loading = false;
+					refreshViewFromDB();
+				}
+			}
+		};
+		Messagebox.Button[] btn = { Messagebox.Button.YES, Messagebox.Button.NO };
+		Messagebox.show(Labels.getLabel("cancelquestion"), "Question", btn, Messagebox.QUESTION,
+				Messagebox.Button.CANCEL, listener);
+	}
+
 	@NotifyChange("*")
 	@Command
 	public void delete(@BindingParam("target") ArticleTreeNode target) throws Exception {
 		Article targetArticle = target.getData();
-		// String loginAccount = authenticationService.getUserCredential().getAccount();
 		if (!loginUser.getAccount().equals(targetArticle.getAuthor().getAccount())) {
-			throw new Exception("you are not Author.");
-			// return;
+			logger.warn("fail delete articleId:" + targetArticle.getId() + " by:" + loginUser.getAccount());
+			throw new Exception(Labels.getLabel("editalert"));
 		}
 		targetArticle.setVisible(false);
 		logger.warn("delete article: " + targetArticle.getSubject() + " author: "
 				+ targetArticle.getAuthor().getAccount() + " byUser: " + loginUser.getAccount());
 		forumService.saveArticle(targetArticle);
 		setChildrenVisible(targetArticle);
-		refreshViewFromDB();
+		que.publish(new Event("onUpdate", null));
 	}
 
 	public void refreshViewFromDB() {
-//		logger.debug("refreshViewFromDB() start.");
+		// logger.debug("refreshViewFromDB() start.");
 		Article root = forumService.findOneArticleById(1);
-		parent = root;
-		singleArticleView = new Article();
-		formArticle = new Article();
+		// singleArticleView = new Article();
 		List<Article> mainList = forumService.findAllVisibleMain(root);
 		rootListModel = new ListModelList<Article>(mainList);
 		List<Tag> tagList = forumService.findAllTags();
@@ -295,8 +365,17 @@ public class ArticleMainViewModel {
 		BindUtils.postNotifyChange(null, null, this, "tagListModel");
 		BindUtils.postNotifyChange(null, null, this, "treeModel");
 		BindUtils.postNotifyChange(null, null, this, "centerTreeModel");
-		BindUtils.postNotifyChange(null, null, this, "formArticle");
-		BindUtils.postNotifyChange(null, null, this, "parent");
+		BindUtils.postNotifyChange(null, null, this, "loading");
+		// BindUtils.postNotifyChange(null, null, this, "singleArticleView");
 	}
 
+	@NotifyChange("countdown")
+	@Command
+	public void timer() {
+		if (countdown > 0) {
+			countdown -= 1;
+		} else {
+			countdown = waitTime;
+		}
+	}
 }

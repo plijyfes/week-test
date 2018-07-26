@@ -65,7 +65,9 @@ public class ArticleViewModel {
 		westListModel = new ListModelList<Article>(westList);
 		centerListModel = new ListModelList<Article>(centerList);
 		eastListModel = new ListModelList<Article>(eastList);
-		BindUtils.postNotifyChange(null, null, this, "*");
+		BindUtils.postNotifyChange(null, null, this, "westListModel");
+		BindUtils.postNotifyChange(null, null, this, "centerListModel");
+		BindUtils.postNotifyChange(null, null, this, "eastListModel");
 	}
 
 	public ListModel<Article> getWestListModel() {

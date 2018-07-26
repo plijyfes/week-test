@@ -3,7 +3,7 @@
 	<borderlayout>
 		<west size="33%" title="${labels.westlist}">
 			<vlayout hflex="1">
-				<listbox model="@bind(avm.westListModel)" rows="10">
+				<listbox model="@load(avm.westListModel)" rows="10">
 					<listhead>
 						<listheader hflex="min">
 							<label value="${labels.date}"></label>
@@ -19,13 +19,13 @@
 						<listitem>
 							<listcell>
 								<label
-									value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+									value="@load(each.updateTime) @converter('formattedDate', format='MM/dd')" />
 							</listcell>
 							<listcell>
-								<label value="@bind(each.subject)" />
+								<label value="@load(each.subject)" />
 							</listcell>
 							<listcell>
-								<label value="@bind(each.author)" />
+								<label value="@load(each.author)" />
 							</listcell>
 						</listitem>
 					</template>
@@ -35,7 +35,7 @@
 		</west>
 		<center title="${labels.centerlist}">
 			<vlayout hflex="1">
-				<listbox model="@bind(avm.centerListModel)" rows="10">
+				<listbox model="@load(avm.centerListModel)" rows="10">
 					<listhead>
 						<listheader hflex="min">
 							<label value="${labels.date}"></label>
@@ -51,13 +51,13 @@
 						<listitem>
 							<listcell>
 								<label
-									value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+									value="@load(each.updateTime) @converter('formattedDate', format='MM/dd')" />
 							</listcell>
 							<listcell>
-								<label value="@bind(each.subject)" />
+								<label value="@load(each.subject)" />
 							</listcell>
 							<listcell>
-								<label value="@bind(each.author)" />
+								<label value="@load(each.author)" />
 							</listcell>
 						</listitem>
 					</template>
@@ -68,7 +68,7 @@
 		<east size="33%"
 			title="${labels.eastlist}">
 			<vlayout hflex="1">
-				<listbox model="@bind(avm.eastListModel)" rows="10">
+				<listbox model="@load(avm.eastListModel)" rows="10">
 					<listhead>
 						<listheader hflex="min">
 							<label value="${labels.date}"></label>
@@ -84,13 +84,13 @@
 						<listitem>
 							<listcell>
 								<label
-									value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+									value="@load(each.updateTime) @converter('formattedDate', format='MM/dd')" />
 							</listcell>
 							<listcell>
-								<label value="@bind(each.subject)" />
+								<label value="@load(each.subject)" />
 							</listcell>
 							<listcell>
-								<label value="@bind(each.author)" />
+								<label value="@load(each.author)" />
 							</listcell>
 						</listitem>
 					</template>

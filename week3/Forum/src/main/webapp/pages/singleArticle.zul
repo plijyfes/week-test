@@ -1,6 +1,6 @@
 <zk>
 	<window>
-		<vlayout hflex="1" model="@bind(amvm.singleArticleView)">
+		<vlayout hflex="1" model="@load(amvm.singleArticleView)">
 			<div>
 				<label value="${labels.subject}:"></label>
 				<label

@@ -1,7 +1,7 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<vlayout hflex="1">
-		<listbox model="@bind(amvm.rootListModel)">
+		<listbox model="@load(amvm.rootListModel)">
 			<listhead>
 				<listheader hflex="min">
 					<label value="${labels.date}"></label>
@@ -17,13 +17,13 @@
 				<listitem onClick="@command('clickOnList',target=event.target.value)">
 					<listcell>
 						<label
-							value="@bind(each.updateTime) @converter('formattedDate', format='MM/dd')" />
+							value="@load(each.updateTime) @converter('formattedDate', format='MM/dd')" />
 					</listcell>
 					<listcell>
-						<label value="@bind(each.subject)" />
+						<label value="@load(each.subject)" />
 					</listcell>
 					<listcell>
-						<label value="@bind(each.author)" />
+						<label value="@load(each.author)" />
 					</listcell>
 				</listitem>
 			</template>

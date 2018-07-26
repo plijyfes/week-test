@@ -16,7 +16,7 @@
 							<textbox value="@bind(fx.subject)" />
 							<label>${labels.parent}:</label>
 							<label
-								value="@load(amvm.parent.subject, after={'edit','goReply','init','newPost'}) ">
+								value="@load(amvm.parent.subject) ">
 							</label>
 							<button label="${labels.newpost}" onClick="@command('newPost')" />
 						</div>
@@ -34,12 +34,22 @@
 						<chosenbox hflex="1"
 							model="@load(amvm.tagListModel)"
 							emptyMessage="choose one or more labels"
-							selectedObjects="@save(fx.tags)"
+							selectedObjects="@bind(amvm.selectedtagListModel)"
 							creatable="true">
 						</chosenbox>
 					</row>
 					<row>
-						<button label="${labels.submit}" onClick="@command('save')" />
+						<button label="${labels.submit}" onClick="@command('save')" />	
+						<div>
+							<label>${labels.status}:</label>
+							<if test="@load(amvm.loading)">
+								<label>${labels.loading}...</label>
+								<label value="@load(amvm.countdown)"></label>
+								<label>${labels.sec}</label>
+								<button label="${labels.cancel}" onClick="@command('cancelSave')" />
+								<timer id="timer" delay="1000" repeats="true" onTimer="@command('timer')"/>		       
+							</if>
+						</div>
 					</row>
 				</rows>
 			</grid>

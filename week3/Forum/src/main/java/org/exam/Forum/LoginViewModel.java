@@ -1,7 +1,6 @@
 package org.exam.Forum;
 
 import org.exam.Forum.services.AuthenticationService;
-import org.exam.Forum.services.impl.UserCredential;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
