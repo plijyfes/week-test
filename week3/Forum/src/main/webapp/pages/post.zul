@@ -33,7 +33,7 @@
 					<row>
 						<chosenbox hflex="1"
 							model="@load(amvm.tagListModel)"
-							emptyMessage="choose one or more labels"
+							emptyMessage="${labels.choose}"
 							selectedObjects="@bind(amvm.selectedtagListModel)"
 							creatable="true">
 						</chosenbox>
