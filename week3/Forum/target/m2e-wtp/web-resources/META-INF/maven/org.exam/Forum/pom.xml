@@ -6,11 +6,13 @@
 	<artifactId>Forum</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<zk.version>8.5.0-Eval</zk.version>
 		<spring.version>5.0.6.RELEASE</spring.version>
 		<hibernate.version>4.0.0.Final</hibernate.version>
 		<commons-io>2.4</commons-io>
 		<maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<packname>-${project.version}-FL-${maven.build.timestamp}</packname>
 	</properties>
 	<packaging>war</packaging>
@@ -133,17 +135,14 @@
 			<artifactId>spring-context</artifactId>
 			<version>5.0.6.RELEASE</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>5.0.6.RELEASE</version>
 		</dependency>
-
-
 	</dependencies>
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>${finalName}</finalName>
 		<plugins>
 			<!-- Run with Jetty -->
 			<plugin>

@@ -6,6 +6,7 @@
 	<artifactId>Forum</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<zk.version>8.5.0-Eval</zk.version>
 		<spring.version>5.0.6.RELEASE</spring.version>
 		<hibernate.version>4.0.0.Final</hibernate.version>
@@ -141,7 +142,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>${finalName}</finalName>
 		<plugins>
 			<!-- Run with Jetty -->
 			<plugin>

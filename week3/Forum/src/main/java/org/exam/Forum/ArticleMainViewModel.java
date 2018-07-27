@@ -2,7 +2,6 @@ package org.exam.Forum;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -89,7 +88,7 @@ public class ArticleMainViewModel {
 		countdown = waitTime;
 	}
 
-	public void subscribe() {
+	private void subscribe() {
 		que.subscribe(new EventListener<Event>() {
 			public void onEvent(Event evt) {
 				refreshViewFromDB();
@@ -325,7 +324,7 @@ public class ArticleMainViewModel {
 				if (e.getName().equals("onYes")) {
 					future.cancel(true);
 					loading = false;
-					refreshViewFromDB();
+//					refreshViewFromDB();
 				}
 			}
 		};

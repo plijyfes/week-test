@@ -46,7 +46,7 @@ public class ArticleViewModel {
 		eastListModel = new ListModelList<Article>(eastList);
 	}
 
-	public void subscribe() {
+	private void subscribe() {
 		que.subscribe(new EventListener<Event>() {
 			public void onEvent(Event evt) {
 				refreshViewFromDB();

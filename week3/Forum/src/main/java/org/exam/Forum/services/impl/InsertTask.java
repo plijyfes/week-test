@@ -31,8 +31,7 @@ public class InsertTask implements Runnable {
 		forumService.saveArticle(article);
 		que.publish(new Event("onUpdate", null));
 		amvm.setLoading(false);
-		amvm.setSelectedtagListModel(new ListModelList<Tag>());
-		amvm.setFormArticle(new Article());
+		amvm.newPost();
 		amvm.setCountdown(amvm.getWaitTime());
 		// System.out.println("save");
 	}

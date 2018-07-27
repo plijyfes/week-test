@@ -2,57 +2,50 @@
 <zk xmlns:n="http://www.zkoss.org/2005/zk/native">
 	<hbox self="@define(content)" vflex="1" hflex="1" align="center"
 		pack="center">
-		<groupbox
+		<grid width="100%"
 			form="@id('fx') @load(amvm.formArticle, after={'edit','goReply','newPost'}) @save(amvm.formArticle, before='save')">
-			<grid width="100%">
-				<columns>
-					<column />
-					<column />
-				</columns>
-				<rows>
-					<row width="800px">
-						<div>
-							<label>${labels.subject}:</label>
-							<textbox value="@bind(fx.subject)" />
-							<label>${labels.parent}:</label>
-							<label
-								value="@load(amvm.parent.subject) ">
-							</label>
-							<button label="${labels.newpost}" onClick="@command('newPost')" />
-						</div>
-					</row>
-					<row width="800px">
-						<div>
-							<label>${labels.content}:</label>
-							<ckeditor width="100%"
-								value="@bind(fx.content)"
-								customConfigurationsPath="/pages/config.js">
-							</ckeditor>
-						</div>
-					</row>
-					<row>
-						<chosenbox hflex="1"
-							model="@load(amvm.tagListModel)"
-							emptyMessage="${labels.choose}"
-							selectedObjects="@bind(amvm.selectedtagListModel)"
-							creatable="true">
-						</chosenbox>
-					</row>
-					<row>
-						<button label="${labels.submit}" onClick="@command('save')" />	
-						<div>
-							<label>${labels.status}:</label>
-							<if test="@load(amvm.loading)">
-								<label>${labels.loading}...</label>
-								<label value="@load(amvm.countdown)"></label>
-								<label>${labels.sec}</label>
-								<button label="${labels.cancel}" onClick="@command('cancelSave')" />
-								<timer id="timer" delay="1000" repeats="true" onTimer="@command('timer')"/>		       
-							</if>
-						</div>
-					</row>
-				</rows>
-			</grid>
-		</groupbox>
+			<rows>
+				<row>
+					<div>
+						<label>${labels.subject}:</label>
+						<textbox value="@bind(fx.subject)" />
+						<label>${labels.parent}:</label>
+						<label value="@load(amvm.parent.subject) ">
+						</label>
+						<button label="${labels.newpost}"
+							onClick="@command('newPost')" />
+					</div>
+				</row>
+				<row>
+					<div>
+						<label>${labels.content}:</label>
+						<ckeditor width="100%" value="@bind(fx.content)"
+							customConfigurationsPath="/pages/config.js">
+						</ckeditor>
+					</div>
+				</row>
+				<row>
+					<chosenbox hflex="1"
+						model="@load(amvm.tagListModel)" emptyMessage="${labels.choose}"
+						selectedObjects="@bind(amvm.selectedtagListModel)"
+						creatable="true">
+					</chosenbox>
+				</row>
+				<row>
+					<button label="${labels.submit}"
+						onClick="@command('save')" />
+					<label>${labels.status}:</label>
+					<if test="@load(amvm.loading)">
+						<label>${labels.loading}...</label>
+						<label value="@load(amvm.countdown)"></label>
+						<label>${labels.sec}</label>
+						<button label="${labels.cancel}"
+							onClick="@command('cancelSave')" />
+						<timer id="timer" delay="1000" repeats="true"
+							onTimer="@command('timer')" />
+					</if>
+				</row>
+			</rows>
+		</grid>
 	</hbox>
 </zk>
