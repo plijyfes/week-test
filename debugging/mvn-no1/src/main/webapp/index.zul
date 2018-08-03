@@ -1,0 +1,28 @@
+<zk>
+	Please click the "Remove all", and it should not throw an exception.
+	<window  apply="testzk.No1Composer">
+	<listbox id="listbox" width="250px">
+		<listhead sizable="true">
+			<listheader label="name" sort="auto" />
+			<listheader label="gender" sort="auto" />
+		</listhead>
+		<listitem>
+			<listcell label="Mary" />
+			<listcell label="FEMALE" />
+		</listitem>
+		<listitem>
+			<listcell label="John" />
+			<listcell label="MALE" />
+		</listitem>
+		<listitem>
+			<listcell label="Jane" />
+			<listcell label="FEMALE" />
+		</listitem>
+		<listitem>
+			<listcell label="Henry" />
+			<listcell label="MALE" />
+		</listitem>
+	</listbox>
+	<button id="btn" label="Remove all"/>
+	</window>
+</zk>

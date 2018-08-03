@@ -34,16 +34,18 @@
 				<row>
 					<button label="${labels.submit}"
 						onClick="@command('save')" />
-					<label>${labels.status}:</label>
-					<if test="@load(amvm.loading)">
-						<label>${labels.loading}...</label>
-						<label value="@load(amvm.countdown)"></label>
-						<label>${labels.sec}</label>
-						<button label="${labels.cancel}"
-							onClick="@command('cancelSave')" />
-						<timer id="timer" delay="1000" repeats="true"
-							onTimer="@command('timer')" />
-					</if>
+					<div>
+						<label>${labels.status}:</label>
+						<if test="@load(amvm.loading)">
+							<label>${labels.loading}...</label>
+							<label value="@load(amvm.countdown)"></label>
+							<label>${labels.sec}</label>
+							<button label="${labels.cancel}"
+								onClick="@command('cancelSave')" />
+							<timer id="timer" delay="1000" repeats="true"
+								onTimer="@command('timer')" />
+						</if>
+					</div>
 				</row>
 			</rows>
 		</grid>

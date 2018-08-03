@@ -1,0 +1,10 @@
+<zk>
+	<window border="normal" title="hello">
+		<doublebox format=",###.#" width="200px">
+			<attribute name="onChange"><![CDATA[
+			java.text.NumberFormat formatter = new java.text.DecimalFormat(",###.#");
+			Clients.showNotification("" + formatter.format(self.getValue()), "info", self, "end_center", 2000);
+			]]></attribute>
+		</doublebox>
+	</window>
+</zk>

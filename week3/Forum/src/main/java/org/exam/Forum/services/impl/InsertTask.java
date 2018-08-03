@@ -32,6 +32,7 @@ public class InsertTask implements Runnable {
 		que.publish(new Event("onUpdate", null));
 		amvm.setLoading(false);
 		amvm.newPost();
+//		amvm.setFormArticle(new Article());
 		amvm.setCountdown(amvm.getWaitTime());
 		// System.out.println("save");
 	}

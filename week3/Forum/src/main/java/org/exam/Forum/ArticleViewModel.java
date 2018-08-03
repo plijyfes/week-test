@@ -36,20 +36,14 @@ public class ArticleViewModel {
 	public void init() {
 		que = EventQueues.lookup("update", EventQueues.APPLICATION, true);
 		subscribe();
-		Article root = forumService.findOneArticleById(1);
-		List<Article> westList = forumService.findNew10MainArticle(root);
-		List<Article> centerList = forumService.findNew10ChildArticle(root);
-		String account = authenticationService.getUserCredential().getAccount();
-		List<Article> eastList = forumService.findNew10ArticleByUser(forumService.findOneUserByAccount(account));
-		westListModel = new ListModelList<Article>(westList);
-		centerListModel = new ListModelList<Article>(centerList);
-		eastListModel = new ListModelList<Article>(eastList);
+		refreshViewFromDB();
 	}
 
 	private void subscribe() {
 		que.subscribe(new EventListener<Event>() {
 			public void onEvent(Event evt) {
 				refreshViewFromDB();
+				refreshViewBinding();
 			}
 		});
 	}
@@ -65,6 +59,9 @@ public class ArticleViewModel {
 		westListModel = new ListModelList<Article>(westList);
 		centerListModel = new ListModelList<Article>(centerList);
 		eastListModel = new ListModelList<Article>(eastList);
+	}
+	
+	public void refreshViewBinding() {
 		BindUtils.postNotifyChange(null, null, this, "westListModel");
 		BindUtils.postNotifyChange(null, null, this, "centerListModel");
 		BindUtils.postNotifyChange(null, null, this, "eastListModel");

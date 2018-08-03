@@ -66,18 +66,12 @@ public class ArticleMainViewModel {
 	@Init
 	public void init() {
 		// view
+		refreshViewFromDB();
 		Article root = forumService.findOneArticleById(1);
 		parent = root;
 		singleArticleView = new Article();
 		formArticle = new Article();
-		List<Article> mainList = forumService.findAllVisibleMain(root);
-		rootListModel = new ListModelList<Article>(mainList);
-		List<Tag> tagList = forumService.findAllTags();
-		tagListModel = new ListModelList<Tag>(tagList);
 		selectedtagListModel = new ListModelList<Tag>();
-		ArticleTreeNode rootNode = loadOnce(root);
-		treeModel = new ArticleTreeModel(rootNode, true);
-		centerTreeModel = new ArticleTreeModel(rootNode, true);
 		// event
 		que = EventQueues.lookup("update", EventQueues.APPLICATION, true);
 		subscribe();
@@ -92,6 +86,7 @@ public class ArticleMainViewModel {
 		que.subscribe(new EventListener<Event>() {
 			public void onEvent(Event evt) {
 				refreshViewFromDB();
+				refreshViewBinding();
 			}
 		});
 	}
@@ -333,7 +328,6 @@ public class ArticleMainViewModel {
 				Messagebox.Button.CANCEL, listener);
 	}
 
-	@NotifyChange("*")
 	@Command
 	public void delete(@BindingParam("target") ArticleTreeNode target) throws Exception {
 		Article targetArticle = target.getData();
@@ -360,12 +354,15 @@ public class ArticleMainViewModel {
 		ArticleTreeNode rootNode = loadOnce(root);
 		treeModel = new ArticleTreeModel(rootNode, true);
 		centerTreeModel = new ArticleTreeModel(rootNode, true);
+		// BindUtils.postNotifyChange(null, null, this, "singleArticleView");
+	}
+	
+	public void refreshViewBinding() {
 		BindUtils.postNotifyChange(null, null, this, "rootListModel");
 		BindUtils.postNotifyChange(null, null, this, "tagListModel");
 		BindUtils.postNotifyChange(null, null, this, "treeModel");
 		BindUtils.postNotifyChange(null, null, this, "centerTreeModel");
 		BindUtils.postNotifyChange(null, null, this, "loading");
-		// BindUtils.postNotifyChange(null, null, this, "singleArticleView");
 	}
 
 	@NotifyChange("countdown")
