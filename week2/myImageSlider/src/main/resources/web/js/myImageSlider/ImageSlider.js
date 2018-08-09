@@ -20,7 +20,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	_selectedIndex: -1,
 	_imageWidth: 200,
 	_target: 0,
-	_timer: clearInterval(0), // not need
+//	_timer: clearInterval(0), // not need
 	
 	/**
 	 * Don't use array/object as a member field, it's a restriction for ZK
@@ -40,29 +40,22 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		 */		
 		selectedIndex : function(selectedIndex) {
 			if (this.desktop && selectedIndex != -1) {
-				if(this._timer){
-					clearInterval(this._timer)
-				}
 				var scrollpos = this.$n('scroll-div').scrollLeft;
-				for (var i = 0; i < this.nChildren; i++) {
-					this.$n('content').children[i].className = this.$s('image');
-				}
+				this._clearSelectedView();
 				this.$n('content').children[selectedIndex].className = this.$s('image-selected');
 				if(!(scrollpos < selectedIndex * this.getImageWidth() && 
 						selectedIndex * this.getImageWidth() < scrollpos + this._viewportSize * this._imageWidth)) {
 					this.$n('scroll-div').scrollLeft = selectedIndex * this.getImageWidth();
 				}
 				this._target = this.$n('scroll-div').scrollLeft;
-			} else {
+			} else if (selectedIndex == -1){
+			    this._clearSelectedView();
 				// -1 的情形
 			}
 		},
 
 		viewportSize : function (viewportSize) {
 			if (this.desktop) {
-				if (this._timer) { // not need
-					clearInterval(this._timer);
-				}
 				var fullview = (viewportSize >= this.nChildren);
 				this.$n().style = "width:" + (this.getImageWidth() * viewportSize + (fullview ? 0 : 80)) + 'px;';			
 				this.$n('left-button').className = this.$s('left-button' + (fullview ? '-d' : ''));
@@ -73,9 +66,6 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 
 		imageWidth : function (imageWidth) {
 			if (this.desktop) {
-				if (this._timer) { // not need
-					clearInterval(this._timer);
-				}
 				for (var i = 0; i < this.nChildren; i++) {
 					this.$n('content').children[i].style = 'width:' + this.getImageWidth() + 'px;';
 				}
@@ -106,11 +96,13 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		var scrollDiv = this.$n('scroll-div'),
 		    imageWidth = this.getImageWidth(),
 		    scrollLimit = imageWidth * (this.nChildren - this.getViewportSize()),
-		    target = this._target;
+		    target = this._target,
+		    self = this;
 
-		if (this._timer) {
-			clearInterval(this._timer);
-		} 
+        if (self._timer) {
+        	clearInterval(self._timer);
+        }
+
 		if (evt.domTarget == this.$n('left-button')) {
 			if (target >= imageWidth) {
 				this._target -= imageWidth;
@@ -120,7 +112,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 					if (scrollDiv.scrollLeft > target) {
 						scrollDiv.scrollLeft -= (0.02 * imageWidth);
 					} else {
-						clearInterval(this._timer);
+						clearInterval(self._timer);
 					}
 				}, 10);
 			}
@@ -133,7 +125,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 					if (scrollDiv.scrollLeft < target) {
 						scrollDiv.scrollLeft += (0.02 * imageWidth);
 					} else {
-						clearInterval(this._timer);
+						clearInterval(self._timer);
 					}
 				}, 10);
 			}
@@ -154,13 +146,16 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		} 
  },
 	
- 	removeChildHTML_: function (child) {
- 		this.$supers('removeChildHTML_', arguments);
+ 	removeChild: function (child) {
+ 		this.$supers('removeChild', arguments);
  		if(this._selectedIndex == child.getChildIndex()){
  			this.setSelectedIndex(-1);
  		}
 		jq(this.$n('content').children[child.getChildIndex()]).remove();
 		this.$n('content').style = "width:" + (this.getImageWidth() * this.$n('content').children.length) + 'px;';
+		if(this._viewportSize == this.nChildren + 1) {
+		    this.setViewportSize(this.nChildren);
+		}
 	},
 	
 	insertChildHTML_: function (child, before, desktop) {
@@ -173,5 +168,20 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		this.$n('content').appendChild(divforchild);
 //		this.$n('content').insertBefore(divforchild, (before) ? before.$n() : null); // before.$n() is not a Node
 		child.bind(desktop);
-	}// to do: 新增物件多次完處理一次畫面更新
+		this._resetViewport();
+	},// to do: 新增物件多次完處理一次畫面更新
+
+	_resetViewport:function() {
+	    var fullview = (this._viewportSize >= this.nChildren);
+        this.$n().style = "width:" + (this.getImageWidth() * this._viewportSize + (fullview ? 0 : 80)) + 'px;';
+        this.$n('left-button').className = this.$s('left-button' + (fullview ? '-d' : ''));
+        this.$n('right-button').className = this.$s('right-button' + (fullview ? '-d' : ''));
+        this.$n('scroll-div').style = "width:" + this._viewportSize * this.getImageWidth() + 'px;';
+	},
+
+	_clearSelectedView:function() {
+	    for (var i = 0; i < this.nChildren; i++) {
+            this.$n('content').children[i].className = this.$s('image');
+        }
+	}
 });
