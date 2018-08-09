@@ -24,15 +24,15 @@ public class ImageSlider extends XulElement {
 	private int _imageWidth = 200;
 
 	public Image getSelectedItem() {
-		if (_selectedIndex != -1) {	  // 邊界判斷
-			List<Component> imagelist = getChildren();
+		List<Component> imagelist = getChildren();
+		if (_selectedIndex != -1 && _selectedIndex >= 0 && _selectedIndex < imagelist.size()) {	  // 邊界判斷
 			return (Image) imagelist.get(_selectedIndex);
 		}
 		return null;
 	}
 
 	public void setSelectedItem(Image selectedItem) {
-		if (selectedItem != null) {	
+		if (selectedItem != null) {
 			if (selectedItem.getParent() == this) {
 				setSelectedIndex(getChildren().indexOf(selectedItem));
 			} else {
@@ -52,7 +52,7 @@ public class ImageSlider extends XulElement {
 			if (_selectedIndex != selectedIndex) {
 				_selectedIndex = selectedIndex;
 				smartUpdate("selectedIndex", _selectedIndex);
-			} 
+			}
 		} else {
 			throw new UiException("Invalid selectedIndex" + selectedIndex);
 		}

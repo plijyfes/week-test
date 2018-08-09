@@ -49,8 +49,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 				}
 				this._target = this.$n('scroll-div').scrollLeft;
 			} else if (selectedIndex == -1){
-			    this._clearSelectedView();
-				// -1 的情形
+			    this._clearSelectedView(); // -1 的情形
 			}
 		},
 
@@ -146,17 +145,23 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		} 
  },
 	
- 	removeChild: function (child) {
- 		this.$supers('removeChild', arguments);
+ 	removeChildHTML_: function (child) {
  		if(this._selectedIndex == child.getChildIndex()){
- 			this.setSelectedIndex(-1);
- 		}
+         	this.setSelectedIndex(-1);
+        }
+ 		this.$supers('removeChildHTML_', arguments);
 		jq(this.$n('content').children[child.getChildIndex()]).remove();
 		this.$n('content').style = "width:" + (this.getImageWidth() * this.$n('content').children.length) + 'px;';
-		if(this._viewportSize == this.nChildren + 1) {
-		    this.setViewportSize(this.nChildren);
-		}
 	},
+
+    removeChild: function (child) {
+     	this.$supers('removeChild', arguments);
+    	if(this._viewportSize == this.nChildren + 1) {
+    	    this.setViewportSize(this.nChildren);
+    	}else if(this._viewportSize == this.nChildren) {
+            this._resetViewport();
+        }
+    },
 	
 	insertChildHTML_: function (child, before, desktop) {
 		divforchild = document.createElement('div');

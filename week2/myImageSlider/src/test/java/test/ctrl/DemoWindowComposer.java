@@ -9,23 +9,23 @@ import org.zkoss.zul.Image;
 
 public class DemoWindowComposer extends SelectorComposer {
 
-	@Wire
-	private ImageSlider myImageSlider;
+    @Wire
+    private ImageSlider myImageSlider;
 
-	public void doAfterCompose(Component comp) throws Exception {
-		super.doAfterCompose(comp);
-	}
+    public void doAfterCompose(Component comp) throws Exception {
+        super.doAfterCompose(comp);
+    }
 
-	@Listen("onClick = #btn1")
-	public void onClick$btn1() {
-		Image img1 = new Image("/test_img/ironman-01.jpg");
-//		myImageSlider.appendChild(img1);
-		myImageSlider.insertBefore(img1, myImageSlider.getFirstChild());
-	}
+    @Listen("onClick = #btn1")
+    public void onClick$btn1() {
+        Image img1 = new Image("/test_img/ironman-01.jpg");
+        myImageSlider.appendChild(img1);
+//		myImageSlider.insertBefore(img1, myImageSlider.getFirstChild());
+    }
 
-	@Listen("onClick = #btn2")
-	public void onClick$btn2() {
-//		myImageSlider.removeChild(myImageSlider.getLastChild());
-		 myImageSlider.removeChild(myImageSlider.getFirstChild());
-	}
+    @Listen("onClick = #btn2")
+    public void onClick$btn2() {
+        myImageSlider.removeChild(myImageSlider.getLastChild());
+//		myImageSlider.removeChild(myImageSlider.getFirstChild());
+    }
 }
