@@ -1,0 +1,40 @@
+<zk>
+	<zscript><![CDATA[
+	ListModelList model = new ListModelList();
+	public void add(){
+		model.add(System.currentTimeMillis() + "");
+	}
+	]]></zscript>
+	<button label="add" onClick="add()"/>
+	<grid  model="${model}" height="100px" class="smaller">
+		<columns>
+			<column label="col 1" />
+			<column label="col 2" />
+		</columns>
+		<template name="model">
+			<row>
+				<label value="${each}"/>
+				<label value="${each}"/>
+			</row>
+		</template>
+	</grid>
+	<separator height="50px"/>
+	<grid   height="100px" >
+		<columns>
+			<column label="col 1" />
+			<column label="col 2" />
+		</columns>
+		<rows>
+            <forEach begin="0" end="5">
+			<row>
+				<cell>
+				<label value="aaa"/>
+				</cell>
+				<cell>
+				<label value="bbb"/>
+				</cell>
+			</row>
+            </forEach>
+		</rows>
+	</grid>
+</zk>
