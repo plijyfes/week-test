@@ -63,9 +63,13 @@ public class ImageSlider extends XulElement {
 	}
 
 	public void setViewportSize(int viewportSize) { // 可判斷邊界
-		if (_viewportSize != viewportSize) {
-			_viewportSize = viewportSize;
-			smartUpdate("viewportSize", _viewportSize);
+		if (viewportSize > 0) {
+			if (_viewportSize != viewportSize) {
+				_viewportSize = viewportSize;
+				smartUpdate("viewportSize", _viewportSize);
+			}
+		} else {
+			throw new UiException("Invalid viewportSize" + viewportSize);
 		}
 	}
 
@@ -73,10 +77,14 @@ public class ImageSlider extends XulElement {
 		return _imageWidth;
 	}
 
-	public void setImageWidth(int imageWidth) { //邊界判斷
-		if (_imageWidth != imageWidth) {
-			_imageWidth = imageWidth;
-			smartUpdate("imageWidth", _imageWidth);
+	public void setImageWidth(int imageWidth) {
+		if (imageWidth >= 0) {
+			if (_imageWidth != imageWidth) {
+				_imageWidth = imageWidth;
+				smartUpdate("imageWidth", _imageWidth);
+			}
+		} else {
+			throw new UiException("Invalid imageWidth" + imageWidth);
 		}
 	}
 
@@ -84,7 +92,7 @@ public class ImageSlider extends XulElement {
 	public void onChildAdded(Component child) {
 		super.onChildAdded(child);
 		List<Component> imagelist = getChildren();
-		setSelectedIndex(imagelist.indexOf(getSelectedItem())); // bug to be fix
+		setSelectedIndex(imagelist.indexOf(getSelectedItem()));
 	}
 
 	@Override
@@ -137,7 +145,7 @@ public class ImageSlider extends XulElement {
 
 	public void beforeChildAdded(Component child, Component refChild) {
 		if (!(child instanceof Image)) {
-			throw new UiException("Unsupported child: " + child + ("(Image only)")); // image only
+			throw new UiException("Unsupported child: " + child + "(Image only)"); // image only
 		}
 		super.beforeChildAdded(child, refChild);
 	}
