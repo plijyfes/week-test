@@ -31,73 +31,76 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="class" value="2" />
-          <entry key="java" value="16" />
+          <entry key="class" value="10" />
+          <entry key="java" value="17" />
+          <entry key="js" value="5" />
           <entry key="xml" value="3" />
           <entry key="xsd" value="1" />
-          <entry key="zul" value="12" />
+          <entry key="zul" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CLASS" value="2" />
-          <entry key="JAVA" value="16" />
+          <entry key="CLASS" value="10" />
+          <entry key="JAVA" value="17" />
+          <entry key="JavaScript" value="5" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="XML" value="15" />
+          <entry key="XML" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
+          <entry key="html" value="11" />
           <entry key="java" value="69" />
-          <entry key="xml" value="37" />
-          <entry key="zul" value="73" />
+          <entry key="xml" value="41" />
+          <entry key="zhtml" value="56" />
+          <entry key="zul" value="90" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
+          <entry key="HTML" value="11" />
           <entry key="JAVA" value="69" />
-          <entry key="XML" value="110" />
+          <entry key="PLAIN_TEXT" value="56" />
+          <entry key="XML" value="131" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="9" column="30" lean-forward="true" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/zk3735.zul">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="6" column="41" lean-forward="true" selection-start-line="6" selection-start-column="41" selection-end-line="6" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/zkoss/zktest/test2/ZK3735TestComposer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1113">
-              <caret line="53" column="5" lean-forward="true" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/t5804.zul">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/zk3663.zhtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
-              <caret line="2" column="12" lean-forward="true" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="17" />
+            <state relative-caret-position="210">
+              <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/web/js/zul/wgt/Nodom.src.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="191">
+              <caret line="21" column="23" lean-forward="true" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zk/8.5.2-Eval/zk-8.5.2-Eval.jar!/web/js/zk/widget.src.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="186">
+              <caret line="2987" column="38" lean-forward="true" selection-start-line="2987" selection-start-column="38" selection-end-line="2987" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/zk3663.zul">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="10" column="54" selection-start-line="10" selection-start-column="54" selection-end-line="10" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -116,6 +119,11 @@
       <find>popup</find>
       <find>close()</find>
       <find>add</find>
+      <find>dragging</find>
+      <find>onFloatUp</find>
+      <find>intercept</find>
+      <find>bind()</find>
+      <find>bind:</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -126,9 +134,12 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/webapp/zulmodal.zul" />
         <option value="$PROJECT_DIR$/src/main/java/org/zkoss/zktest/test2/testCase3735.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/webapp/zk3735.zul" />
         <option value="$PROJECT_DIR$/src/main/java/org/zkoss/zktest/test2/ZK3735TestComposer.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/zk3663.html" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/webapp/zk3663.zul" />
+        <option value="$PROJECT_DIR$/src/main/webapp/zk3663.zhtml" />
       </list>
     </option>
   </component>
@@ -167,25 +178,21 @@
             </path>
             <path>
               <item name="mvn-no5" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="mvn-no5" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="mvn-no5" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: org.zkoss.zk:zul:8.5.2-Eval" type="70bed36:NamedLibraryElementNode" />
+              <item name="mvn-no5" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="mvn-no5" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: org.zkoss.zk:zul:8.5.2-Eval" type="70bed36:NamedLibraryElementNode" />
-              <item name="zul-8.5.2-Eval.jar" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="mvn-no5" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Maven: org.zkoss.zk:zul:8.5.2-Eval" type="70bed36:NamedLibraryElementNode" />
-              <item name="zul-8.5.2-Eval.jar" type="462c0819:PsiDirectoryNode" />
-              <item name="zul" type="462c0819:PsiDirectoryNode" />
+              <item name="mvn-no5" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -194,7 +201,8 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1533788259759" />
+    <property name="SearchEverywhereHistoryKey" value="widget.&#9;FILE&#9;jar://C:/Users/rd/.m2/repository/org/zkoss/zk/zk/8.5.2-Eval/zk-8.5.2-Eval.jar!/web/js/zk/widget.src.js&#10;Nodom.js&#9;FILE&#9;jar://C:/Users/rd/.m2/repository/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/web/js/zul/wgt/Nodom.src.js&#10;xul&#9;FILE&#9;jar://C:/Users/rd/.m2/repository/org/zkoss/zk/zul/8.5.0-Eval/zul-8.5.0-Eval-sources.jar!/org/zkoss/zul/impl/XulElement.java&#10;Drag.js&#9;FILE&#9;jar://C:/Users/rd/.m2/repository/org/zkoss/zk/zk/8.5.2-Eval/zk-8.5.2-Eval.jar!/web/js/zk/drag.src.js&#10;Window.js&#9;FILE&#9;jar://C:/Users/rd/.m2/repository/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/web/js/zul/wnd/Window.src.js" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1533896430288" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -269,7 +277,7 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18683812" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2655068" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -278,13 +286,13 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.83812404" visible="true" weight="0.25737706" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.8729198" weight="0.3442623" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.8366112" visible="true" weight="0.25737706" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.871407" weight="0.3442623" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49924356" weight="0.3295082" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49848714" weight="0.3295082" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.16187595" side_tool="true" visible="true" weight="0.25737706" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.1633888" side_tool="true" visible="true" weight="0.25737706" />
       <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49924356" weight="0.3295082" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.52723145" weight="0.3295082" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -300,6 +308,21 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.0-Eval/zul-8.5.0-Eval-sources.jar!/org/zkoss/zul/impl/XulElement.java</url>
+          <line>45</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/zk-4015/pom.xml" />
     <entry file="file://$PROJECT_DIR$/src/main/java/org/zkoss/zktest/test2/grid/FakeListModel.java" />
@@ -307,13 +330,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
           <caret line="952" column="4" selection-start-line="952" selection-start-column="4" selection-end-line="952" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.0-Eval/zul-8.5.0-Eval-sources.jar!/org/zkoss/zul/impl/XulElement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="42" column="19" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -423,34 +439,154 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/t5804.zul">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" column="30" lean-forward="true" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
+        <state relative-caret-position="42">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/zk3735.zul">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/web/js/zul/wnd/Window.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="6" column="41" lean-forward="true" selection-start-line="6" selection-start-column="41" selection-end-line="6" selection-end-column="41" />
+        <state relative-caret-position="84">
+          <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zk/8.5.2-Eval/zk-8.5.2-Eval.jar!/web/js/zk/drag.src.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="20" column="17" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/web/js/zul/wnd/Window.src.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-255">
+          <caret line="924" column="13" selection-start-line="924" selection-start-column="4" selection-end-line="924" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/zkoss/zktest/test2/ZK3735TestComposer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1113">
-          <caret line="53" column="5" lean-forward="true" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
+          <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/t5804.zul">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/zk3735.zul">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="2" column="12" lean-forward="true" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="17" />
+        <state relative-caret-position="126">
+          <caret line="6" column="41" selection-start-line="6" selection-start-column="41" selection-end-line="6" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/org/zkoss/zul/Button.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="205" selection-start-line="205" selection-end-line="205" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zk/8.5.2-Eval/zk-8.5.2-Eval.jar!/org/zkoss/zk/ui/AbstractComponent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="1982" selection-start-line="1982" selection-end-line="1982" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zk/8.5.2-Eval/zk-8.5.2-Eval.jar!/org/zkoss/zk/ui/sys/HtmlPageRenders.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="900" column="29" selection-start-line="900" selection-start-column="29" selection-end-line="900" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zhtml/8.5.2-Eval/zhtml-8.5.2-Eval.jar!/org/zkoss/zhtml/impl/AbstractTag.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="331" selection-start-line="331" selection-end-line="331" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/org/zkoss/zul/Div.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/org/zkoss/zul/impl/XulElement.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="129">
+          <caret line="146" selection-start-line="146" selection-end-line="146" />
+          <folding>
+            <element signature="e#863#864#0" expanded="true" />
+            <element signature="e#937#938#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.0-Eval/zul-8.5.0-Eval-sources.jar!/org/zkoss/zul/impl/XulElement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="48" column="41" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="41" />
+          <folding>
+            <element signature="e#1103#1104#0" expanded="true" />
+            <element signature="e#1158#1159#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/org/zkoss/zul/impl/LabelElement.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="42" selection-start-line="42" selection-end-line="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/org/zkoss/zul/impl/LabelImageElement.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="177" selection-start-line="177" selection-end-line="177" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/web/js/zul/wgt/Nodom.src.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="21" column="23" lean-forward="true" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/zkoss/zk/zk/8.5.2-Eval/zk-8.5.2-Eval.jar!/web/js/zk/widget.src.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="2987" column="38" lean-forward="true" selection-start-line="2987" selection-start-column="38" selection-end-line="2987" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/zk3663.zul">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" column="54" selection-start-line="10" selection-start-column="54" selection-end-line="10" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/zk3663.zhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
         </state>
       </provider>
     </entry>

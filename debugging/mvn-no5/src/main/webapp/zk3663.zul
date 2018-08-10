@@ -1,0 +1,12 @@
+
+<zk>
+        <nodom>
+            <button label="button in nodom"></button>
+        </nodom>
+        <div>
+            <nodom>
+                <button label="button in nodom enclose zDiv"></button>
+            </nodom>
+        </div>
+        <button label="button outside nodom"></button>
+</zk>

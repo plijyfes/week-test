@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:z="zul">
+    <head></head>
+    <body>
+        <z:nodom>
+            <z:button label="button in nodom"></z:button>
+        </z:nodom>
+        <z:div>
+            <z:nodom>
+                <z:button label="button in nodom enclose zDiv"></z:button>
+            </z:nodom>
+        </z:div>
+        <z:button label="button outside nodom"></z:button>
+    </body>
+</html>
