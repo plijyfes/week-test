@@ -91,7 +91,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	 * A example for domListen_ listener.
 	 */
 
-	_doScrollClick : function(evt) { // 重構
+	_doScrollClick : function(evt) {
 		var scrollDiv = this.$n('scroll-div'),
 		    imageWidth = this.getImageWidth(),
 		    scrollLimit = imageWidth * (this.nChildren - this.getViewportSize()),
@@ -164,17 +164,23 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
     },
 	
 	insertChildHTML_: function (child, before, desktop) {
-		divforchild = document.createElement('div');
-		divforchild.id = child.uuid;
-		divforchild.className = this.$s('image')
-		divforchild.style = 'width:' + this._imageWidth + 'px; height:' + this._imageWidth + 'px;'
-		divforchild.innerHTML = child.redrawHTML_(); //ZK buffer 串DIV字串  out 給child.redraw 參考Box.js
-		this.$n('content').style = "width:" + (this.getImageWidth() * this.nChildren) + 'px;';
-		this.$n('content').appendChild(divforchild);
-//		this.$n('content').insertBefore(divforchild, (before) ? before.$n() : null); // before.$n() is not a Node
+//		divforchild = document.createElement('div');
+//		divforchild.id = child.uuid;
+//		divforchild.className = this.$s('image')
+//		divforchild.style = 'width:' + this._imageWidth + 'px; height:' + this._imageWidth + 'px;'
+//		divforchild.innerHTML = child.redrawHTML_();
+//		ZK buffer 串DIV字串  out 給child.redraw 參考Box.js
+        var oo = new zk.Buffer();
+        oo.push('<div id="' + child.uuid + '-image" class="' + this.$s('image') + '" style="width:' + this._imageWidth + 'px; height:' + this._imageWidth + 'px;">');
+        child.redraw(oo);
+        oo.push('</div>');
+        console.log(oo);
+		this.$n('content').style = 'width:' + (this.getImageWidth() * this.nChildren) + 'px;';
+		this.$n('content').insertAdjacentHTML('beforeend', oo);
+//		this.$n('content').appendChild(divforchild);
 		child.bind(desktop);
 		this._resetViewport();
-	},// to do: 新增物件多次完處理一次畫面更新
+	},
 
 	_resetViewport:function() {
 	    var fullview = (this._viewportSize >= this.nChildren);
