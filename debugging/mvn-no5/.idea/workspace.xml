@@ -72,8 +72,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/zk3663.zhtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+            <state relative-caret-position="294">
+              <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -202,7 +202,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="widget.&#9;FILE&#9;jar://C:/Users/rd/.m2/repository/org/zkoss/zk/zk/8.5.2-Eval/zk-8.5.2-Eval.jar!/web/js/zk/widget.src.js&#10;Nodom.js&#9;FILE&#9;jar://C:/Users/rd/.m2/repository/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/web/js/zul/wgt/Nodom.src.js&#10;xul&#9;FILE&#9;jar://C:/Users/rd/.m2/repository/org/zkoss/zk/zul/8.5.0-Eval/zul-8.5.0-Eval-sources.jar!/org/zkoss/zul/impl/XulElement.java&#10;Drag.js&#9;FILE&#9;jar://C:/Users/rd/.m2/repository/org/zkoss/zk/zk/8.5.2-Eval/zk-8.5.2-Eval.jar!/web/js/zk/drag.src.js&#10;Window.js&#9;FILE&#9;jar://C:/Users/rd/.m2/repository/org/zkoss/zk/zul/8.5.2-Eval/zul-8.5.2-Eval.jar!/web/js/zul/wnd/Window.src.js" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1533896430288" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1534145962888" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -585,8 +585,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/zk3663.zhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+        <state relative-caret-position="294">
+          <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
         </state>
       </provider>
     </entry>

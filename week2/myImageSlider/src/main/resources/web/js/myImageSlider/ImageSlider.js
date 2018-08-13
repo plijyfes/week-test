@@ -156,7 +156,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 
     removeChild: function (child) {
      	this.$supers('removeChild', arguments);
-    	if(this._viewportSize == this.nChildren + 1) {
+    	if(this._viewportSize > this.nChildren) {
     	    this.setViewportSize(this.nChildren);
     	}else if(this._viewportSize == this.nChildren) {
             this._resetViewport();
