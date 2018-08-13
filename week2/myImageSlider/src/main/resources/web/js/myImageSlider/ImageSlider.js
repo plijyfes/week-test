@@ -95,36 +95,35 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		var scrollDiv = this.$n('scroll-div'),
 		    imageWidth = this.getImageWidth(),
 		    scrollLimit = imageWidth * (this.nChildren - this.getViewportSize()),
-		    target = this._target,
 		    self = this;
 
         if (self._timer) {
-        	clearInterval(self._timer);
+        	self._timer = clearInterval(self._timer);
         }
 
 		if (evt.domTarget == this.$n('left-button')) {
-			if (target >= imageWidth) {
-				this._target -= imageWidth;
+			if (self._target >= imageWidth) {
+				self._target -= imageWidth;
 			}
 			if (scrollDiv.scrollLeft > 0) {
-				this._timer = setInterval(function() { // 閉包 self = this 放外面
-					if (scrollDiv.scrollLeft > target) {
+				self._timer = setInterval(function() { // 閉包 self = this 放外面
+					if (scrollDiv.scrollLeft > self._target) {
 						scrollDiv.scrollLeft -= (0.02 * imageWidth);
 					} else {
-						clearInterval(self._timer);
+						self._timer = clearInterval(self._timer);
 					}
 				}, 10);
 			}
 		} else {
-			if (target <= scrollLimit - imageWidth) {
-				this._target += imageWidth;
+			if (self._target <= scrollLimit - imageWidth) {
+				self._target += imageWidth;
 			}
 			if (scrollDiv.scrollLeft < scrollLimit) {
-				this._timer = setInterval(function() {
-					if (scrollDiv.scrollLeft < target) {
+				self._timer = setInterval(function() {
+					if (scrollDiv.scrollLeft < self._target) {
 						scrollDiv.scrollLeft += (0.02 * imageWidth);
 					} else {
-						clearInterval(self._timer);
+						self._timer = clearInterval(self._timer);
 					}
 				}, 10);
 			}

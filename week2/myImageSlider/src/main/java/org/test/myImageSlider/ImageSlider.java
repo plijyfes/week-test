@@ -103,7 +103,7 @@ public class ImageSlider extends XulElement {
 		} else if (getSelectedIndex() > childIndex) {
 			setSelectedIndex(getSelectedIndex() - 1);
 		}
-		if (_viewportSize > getChildren().size()) {
+		if (_viewportSize >= getChildren().size()) {
 			setViewportSize(getChildren().size() - 1);
 		}
 		super.beforeChildRemoved(child);
