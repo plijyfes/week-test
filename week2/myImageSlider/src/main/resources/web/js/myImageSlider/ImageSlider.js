@@ -39,17 +39,19 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		 * a coding sugar.)
 		 */		
 		selectedIndex : function(selectedIndex) {
-			if (this.desktop && selectedIndex != -1) {
-				var scrollpos = this.$n('scroll-div').scrollLeft;
-				this._clearSelectedView();
-				this.$n('content').children[selectedIndex].className = this.$s('image-selected');
-				if(!(scrollpos < selectedIndex * this.getImageWidth() && 
-						selectedIndex * this.getImageWidth() < scrollpos + this._viewportSize * this._imageWidth)) {
-					this.$n('scroll-div').scrollLeft = selectedIndex * this.getImageWidth();
-				}
-				this._target = this.$n('scroll-div').scrollLeft;
-			} else if (selectedIndex == -1){
-			    this._clearSelectedView(); // -1 的情形
+			if (this.desktop) {
+			    if (selectedIndex != -1) {
+                	var scrollpos = this.$n('scroll-div').scrollLeft;
+                	this._clearSelectedView();
+                	this.$n('content').children[selectedIndex].className = this.$s('image-selected');
+                	if(!(scrollpos < selectedIndex * this.getImageWidth() &&
+                		selectedIndex * this.getImageWidth() < scrollpos + this._viewportSize * this._imageWidth)) {
+                		this.$n('scroll-div').scrollLeft = selectedIndex * this.getImageWidth();
+                	}
+                	this._target = this.$n('scroll-div').scrollLeft;
+                	} else if (selectedIndex == -1){
+                		this._clearSelectedView(); // -1 的情形
+                	}
 			}
 		},
 
@@ -94,40 +96,19 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 	_doScrollClick : function(evt) {
 		var scrollDiv = this.$n('scroll-div'),
 		    imageWidth = this.getImageWidth(),
-		    scrollLimit = imageWidth * (this.nChildren - this.getViewportSize()),
+		    isLeft = (evt.domTarget == this.$n('left-button')),
+		    move = isLeft ? -imageWidth : imageWidth,
+		    moveTimes = 100,
+            moveStep = move / moveTimes,
 		    self = this;
 
         if (self._timer) {
-        	self._timer = clearInterval(self._timer);
+            return false;
         }
-
-		if (evt.domTarget == this.$n('left-button')) {
-			if (self._target >= imageWidth) {
-				self._target -= imageWidth;
-			}
-			if (scrollDiv.scrollLeft > 0) {
-				self._timer = setInterval(function() { // 閉包 self = this 放外面
-					if (scrollDiv.scrollLeft > self._target) {
-						scrollDiv.scrollLeft -= (0.02 * imageWidth);
-					} else {
-						self._timer = clearInterval(self._timer);
-					}
-				}, 10);
-			}
-		} else {
-			if (self._target <= scrollLimit - imageWidth) {
-				self._target += imageWidth;
-			}
-			if (scrollDiv.scrollLeft < scrollLimit) {
-				self._timer = setInterval(function() {
-					if (scrollDiv.scrollLeft < self._target) {
-						scrollDiv.scrollLeft += (0.02 * imageWidth);
-					} else {
-						self._timer = clearInterval(self._timer);
-					}
-				}, 10);
-			}
-		}
+        this._timer = setInterval(function () {
+        	if (--moveTimes <= 0) self._timer = clearInterval(self._timer);
+        	scrollDiv.scrollLeft += moveStep;
+        }, 10)
 	},
 
 	/*
@@ -145,9 +126,9 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
  },
 	
  	removeChildHTML_: function (child) {
- 		if(this._selectedIndex == child.getChildIndex()){
-         	this.setSelectedIndex(-1);
-        }
+// 		if(this._selectedIndex == child.getChildIndex()){
+//         	this.setSelectedIndex(-1);
+//        }
  		this.$supers('removeChildHTML_', arguments);
 		jq(this.$n('content').children[child.getChildIndex()]).remove();
 		this.$n('content').style = "width:" + (this.getImageWidth() * this.$n('content').children.length) + 'px;';
@@ -158,7 +139,7 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
     	if(this._viewportSize > this.nChildren) {
     	    this.setViewportSize(this.nChildren);
     	}else if(this._viewportSize == this.nChildren) {
-            this._resetViewport();
+            this._reDrawLFbutton();
         }
     },
 	
@@ -178,10 +159,10 @@ myImageSlider.ImageSlider = zk.$extends(zul.Widget, {
 		this.$n('content').insertAdjacentHTML('beforeend', oo);
 //		this.$n('content').appendChild(divforchild);
 		child.bind(desktop);
-		this._resetViewport();
+		this._reDrawLFbutton();
 	},
 
-	_resetViewport:function() {
+	_reDrawLFbutton:function() {
 	    var fullview = (this._viewportSize >= this.nChildren);
         this.$n().style = "width:" + (this.getImageWidth() * this._viewportSize + (fullview ? 0 : 80)) + 'px;';
         this.$n('left-button').className = this.$s('left-button' + (fullview ? '-d' : ''));

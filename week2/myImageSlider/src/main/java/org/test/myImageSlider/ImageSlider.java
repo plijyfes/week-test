@@ -25,7 +25,7 @@ public class ImageSlider extends XulElement {
 
 	public Image getSelectedItem() {
 		List<Component> imagelist = getChildren();
-		if (_selectedIndex != -1 && _selectedIndex >= 0 && _selectedIndex < imagelist.size()) {	  // 邊界判斷
+		if (_selectedIndex >= 0 && _selectedIndex < imagelist.size()) {	  // 邊界判斷
 			return (Image) imagelist.get(_selectedIndex);
 		}
 		return null;
@@ -92,7 +92,9 @@ public class ImageSlider extends XulElement {
 	public void onChildAdded(Component child) {
 		super.onChildAdded(child);
 		List<Component> imagelist = getChildren();
-		setSelectedIndex(imagelist.indexOf(getSelectedItem()));
+		if (imagelist.indexOf(child) < imagelist.indexOf(getSelectedItem())) {
+			setSelectedIndex(imagelist.indexOf(getSelectedItem()));
+		}
 	}
 
 	@Override
@@ -103,9 +105,9 @@ public class ImageSlider extends XulElement {
 		} else if (getSelectedIndex() > childIndex) {
 			setSelectedIndex(getSelectedIndex() - 1);
 		}
-		if (_viewportSize >= getChildren().size()) {
-			setViewportSize(getChildren().size() - 1);
-		}
+//		if (_viewportSize >= getChildren().size()) {
+//			setViewportSize(getChildren().size() - 1);
+//		}
 		super.beforeChildRemoved(child);
 	}
 
